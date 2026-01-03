@@ -11,6 +11,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install deploy dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsync openssh-client
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
