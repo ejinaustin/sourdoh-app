@@ -13,8 +13,21 @@ jobs:
 
       - name: Install deploy dependencies
         run: |
+          set -euxo pipefail
           sudo apt-get update
           sudo apt-get install -y rsync openssh-client
+
+      - name: Debug tools
+        run: |
+          set -eux
+          uname -a
+          echo "PATH=$PATH"
+          which bash || true
+          which ssh || true
+          ssh -V || true
+          which ssh-keyscan || true
+          which rsync || true
+          rsync --version || true
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -24,11 +37,13 @@ jobs:
 
       - name: Add known hosts
         run: |
+          set -eux
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.DREAMHOST_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy via rsync
         run: |
+          set -eux
           rsync -avz --delete \
             --exclude ".git/" \
             --exclude ".github/" \
