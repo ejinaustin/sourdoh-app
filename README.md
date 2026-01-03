@@ -1,2 +1,2 @@
 # sourdoh-app
-A friendly sourdough companion app for treacking starters, bakes and expiriments.
+A friendly sourdough companion app for tracking starters, bakes and experiments.
