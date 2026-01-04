@@ -17,28 +17,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y rsync openssh-client
 
-      - name: Set up SSH key (manual)
+      - name: Set up SSH key
         run: |
           set -euxo pipefail
           mkdir -p ~/.ssh
           echo "${{ secrets.DREAMHOST_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-
-          # Trust the DreamHost host key (non-interactive)
           ssh-keyscan -H "${{ secrets.DREAMHOST_HOST }}" >> ~/.ssh/known_hosts
-
-          # Show what we have (safe)
-          ls -la ~/.ssh
-          ssh -V
-
-      - name: SSH connectivity test (prints real error)
-        run: |
-          set -euxo pipefail
-          ssh -i ~/.ssh/id_ed25519 \
-            -o IdentitiesOnly=yes \
-            -o BatchMode=yes \
-            "${{ secrets.DREAMHOST_USER }}@${{ secrets.DREAMHOST_HOST }}" \
-            "echo 'SSH_OK' && whoami && hostname && pwd"
 
       - name: Deploy via rsync
         run: |
