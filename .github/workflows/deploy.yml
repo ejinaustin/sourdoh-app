@@ -1,3 +1,4 @@
+# DEBUG-MARKER-ED-123
 name: Deploy to DreamHost
 
 on:
@@ -22,7 +23,6 @@ jobs:
           set -eux
           uname -a
           echo "PATH=$PATH"
-          which bash || true
           which ssh || true
           ssh -V || true
           which ssh-keyscan || true
@@ -44,8 +44,8 @@ jobs:
       - name: Deploy via rsync
         run: |
           set -eux
+          DEST="${{ secrets.DREAMHOST_USER }}@${{ secrets.DREAMHOST_HOST }}:${{ secrets.DREAMHOST_PATH }}"
           rsync -avz --delete \
             --exclude ".git/" \
             --exclude ".github/" \
-            ./ \
-            ${{ secrets.DREAMHOST_USER }}@${{ secrets.DREAMHOST_HOST }}:${{ secrets.DREAMHOST_PATH }}
+            ./ "$DEST"
