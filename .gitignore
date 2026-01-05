@@ -1,0 +1,5 @@
+# Local backups
+*.zip
+*.7z
+*.rar
+*_BACKUP_*
