@@ -1,0 +1,2686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===================== BEGIN: META & TITLE ===================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sour D’oh! – Sourdough Companion</title>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <!-- ===================== END: META & TITLE ===================== -->
+
+  <!-- ===================== BEGIN: BASE STYLES ===================== -->
+  <style>
+    :root {
+      /* Color palette – warm & cozy bakery */
+      --bg-body: #f5eee6;
+      --bg-card: #fff8f0;
+      --bg-card-soft: #f9f1e7;
+      --accent: #d98b4a;
+      --accent-soft: rgba(217, 139, 74, 0.17);
+      --accent-deep: #b76727;
+      --text-main: #3a2a1b;
+      --text-muted: #7a6551;
+      --border-soft: rgba(102, 76, 51, 0.12);
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.08);
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-pill: 999px;
+      --transition-fast: 150ms ease-out;
+      --transition-med: 220ms ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #fffaf2 0%, #f3e7da 40%, #f1e2d3 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 1.75rem 0.75rem;
+    }
+
+    #app-root {
+      width: 100%;
+      max-width: 1180px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* ===================== BEGIN: APP SHELL ===================== */
+    .app-shell {
+      background: rgba(255, 248, 240, 0.94);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+      padding: 1.25rem 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      backdrop-filter: blur(18px);
+    }
+
+    @media (min-width: 900px) {
+      .app-shell {
+        padding: 1.7rem 1.8rem 1.9rem;
+      }
+    }
+
+    /* ===================== BEGIN: HEADER ===================== */
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.3rem 0.2rem 0.2rem;
+    }
+
+    .app-badge-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg, #fbe1c2, #f7b57d, #fdd7b0, #fbe1c2);
+      box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.18),
+        0 0 0 2px rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+
+    .app-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .app-title {
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+    }
+
+    .app-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+    }
+
+    .app-mode-pill {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(233, 189, 139, 0.7);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .app-mode-select {
+      border: none;
+      background: transparent;
+      font-size: 0.8rem;
+      color: var(--accent-deep);
+      font-weight: 600;
+      outline: none;
+      padding: 0.1rem;
+      cursor: pointer;
+    }
+    /* ===================== END: HEADER ===================== */
+
+    /* ===================== BEGIN: NAVIGATION ===================== */
+    .app-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-pill);
+      padding: 0.25rem;
+      border: 1px solid rgba(210, 177, 139, 0.45);
+      box-shadow: 0 14px 25px rgba(0, 0, 0, 0.04);
+    }
+
+    .app-nav-button {
+      border-radius: 999px;
+      border: none;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.82rem;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+      position: relative;
+    }
+
+    .app-nav-button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.9), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      pointer-events: none;
+    }
+
+    .app-nav-button:hover {
+      background: rgba(248, 235, 220, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .app-nav-button:hover::after {
+      opacity: 1;
+    }
+
+    .app-nav-button span.emoji {
+      font-size: 1rem;
+    }
+
+    .app-nav-button.app-nav-active {
+      background: linear-gradient(135deg, #f8c89b, #f29a54);
+      color: #3c2511;
+      font-weight: 700;
+      box-shadow: 0 10px 18px rgba(191, 112, 49, 0.26);
+      transform: translateY(-1px);
+    }
+
+    .app-nav-button.app-nav-active::after {
+      opacity: 0.3;
+    }
+    /* ===================== END: NAVIGATION ===================== */
+
+    /* ===================== BEGIN: MAIN LAYOUT ===================== */
+    .app-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1.05fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 860px) {
+      .app-main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .app-section {
+      display: none;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .app-section.app-section-active {
+      display: flex;
+    }
+
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .section-title span.emoji {
+      font-size: 1.2rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    .pill-label {
+      font-size: 0.75rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(214, 176, 130, 0.7);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      padding: 0.9rem 1rem;
+    }
+
+    .card-soft {
+      background: var(--bg-card-soft);
+    }
+
+    .card-header {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .card-header .tag {
+      font-size: 0.72rem;
+      padding: 0.05rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(225, 188, 141, 0.7);
+      color: var(--text-muted);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .card-body {
+      font-size: 0.88rem;
+      color: var(--text-main);
+    }
+
+    .card-footer {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .primary-btn,
+    .ghost-btn,
+    .soft-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 0.36rem 0.85rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 600;
+      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #f7b575, #e88b3b);
+      color: #3a2310;
+      box-shadow: 0 10px 20px rgba(188, 112, 52, 0.3);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(188, 112, 52, 0.4);
+    }
+
+    .ghost-btn {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--accent-deep);
+      border: 1px solid rgba(216, 167, 117, 0.7);
+    }
+
+    .ghost-btn:hover {
+      background: rgba(248, 235, 220, 0.95);
+    }
+
+    .soft-btn {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-muted);
+      border: 1px solid rgba(222, 194, 151, 0.8);
+    }
+
+    .soft-btn:hover {
+      background: rgba(249, 236, 221, 0.98);
+    }
+
+    .soft-btn[disabled],
+    .primary-btn[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Right-hand column */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .mode-hint {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .history-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .history-pill {
+      padding: 0.5rem 0.7rem;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px dashed rgba(201, 163, 121, 0.6);
+    }
+
+    /* Deep Science collapsible */
+    .deep-science-block {
+      border-radius: var(--radius-lg);
+      border: 1px dashed rgba(180, 142, 103, 0.7);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 0.6rem 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .deep-science-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .deep-science-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--accent-deep);
+    }
+
+    .deep-science-toggle-icon {
+      font-size: 1rem;
+      transform-origin: center;
+      transition: transform var(--transition-med);
+    }
+
+    .deep-science-content {
+      margin-top: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--text-main);
+      line-height: 1.5;
+      display: none;
+    }
+
+    .deep-science-open .deep-science-content {
+      display: block;
+    }
+
+    .deep-science-open .deep-science-toggle-icon {
+      transform: rotate(90deg);
+    }
+
+    /* Small helper styles */
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      min-width: 130px;
+      flex: 1;
+      font-size: 0.82rem;
+    }
+
+    .input-group label {
+      color: var(--text-muted);
+    }
+
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+      border-radius: 10px;
+      border: 1px solid rgba(167, 135, 100, 0.4);
+      padding: 0.3rem 0.4rem;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: rgba(255, 255, 255, 0.95);
+      outline: none;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    .input-group input:focus,
+    .input-group select:focus,
+    .input-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(217, 139, 74, 0.45);
+      background: #ffffff;
+    }
+
+    .input-group textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .muted-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.35rem;
+    }
+
+    .tag-pill {
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(201, 163, 121, 0.7);
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .footer-text {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .list-empty {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .list-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-top: 0.3rem;
+    }
+
+    .list-item {
+      padding: 0.45rem 0.6rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(203, 173, 137, 0.4);
+      font-size: 0.8rem;
+    }
+
+    .list-item-header {
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.3rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .list-item-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .list-item-body {
+      font-size: 0.8rem;
+      color: var(--text-main);
+      margin-top: 0.15rem;
+    }
+
+    .list-item-line {
+      margin-top: 0.1rem;
+    }
+
+    .settings-units-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+      align-items: center;
+    }
+
+    .settings-radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: 0.82rem;
+    }
+
+    .settings-radio {
+      display: inline-flex;
+      gap: 0.3rem;
+      align-items: center;
+    }
+
+    .settings-radio input[type="radio"] {
+      accent-color: var(--accent-deep);
+    }
+
+    .converter-section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 0.4rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .converter-inline-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      margin-top: 0.3rem;
+      font-size: 0.82rem;
+    }
+
+    .converter-inline-row select,
+    .converter-inline-row input {
+      min-width: 90px;
+    }
+
+    .converter-result {
+      margin-top: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-deep);
+    }
+
+    /* Mode-based */
+    body[data-mode="beginner"] .expert-only {
+      display: none !important;
+    }
+
+    body[data-mode="expert"] .beginner-only {
+      display: none !important;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Printable layout – hidden on screen, visible when printing */
+    .print-layout {
+      display: none;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .app-shell {
+        display: none !important;
+      }
+      #printStarterLog {
+        display: block;
+        padding: 1in;
+        font-family: "Nunito", system-ui, sans-serif;
+        color: #000;
+      }
+      #printStarterLog h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.2in;
+      }
+      #printStarterLog h2 {
+        font-size: 1.1rem;
+        margin-top: 0.5in;
+        margin-bottom: 0.1in;
+      }
+      #printStarterLog p {
+        font-size: 0.9rem;
+      }
+      #printStarterLog table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0.15in;
+      }
+      #printStarterLog th,
+      #printStarterLog td {
+        border: 1px solid #555;
+        padding: 0.15in 0.1in;
+        font-size: 0.85rem;
+      }
+      #printStarterLog th {
+        background: #f0f0f0;
+        text-align: left;
+      }
+    }
+  </style>
+  <!-- ===================== END: BASE STYLES ===================== -->
+</head>
+
+<body data-mode="beginner" data-units="metric">
+  <div id="app-root">
+    <div class="app-shell">
+      <!-- ===================== BEGIN: HEADER ===================== -->
+      <header class="app-header">
+        <div class="app-badge-icon" aria-hidden="true">🥖</div>
+        <div class="app-title-block">
+          <div class="app-title">Sour D’oh!</div>
+          <div class="app-subtitle">A cozy, scientific companion for your sourdough journey.</div>
+        </div>
+        <div class="app-mode-pill">
+          Mode:
+          <select id="modeSelect" class="app-mode-select" aria-label="Experience mode">
+            <option value="beginner">Beginner</option>
+            <option value="expert">Expert</option>
+          </select>
+        </div>
+      </header>
+      <!-- ===================== END: HEADER ===================== -->
+
+      <!-- ===================== BEGIN: NAVIGATION ===================== -->
+      <nav class="app-nav" aria-label="Main navigation">
+        <button class="app-nav-button app-nav-active" data-section="home">
+          <span class="emoji">🏠</span>
+          <span>Home</span>
+        </button>
+        <button class="app-nav-button" data-section="starterLab">
+          <span class="emoji">🫙</span>
+          <span>Starter Lab</span>
+        </button>
+        <button class="app-nav-button" data-section="planner">
+          <span class="emoji">🧮</span>
+          <span>Planner</span>
+        </button>
+        <button class="app-nav-button" data-section="bakes">
+          <span class="emoji">📊</span>
+          <span>Bakes</span>
+        </button>
+        <button class="app-nav-button" data-section="learn">
+          <span class="emoji">📚</span>
+          <span>Learn</span>
+        </button>
+        <button class="app-nav-button" data-section="journal">
+          <span class="emoji">📝</span>
+          <span>Journal</span>
+        </button>
+        <button class="app-nav-button" data-section="family">
+          <span class="emoji">👨‍👩‍👧‍👦</span>
+          <span>Family Recipes</span>
+        </button>
+        <button class="app-nav-button" data-section="settings">
+          <span class="emoji">⚙️</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+      <!-- ===================== END: NAVIGATION ===================== -->
+
+      <!-- ===================== BEGIN: MAIN CONTENT ===================== -->
+      <main class="app-main">
+        <!-- LEFT COLUMN -->
+        <section id="section-home" class="app-section app-section-active" aria-labelledby="home-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="home-title" class="section-title">
+                  <span class="emoji">🏠</span>
+                  <span>Today’s Sourdough</span>
+                </div>
+                <div class="section-subtitle">
+                  See where you are in your current bake, or start a new journey from flour to loaf.
+                </div>
+              </div>
+              <div class="pill-label beginner-only">Guided view</div>
+              <div class="pill-label expert-only">Quick-access view</div>
+            </div>
+          </div>
+
+          <div class="card card-soft beginner-only">
+            <div class="card-header">
+              Start at the very beginning
+              <span class="tag">New baker</span>
+            </div>
+            <div class="card-body">
+              Not sure where to start? Begin by creating your very first starter or make a test loaf
+              with a friend’s starter. Sour D’oh! will walk you through each step: feeding, mixing,
+              folding, proofing, and baking.
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" data-link-section="starterLab">
+                <span>✨ Create my first starter</span>
+              </button>
+              <button class="ghost-btn" data-link-section="planner">
+                <span>Plan a simple loaf</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card expert-only">
+            <div class="card-header">
+              Active bake dashboard
+              <span class="tag">Placeholder</span>
+            </div>
+            <div class="card-body">
+              This area will show your current bake’s stage, remaining time, and quick actions
+              (log fold, move to bulk, start proof, etc.). For now, consider it a placeholder
+              for the eventual “control center” of your sourdough day.
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" data-link-section="planner">
+                <span>🔁 Plan a new bake</span>
+              </button>
+              <button class="soft-btn" data-link-section="bakes">
+                <span>📂 View past bakes</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              A living loaf, a living heirloom
+            </div>
+            <div class="card-body">
+              Every loaf you bake here can be logged, tweaked, and eventually turned into
+              a family recipe — complete with notes, photos, and the story of why it matters.
+              Sourdough is one of the oldest ways humans turned grain into comfort food. You’re
+              joining a chain that goes back thousands of years.
+            </div>
+          </div>
+        </section>
+
+        <!-- STARTER LAB -->
+        <section id="section-starterLab" class="app-section" aria-labelledby="starterLab-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="starterLab-title" class="section-title">
+                  <span class="emoji">🫙</span>
+                  <span>Starter Lab</span>
+                </div>
+                <div class="section-subtitle">
+                  Track each starter like a tiny, bubbly pet with its own habits, history, and flavor.
+                </div>
+              </div>
+              <div class="pill-label">Multiple starters supported</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Create or describe a starter
+              <span class="tag">Starter profile</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="starterName">Starter name</label>
+                  <input id="starterName" type="text" placeholder="House White, Rye Beast, Grandma’s Jar…" />
+                </div>
+                <div class="input-group">
+                  <label for="starterHydration">Hydration (%)</label>
+                  <input id="starterHydration" type="number" min="50" max="120" step="1" placeholder="75" />
+                </div>
+                <div class="input-group">
+                  <label for="starterFlour">Flour mix</label>
+                  <input id="starterFlour" type="text" placeholder="80% bread, 20% whole wheat" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="starterOrigin">Origin date</label>
+                  <input id="starterOrigin" type="date" />
+                </div>
+                <div class="input-group">
+                  <label for="starterNotes">Notes</label>
+                  <textarea id="starterNotes" placeholder="Where did it come from? What does it smell like?"></textarea>
+                </div>
+              </div>
+              <p class="muted-text">
+                This now saves into your browser as a reusable starter profile. You can add as many as you like.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="starterSaveBtn">
+                <span>💾 Save starter</span>
+              </button>
+              <button class="soft-btn beginner-only" id="starterExpectationsBtn">
+                <span>👀 What to expect (new starter)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card hidden" id="starterExpectationsCard">
+            <div class="card-header">
+              What to expect from a brand new starter
+              <span class="tag">Beginner comfort</span>
+            </div>
+            <div class="card-body">
+              <p class="muted-text">
+                Every starter is different, but here’s a rough idea of what most people see in the first week if they’re
+                feeding equal parts flour and water at room temperature.
+              </p>
+              <ul class="muted-text">
+                <li>
+                  <strong>Day 1–2:</strong> You mix flour and water. Maybe a few bubbles, maybe none. It might smell like
+                  wet flour or a little grassy. That’s fine. Just keep feeding on schedule.
+                </li>
+                <li>
+                  <strong>Day 2–3:</strong> You might see a big surge of bubbles and activity. This is often a “false peak” —
+                  early microbes throwing a party before the long-term crew moves in. Don’t panic if it calms down again.
+                </li>
+                <li>
+                  <strong>Day 3–4:</strong> Things can go quiet or even a bit weird. Smells can turn funky, cheesy, or like
+                  old socks. As long as there are no bright colors (pink/orange streaks) or fuzzy mold, this is usually
+                  just the ecosystem shifting.
+                </li>
+                <li>
+                  <strong>Day 4–5:</strong> Activity starts to get more predictable. You feed it, and a few hours later it
+                  rises, domes, and then gently falls. The smell leans toward yogurt-tangy, apple, or mild vinegar.
+                </li>
+                <li>
+                  <strong>Day 5–7:</strong> If your room is reasonably warm and your feedings are consistent, you should
+                  see a starter that can double in volume between feeds and smells pleasantly tangy instead of harsh.
+                  This is when you can start test bakes.
+                </li>
+              </ul>
+              <p class="muted-text">
+                <strong>About “hooch” (the grayish liquid):</strong> If your starter is hungry or underfed, a gray or brownish
+                liquid can collect on top. That’s alcohol and byproducts from the yeast. It’s not dangerous, just a sign
+                that your starter wants more food or more frequent feedings. You can pour it off or stir it back in before
+                feeding.
+              </p>
+              <p class="muted-text">
+                <strong>When to throw it out:</strong> If you ever see pink, orange, or bright-colored streaks, fuzzy mold,
+                or it smells rotten in a way that makes you step back, toss it and start over. A healthy starter can smell
+                sour, cheesy, or yogurty — but it should never smell like death.
+              </p>
+              <p class="muted-text">
+                If in doubt, feed it, give it 24–48 hours, and log what you see. Over a week or two, your starter will
+                become much more predictable, and you’ll start to trust your own judgment.
+              </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Saved starters
+            </div>
+            <div class="card-body" id="starterList">
+              <div class="list-empty">No starters yet. Create one above to see it here.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Log a feeding
+              <span class="tag">Connected to a starter</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="feedStarterSelect">Which starter?</label>
+                  <select id="feedStarterSelect">
+                    <option value="">No starters yet</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="feedRatio">Feed ratio (starter : flour : water)</label>
+                  <input id="feedRatio" type="text" placeholder="1 : 2 : 2" />
+                </div>
+                <div class="input-group">
+                  <label for="feedTemp">Room temp (°C)</label>
+                  <input id="feedTemp" type="number" step="0.1" placeholder="23" />
+                </div>
+                <div class="input-group">
+                  <label for="feedPeakTime">Time to peak (hours)</label>
+                  <input id="feedPeakTime" type="number" step="0.1" placeholder="4.5" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="feedNotes">Feed notes - include information regarding your discard here.</label>
+                  <textarea id="feedNotes" placeholder="Bubbly? Domed? Any hooch? Smell more acidic or sweet?"></textarea>
+                </div>
+              </div>
+              <p class="muted-text">
+                Each feeding you save is stored under the chosen starter. Later we can visualize activity over time.
+              </p>
+
+              <div class="deep-science-block" id="starterDeepScience">
+                <div class="deep-science-header">
+                  <div class="deep-science-title">
+                    <span>🧪 Deep Science: What’s happening after a feeding?</span>
+                  </div>
+                  <div class="deep-science-toggle-icon">▶</div>
+                </div>
+                <div class="deep-science-content">
+                  Right after a feeding, your jar becomes a crowded buffet. The starches from the flour are
+                  broken down into sugars, and different microbes sprint to claim them. Wild yeasts lean
+                  on those sugars to produce carbon dioxide and a bit of alcohol. Lactic acid bacteria
+                  favor slightly different sugars and start generating acids that slowly drop the pH.
+                  <br /><br />
+                  The ratio you feed at changes who “wins” that microscopic race. A higher refreshment ratio
+                  (like 1:5:5) dilutes the acidity and gives yeast more time in a gentle environment, often
+                  favoring a milder, less sour profile. Smaller feeds (like 1:1:1) keep the culture more acidic,
+                  which can shift the balance toward bacteria that love low pH and bring more tang.
+                  <br /><br />
+                  Over dozens of feedings, your starter stabilizes into a community that’s uniquely yours:
+                  tuned to your flour, your water, your temperature, and your habits.
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="ghost-btn" id="feedSaveBtn">
+                <span>💾 Log feeding</span>
+              </button>
+              <button class="soft-btn" id="printStarterLogBtn">
+                <span>🧾 Printable starter log</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- PLANNER -->
+        <section id="section-planner" class="app-section" aria-labelledby="planner-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="planner-title" class="section-title">
+                  <span class="emoji">🧮</span>
+                  <span>Bake Planner</span>
+                </div>
+                <div class="section-subtitle">
+                  Define your flour mix, hydration, and schedule. Let the app help you hit your bake window.
+                </div>
+              </div>
+              <div class="pill-label">Formula & timeline</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Dough formula
+              <span class="tag">Inputs</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="targetWeight">Target dough weight (<span data-units-label="weight">g</span>)</label>
+                  <input id="targetWeight" type="number" min="300" max="3000" step="10" placeholder="900" />
+                </div>
+                <div class="input-group">
+                  <label for="hydration">Hydration (%)</label>
+                  <input id="hydration" type="number" min="55" max="90" step="1" placeholder="75" />
+                </div>
+                <div class="input-group">
+                  <label for="saltPercent">Salt (%)</label>
+                  <input id="saltPercent" type="number" min="1.5" max="3" step="0.1" placeholder="2.0" />
+                </div>
+                <div class="input-group expert-only">
+                  <label for="levainPercent">Levain (% of flour)</label>
+                  <input id="levainPercent" type="number" min="5" max="40" step="1" placeholder="20" />
+                </div>
+              </div>
+
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="flourBlend">Flour blend</label>
+                  <input id="flourBlend" type="text" placeholder="70% bread, 20% AP, 10% whole wheat" />
+                </div>
+                <div class="input-group">
+                  <label for="ambientTemp">Room temperature (<span data-units-label="temp">°C</span>)</label>
+                  <input id="ambientTemp" type="number" step="0.1" placeholder="23.0" />
+                </div>
+              </div>
+
+              <p class="muted-text">
+                These inputs drive a mock formula and schedule now. Later we can tie them to your real bake history.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="calculateFormulaBtn">
+                <span>🧾 Calculate formula (mock)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Suggested schedule
+              <span class="tag">Preview</span>
+            </div>
+            <div class="card-body" id="schedulePreview">
+              Enter a target weight, hydration, and room temperature above, then click
+              <strong>Calculate formula</strong>. This area will eventually show a full timeline:
+              autolyse, mix, folds, bulk, shaping, and proofing, tailored to your day.
+            </div>
+          </div>
+        </section>
+
+        <!-- BAKES -->
+        <section id="section-bakes" class="app-section" aria-labelledby="bakes-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="bakes-title" class="section-title">
+                  <span class="emoji">📊</span>
+                  <span>Bake Log & Analytics</span>
+                </div>
+                <div class="section-subtitle">
+                  Log every loaf with full details: formula, fermentation, bake, and evaluation.
+                </div>
+              </div>
+              <div class="pill-label">Free prototype – 1 bake</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Bake details
+              <span class="tag">Saved locally</span>
+            </div>
+            <div class="card-body">
+              <!-- Basic identity -->
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeName">Bake name</label>
+                  <input id="bakeName" type="text" placeholder="House Boule #1" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeDate">Date</label>
+                  <input id="bakeDate" type="date" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeStarterSelect">Starter used (optional)</label>
+                  <select id="bakeStarterSelect">
+                    <option value="">No specific starter</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Formula -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Formula
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeDoughWeight">Total dough weight (<span data-units-label="weight">g</span>)</label>
+                  <input id="bakeDoughWeight" type="number" min="300" max="3000" step="10" placeholder="900" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeHydration">Hydration (%)</label>
+                  <input id="bakeHydration" type="number" min="55" max="90" step="1" placeholder="75" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeSaltPercent">Salt (%)</label>
+                  <input id="bakeSaltPercent" type="number" min="1.5" max="3" step="0.1" placeholder="2.0" />
+                </div>
+                <div class="input-group expert-only">
+                  <label for="bakeLevainPercent">Levain (% of flour)</label>
+                  <input id="bakeLevainPercent" type="number" min="5" max="40" step="1" placeholder="20" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeFlourBlend">Flour blend</label>
+                  <input id="bakeFlourBlend" type="text" placeholder="70% bread, 20% AP, 10% whole wheat" />
+                </div>
+                <div class="input-group expert-only">
+                  <label for="bakeAmbientTemp">Room temperature during bulk (<span data-units-label="temp">°C</span>)</label>
+                  <input id="bakeAmbientTemp" type="number" step="0.1" placeholder="23.0" />
+                </div>
+              </div>
+
+              <!-- Fermentation -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Fermentation
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeBulkHours">Bulk fermentation time (hours)</label>
+                  <input id="bakeBulkHours" type="number" step="0.1" placeholder="5.0" />
+                </div>
+                <div class="input-group expert-only">
+                  <label for="bakeFolds">Number of fold sets</label>
+                  <input id="bakeFolds" type="number" min="0" max="12" step="1" placeholder="3" />
+                </div>
+                <div class="input-group expert-only">
+                  <label for="bakeFoldMethod">Fold method</label>
+                  <select id="bakeFoldMethod">
+                    <option value="">Not specified</option>
+                    <option value="stretch-coil">Stretch &amp; coil</option>
+                    <option value="stretch-fold">Stretch &amp; fold</option>
+                    <option value="lamination">Lamination</option>
+                    <option value="none">No folds</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeBulkNotes">Fermentation notes</label>
+                  <textarea id="bakeBulkNotes" placeholder="How did the dough feel? Volume gain, bubbles, strength…"></textarea>
+                </div>
+              </div>
+
+              <!-- Proof & bake -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Proof &amp; bake
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeProofMethod">Proof style</label>
+                  <select id="bakeProofMethod">
+                    <option value="">Not specified</option>
+                    <option value="room">Room temp same day</option>
+                    <option value="cold">Cold retard in fridge</option>
+                    <option value="combo">Room + fridge combo</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="bakeProofHours">Total proof time (hours, approx.)</label>
+                  <input id="bakeProofHours" type="number" step="0.1" placeholder="12.0" />
+                </div>
+                <div class="input-group expert-only">
+                  <label for="bakeProofTemp">Proof temperature (<span data-units-label="temp">°C</span>, if known)</label>
+                  <input id="bakeProofTemp" type="number" step="0.1" placeholder="5.0 (fridge) or 23.0 (room)" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeVessel">Bake vessel</label>
+                  <select id="bakeVessel">
+                    <option value="">Not specified</option>
+                    <option value="dutch">Dutch oven</option>
+                    <option value="steel">Baking steel / stone</option>
+                    <option value="tray">Sheet tray</option>
+                    <option value="combo">Combination</option>
+                  </select>
+                </div>
+                <div class="input-group expert-only">
+                  <label for="bakePreheatTemp">Preheat temp (<span data-units-label="temp">°C</span>)</label>
+                  <input id="bakePreheatTemp" type="number" step="1" placeholder="250" />
+                </div>
+                <div class="input-group expert-only">
+                  <label for="bakeBakeTemp">Bake temp (<span data-units-label="temp">°C</span>)</label>
+                  <input id="bakeBakeTemp" type="number" step="1" placeholder="230" />
+                </div>
+              </div>
+              <div class="input-row expert-only">
+                <div class="input-group">
+                  <label for="bakeCoveredMinutes">Minutes covered (with lid/steam)</label>
+                  <input id="bakeCoveredMinutes" type="number" step="1" placeholder="20" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeUncoveredMinutes">Minutes uncovered</label>
+                  <input id="bakeUncoveredMinutes" type="number" step="1" placeholder="20" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeSteamMethod">Steam method</label>
+                  <input id="bakeSteamMethod" type="text" placeholder="Dutch oven, lava rocks, pan of water…" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeBakeNotes">Bake notes</label>
+                  <textarea id="bakeBakeNotes" placeholder="Color, blistering, ears, scoring, any mishaps…"></textarea>
+                </div>
+              </div>
+
+              <!-- Evaluation -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Evaluation
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeCrumb">Crumb (1–5)</label>
+                  <input id="bakeCrumb" type="number" min="1" max="5" step="1" placeholder="3" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeCrust">Crust (1–5)</label>
+                  <input id="bakeCrust" type="number" min="1" max="5" step="1" placeholder="3" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeSourness">Sourness (1–5)</label>
+                  <input id="bakeSourness" type="number" min="1" max="5" step="1" placeholder="3" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeScoreNotes">Evaluation notes</label>
+                  <textarea id="bakeScoreNotes" placeholder="What would you repeat? What would you change next time?"></textarea>
+                </div>
+              </div>
+
+              <p class="muted-text">
+                This is your “full story” for a loaf. In the full version you’ll be able to attach photos and compare bakes side-by-side.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="ghost-btn" id="bakeSaveBtn">
+                <span>💾 Save bake</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Saved bakes
+            </div>
+            <div class="card-body" id="bakeList">
+              <div class="list-empty">No bakes saved yet. Log a bake above to see it here.</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Sour D’oh! Pro (Locked)
+              <span class="tag">Future upgrade</span>
+            </div>
+            <div class="card-body">
+              This free prototype lets you fully document <strong>one bake</strong> so you can feel how detailed
+              the tracking can be.
+              <br /><br />
+              In the full version, you’ll unlock:
+              <ul>
+                <li><strong>Unlimited bake history</strong> with filters (hydration, flour mix, starter, rating).</li>
+                <li><strong>Photo timeline</strong> — add pictures for every stage: mix, bulk, proof, bake, crumb.</li>
+                <li><strong>Side-by-side comparisons</strong> of your favorite bakes.</li>
+                <li><strong>Advanced analytics</strong> — charts for hydration vs crumb, bulk time vs sourness, starter age vs oven spring.</li>
+                <li><strong>Community features</strong> — optional Q&amp;A and process-photo sharing, when you’re ready.</li>
+              </ul>
+              <p class="muted-text">
+                Right now, this is just a preview of where the app is going. Your data stays local to your browser.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="soft-btn" disabled>
+                <span>🔒 Unlock in full app (coming soon)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card expert-only">
+            <div class="card-header">
+              Analytics preview
+              <span class="tag">Future graphs</span>
+            </div>
+            <div class="card-body">
+              Imagine graphs here: hydration vs crumb rating, bulk time vs sourness,
+              starter age vs oven spring. As we grow your data, this card becomes the nerdy heart of the app.
+            </div>
+          </div>
+        </section>
+
+        <!-- LEARN -->
+        <section id="section-learn" class="app-section" aria-labelledby="learn-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="learn-title" class="section-title">
+                  <span class="emoji">📚</span>
+                  <span>Learn</span>
+                </div>
+                <div class="section-subtitle">
+                  Cozy explanations first, deep science on tap whenever you want it.
+                </div>
+              </div>
+              <div class="pill-label">Stories & science</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              What is sourdough, really?
+            </div>
+            <div class="card-body">
+              At its simplest, sourdough is just flour, water, and salt. But instead of commercial yeast,
+              it relies on a culture of wild yeast and bacteria that you grow yourself. That culture —
+              your starter — is what turns a bowl of sticky dough into a loaf with flavor, aroma, and
+              a personality you can’t buy in a packet.
+              <div class="deep-science-block" id="learnDeepScience1">
+                <div class="deep-science-header">
+                  <div class="deep-science-title">
+                    <span>🧪 Deep Science: The wild yeast & bacteria duet</span>
+                  </div>
+                  <div class="deep-science-toggle-icon">▶</div>
+                </div>
+                <div class="deep-science-content">
+                  In a mature starter, wild yeasts and lactic acid bacteria live in a steady partnership.
+                  Yeasts specialize in turning simple sugars into carbon dioxide and ethanol. That carbon
+                  dioxide puffs the dough up into a network of gas-filled pockets — the crumb.
+                  <br /><br />
+                  The bacteria are acid producers. Some favor lactic acid (think yogurt smoothness),
+                  others produce more acetic acid (vinegar-like sharpness). They break down starches
+                  and even gluten over time, changing how the dough stretches, tears, and tastes.
+                  <br /><br />
+                  Temperature, hydration, and feeding schedule nudge the balance of this community.
+                  Warmer, wetter starters tend to push toward lactic-acid–dominant bacteria and a milder tang.
+                  Cooler, stiffer cultures often tilt toward acetic acid and a sharper flavor. Your
+                  “house starter” is basically a tiny laboratory responding to your habits.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Sourdough through history
+            </div>
+            <div class="card-body">
+              Humans were making sourdough long before anyone isolated yeast in a lab. Ancient bakers
+              noticed that if they left wet flour sitting out, it would sometimes turn bubbly and rise
+              in the oven. Instead of a precise recipe, they were caring for a living culture.
+              <br /><br />
+              Sourdough followed armies, caravans, miners, and families. Gold rush prospectors were
+              nicknamed “sourdoughs” because they carried their starter with them into the frozen north.
+              That same idea — a jar of life you feed and carry — is what lets you create a loaf that
+              tastes like nowhere else.
+              <br /><br />
+              That’s why a good sourdough recipe is an heirloom. It’s not just a list of grams; it’s
+              a record of how your family fed, timed, and treated a living culture over years.
+            </div>
+          </div>
+        </section>
+
+        <!-- JOURNAL -->
+        <section id="section-journal" class="app-section" aria-labelledby="journal-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="journal-title" class="section-title">
+                  <span class="emoji">📝</span>
+                  <span>Journal</span>
+                </div>
+                <div class="section-subtitle">
+                  Capture ideas, experiments, and stories that don’t fit into a single bake.
+                </div>
+              </div>
+              <div class="pill-label">Freeform notes</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New journal entry
+              <span class="tag">Saved locally</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="journalTitle">Title</label>
+                  <input id="journalTitle" type="text" placeholder="Idea for a rosemary loaf…" />
+                </div>
+                <div class="input-group">
+                  <label for="journalTags">Tags</label>
+                  <input id="journalTags" type="text" placeholder="#flavor #starter #experiment" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="journalBody">Entry</label>
+                  <textarea id="journalBody" placeholder="Write anything – dough behavior, oven quirks, family stories…"></textarea>
+                </div>
+              </div>
+              <p class="muted-text">
+                Entries are stored in your browser and listed below. Later we can link them to specific bakes and starters.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="ghost-btn" id="journalSaveBtn">
+                <span>💾 Save entry</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Journal entries
+            </div>
+            <div class="card-body" id="journalList">
+              <div class="list-empty">No journal entries yet. Write one above to see it here.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAMILY RECIPES -->
+        <section id="section-family" class="app-section" aria-labelledby="family-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="family-title" class="section-title">
+                  <span class="emoji">👨‍👩‍👧‍👦</span>
+                  <span>Family Recipes</span>
+                </div>
+                <div class="section-subtitle">
+                  Mark certain bakes as heirlooms, with their stories and traditions attached.
+                </div>
+              </div>
+              <div class="pill-label">Heirloom mode</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Define a family recipe
+              <span class="tag">Template</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="familyRecipeName">Recipe name</label>
+                  <input id="familyRecipeName" type="text" placeholder="Grandma’s Holiday Boule" />
+                </div>
+                <div class="input-group">
+                  <label for="familyOccasion">Occasion</label>
+                  <input id="familyOccasion" type="text" placeholder="Thanksgiving, New Year’s, Sunday dinners…" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="familyStory">Story</label>
+                  <textarea id="familyStory" placeholder="Who started this tradition? When do you bake it? What memories does it hold?"></textarea>
+                </div>
+              </div>
+              <p class="muted-text">
+                Each family recipe you save here becomes part of a little “bread family tree” we can export later.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="ghost-btn" id="familySaveBtn">
+                <span>💾 Save family recipe</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Saved family recipes
+            </div>
+            <div class="card-body" id="familyList">
+              <div class="list-empty">No family recipes yet. Save one above to see it here.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="section-settings" class="app-section" aria-labelledby="settings-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="settings-title" class="section-title">
+                  <span class="emoji">⚙️</span>
+                  <span>Settings & Tools</span>
+                </div>
+                <div class="section-subtitle">
+                  Tune how Sour D’oh! talks to you, convert between units, and learn the gear that makes life easier.
+                </div>
+              </div>
+              <div class="pill-label">Config & gear</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Experience mode
+            </div>
+            <div class="card-body">
+              <p class="muted-text">
+                You can switch between <strong>Beginner</strong> and <strong>Expert</strong> mode at the top of the screen.
+                Beginner mode keeps things guided and hides advanced knobs. Expert mode exposes formulas, percentages,
+                and eventually full analytics.
+              </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Units & measurements
+            </div>
+            <div class="card-body">
+              <p class="muted-text">
+                Choose your default unit system. This affects how numbers are presented and how future calculators behave.
+              </p>
+              <div class="settings-units-row">
+                <div class="settings-radio-group">
+                  <label class="settings-radio">
+                    <input type="radio" name="units" id="unitsMetric" value="metric" />
+                    <span>Metric (g, kg, °C)</span>
+                  </label>
+                  <label class="settings-radio">
+                    <input type="radio" name="units" id="unitsImperial" value="imperial" />
+                    <span>Imperial (oz, lb, °F, cups)</span>
+                  </label>
+                </div>
+              </div>
+
+              <hr style="margin:0.8rem 0; border:none; border-top:1px dashed rgba(201,163,121,0.6);" />
+
+              <div>
+                <div class="converter-section-title">Quick converter – weight & volume</div>
+                <div class="converter-inline-row">
+                  <label>Amount</label>
+                  <input id="convertWeightAmount" type="number" step="0.01" placeholder="500" />
+                  <label>From</label>
+                  <select id="convertWeightFrom">
+                    <option value="g">grams (g)</option>
+                    <option value="kg">kilograms (kg)</option>
+                    <option value="oz">ounces (oz)</option>
+                    <option value="lb">pounds (lb)</option>
+                    <option value="cup_flour">cups flour (approx.)</option>
+                  </select>
+                  <label>to</label>
+                  <select id="convertWeightTo">
+                    <option value="g">grams (g)</option>
+                    <option value="kg">kilograms (kg)</option>
+                    <option value="oz">ounces (oz)</option>
+                    <option value="lb">pounds (lb)</option>
+                    <option value="cup_flour">cups flour (approx.)</option>
+                  </select>
+                  <button class="soft-btn" id="convertWeightBtn">
+                    <span>⇆ Convert</span>
+                  </button>
+                </div>
+                <div class="converter-result" id="convertWeightResult"></div>
+
+                <p class="muted-text">
+                  Note: cups of flour are approximate (<strong>~120 g per cup</strong>) and vary with how you scoop or sift.
+                  For serious baking, use a digital scale whenever you can.
+                </p>
+
+                <div class="converter-section-title" style="margin-top:0.7rem;">Quick converter – temperature</div>
+                <div class="converter-inline-row">
+                  <label>Amount</label>
+                  <input id="convertTempAmount" type="number" step="0.1" placeholder="450" />
+                  <label>From</label>
+                  <select id="convertTempFrom">
+                    <option value="C">°C</option>
+                    <option value="F">°F</option>
+                  </select>
+                  <label>to</label>
+                  <select id="convertTempTo">
+                    <option value="C">°C</option>
+                    <option value="F">°F</option>
+                  </select>
+                  <button class="soft-btn" id="convertTempBtn">
+                    <span>⇆ Convert</span>
+                  </button>
+                </div>
+                <div class="converter-result" id="convertTempResult"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Tools of the trade
+            </div>
+            <div class="card-body">
+              <p class="muted-text">
+                You can absolutely make great sourdough with just a bowl, your hands, and a hot oven. These tools just make
+                life easier, more consistent, and a little more fun.
+              </p>
+              <ul class="muted-text">
+                <li>
+                  <strong>Bench scraper:</strong> A stiff, flat scraper for lifting and turning dough on the counter,
+                  cutting portions, and cleaning up flour and sticky bits.
+                </li>
+                <li>
+                  <strong>Flexible scraper / bowl scraper:</strong> A soft, curved scraper that hugs the sides of your bowl,
+                  making mixing and dough transfers much cleaner.
+                </li>
+                <li>
+                  <strong>Lame (or razor / very sharp knife):</strong> Used for scoring the dough so it opens where you
+                  want it to during oven spring. A clean, deep score can be the difference between “blob” and “ear.”
+                </li>
+                <li>
+                  <strong>Banneton baskets:</strong> Coiled proofing baskets that support the shaped dough, help it keep
+                  its structure, and leave those pretty spiral lines.
+                </li>
+                <li>
+                  <strong>Tea towels / linen:</strong> Line a bowl or banneton, dust with flour, and use as a gentle
+                  cradle for your dough during proofing.
+                </li>
+                <li>
+                  <strong>Dutch oven or heavy lidded pot:</strong> A home baker’s steam chamber. The lid traps steam from
+                  the dough so the crust can expand before it sets, giving you better oven spring.
+                </li>
+                <li>
+                  <strong>Other baking surfaces:</strong> Baking steel or stone (with a separate steam pan) can also
+                  produce excellent results if you prefer free-form loaves.
+                </li>
+                <li>
+                  <strong>Jars for starters:</strong> Clear glass or plastic jars let you see the bubbles and volume
+                  changes in your starter. Wide-mouth jars are easier to feed and clean.
+                </li>
+                <li>
+                  <strong>Digital scale:</strong> Almost essential for consistent sourdough. Weigh flour, water, and
+                  salt instead of guessing with cups and spoons.
+                </li>
+                <li>
+                  <strong>Spurtle or sturdy spoon:</strong> Great for initial mixing, especially with wetter doughs.
+                  A spurtle’s shape makes it easier to stir heavy batter and dough without killing your wrist.
+                </li>
+                <li>
+                  <strong>Proofing box or warm spot:</strong> A controlled warm environment (commercial box or a DIY
+                  warm corner) helps keep fermentation predictable. Even a turned-off oven with the light on can work.
+                </li>
+              </ul>
+              <p class="muted-text">
+                None of these are mandatory, but if you love the process, they’re the little “quality of life” upgrades
+                that make sourdough feel like play instead of a wrestling match.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT COLUMN -->
+        <aside class="sidebar" aria-label="Sourdough sidebar">
+          <div class="card card-soft">
+            <div class="card-header">
+              Mode hint
+            </div>
+            <div class="card-body mode-hint" id="modeHint">
+              Beginner mode: we’ll keep things gentle, guide step-by-step, and tuck the nerdy bits behind
+              "Deep Science" panels.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Sourdough in one breath
+            </div>
+            <div class="card-body">
+              Mix flour and water. Let wild microbes move in. Feed them until they form a strong, stable
+              starter. Use that starter to ferment dough long and slow, then bake it hot until crust,
+              crumb, and aroma line up with your taste and your family’s stories.
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Little history bites
+            </div>
+            <div class="card-body">
+              <div class="history-strip">
+                <div class="history-pill">
+                  🍞 <strong>Ancient Egypt:</strong> Early leavened breads probably started as accidental sourdoughs.
+                </div>
+                <div class="history-pill">
+                  🥾 <strong>Gold rush:</strong> Prospectors guarded their starter like treasure in the Yukon cold.
+                </div>
+                <div class="history-pill">
+                  🧺 <strong>Modern revival:</strong> Sourdough came roaring back as people rediscovered slow food.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-text">
+            Sour D’oh! – web prototype. Built to grow into a full app and, eventually, a family heirloom.
+          </div>
+        </aside>
+      </main>
+      <!-- ===================== END: MAIN CONTENT ===================== -->
+    </div>
+
+    <!-- ===================== PRINT-ONLY STARTER LOG LAYOUT ===================== -->
+    <div id="printStarterLog" class="print-layout">
+      <h1>Sour D’oh! – Starter Log</h1>
+      <p>
+        Print a few copies of this page and keep them near your starter. Jot notes while you’re elbows-deep in flour,
+        then enter the data into Sour D’oh! later. (A discard section will be added in the next iteration, for now use the notes section to track discard info.)
+      </p>
+
+      <h2>Starter profile</h2>
+      <table>
+        <tr>
+          <th>Starter name</th>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th>Hydration (%)</th>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th>Flour mix</th>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th>Origin date</th>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th>General notes</th>
+          <td style="height:0.6in;">&nbsp;</td>
+        </tr>
+      </table>
+
+      <h2>Feeding log</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:0.9in;">Date</th>
+            <th style="width:0.9in;">Time</th>
+            <th>Feed ratio<br />(starter : flour : water)</th>
+            <th>Room temp<br />(°C or °F)</th>
+            <th>Time to peak<br />(hours)</th>
+            <th>Notes (bubbles, smell, hooch, etc.)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- A few blank rows for handwriting -->
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- ===================== END PRINT LAYOUT ===================== -->
+  </div>
+
+  <!-- ===================== BEGIN: APP SCRIPT (VANILLA JS + LOCAL STORAGE) ===================== -->
+  <script>
+    (function () {
+      // ---------- DATA MODEL & STORAGE ----------
+      const STORAGE_KEY = "sourDohData_v1";
+      const FREE_BAKE_LIMIT = 1;
+
+      function createEmptyData() {
+        return {
+          starters: [],
+          feeds: [],
+          bakes: [],
+          journal: [],
+          familyRecipes: []
+        };
+      }
+
+      function loadData() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return createEmptyData();
+          const parsed = JSON.parse(raw);
+          return {
+            starters: Array.isArray(parsed.starters) ? parsed.starters : [],
+            feeds: Array.isArray(parsed.feeds) ? parsed.feeds : [],
+            bakes: Array.isArray(parsed.bakes) ? parsed.bakes : [],
+            journal: Array.isArray(parsed.journal) ? parsed.journal : [],
+            familyRecipes: Array.isArray(parsed.familyRecipes) ? parsed.familyRecipes : []
+          };
+        } catch (e) {
+          console.warn("Failed to load Sour D’oh! data, resetting:", e);
+          return createEmptyData();
+        }
+      }
+
+      function saveData() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {
+          console.warn("Failed to save Sour D’oh! data:", e);
+        }
+      }
+
+      let data = loadData();
+
+      const shortId = () => "id_" + Math.random().toString(36).slice(2, 10);
+      const formatDate = (iso) => {
+        if (!iso) return "";
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return "";
+        return d.toLocaleDateString();
+      };
+      function truncate(text, maxLen) {
+        if (!text) return "";
+        if (text.length <= maxLen) return text;
+        return text.slice(0, maxLen - 1) + "…";
+      }
+
+      // ---------- NAVIGATION ----------
+      const navButtons = document.querySelectorAll(".app-nav-button");
+      const sections = {
+        home: document.getElementById("section-home"),
+        starterLab: document.getElementById("section-starterLab"),
+        planner: document.getElementById("section-planner"),
+        bakes: document.getElementById("section-bakes"),
+        learn: document.getElementById("section-learn"),
+        journal: document.getElementById("section-journal"),
+        family: document.getElementById("section-family"),
+        settings: document.getElementById("section-settings")
+      };
+
+      function showSection(key) {
+        Object.keys(sections).forEach((name) => {
+          if (name === key) {
+            sections[name].classList.add("app-section-active");
+          } else {
+            sections[name].classList.remove("app-section-active");
+          }
+        });
+
+        navButtons.forEach((btn) => {
+          const target = btn.getAttribute("data-section");
+          if (target === key) {
+            btn.classList.add("app-nav-active");
+          } else {
+            btn.classList.remove("app-nav-active");
+          }
+        });
+      }
+
+      navButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.getAttribute("data-section");
+          showSection(key);
+        });
+      });
+
+      document.querySelectorAll("[data-link-section]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.getAttribute("data-link-section");
+          showSection(key);
+        });
+      });
+
+      // ---------- MODE TOGGLE ----------
+      const body = document.body;
+      const modeSelect = document.getElementById("modeSelect");
+      const modeHint = document.getElementById("modeHint");
+
+      function updateMode(mode) {
+        body.setAttribute("data-mode", mode);
+        modeSelect.value = mode;
+
+        if (mode === "expert") {
+          modeHint.textContent =
+            "Expert mode: formulas, percentages, and (eventually) analytics are front and center, but the cozy explanations are still here when you want them.";
+        } else {
+          modeHint.textContent =
+            "Beginner mode: we’ll keep things gentle, guide step-by-step, and tuck the nerdy bits behind \"Deep Science\" panels.";
+        }
+
+        try {
+          localStorage.setItem("sourDohMode", mode);
+        } catch (e) {}
+      }
+
+      modeSelect.addEventListener("change", () => {
+        updateMode(modeSelect.value === "expert" ? "expert" : "beginner");
+      });
+
+      (function initMode() {
+        let stored = null;
+        try {
+          stored = localStorage.getItem("sourDohMode");
+        } catch (e) {
+          stored = null;
+        }
+        if (stored === "expert" || stored === "beginner") {
+          updateMode(stored);
+        } else {
+          updateMode("beginner");
+        }
+      })();
+
+      // ---------- UNITS PREFERENCE ----------
+      const unitsMetric = document.getElementById("unitsMetric");
+      const unitsImperial = document.getElementById("unitsImperial");
+      const weightUnitLabels = document.querySelectorAll('[data-units-label="weight"]');
+      const tempUnitLabels = document.querySelectorAll('[data-units-label="temp"]');
+
+      function applyUnitsToLabels(units) {
+        if (units === "imperial") {
+          weightUnitLabels.forEach((el) => {
+            el.textContent = "oz / lb (display)";
+          });
+          tempUnitLabels.forEach((el) => {
+            el.textContent = "°F";
+          });
+        } else {
+          weightUnitLabels.forEach((el) => {
+            el.textContent = "g";
+          });
+          tempUnitLabels.forEach((el) => {
+            el.textContent = "°C";
+          });
+        }
+      }
+
+      function updateUnits(units) {
+        const value = units === "imperial" ? "imperial" : "metric";
+        body.setAttribute("data-units", value);
+        if (value === "imperial") {
+          if (unitsImperial) unitsImperial.checked = true;
+        } else {
+          if (unitsMetric) unitsMetric.checked = true;
+        }
+        applyUnitsToLabels(value);
+        try {
+          localStorage.setItem("sourDohUnits", value);
+        } catch (e) {}
+      }
+
+      if (unitsMetric) {
+        unitsMetric.addEventListener("change", () => {
+          if (unitsMetric.checked) updateUnits("metric");
+        });
+      }
+      if (unitsImperial) {
+        unitsImperial.addEventListener("change", () => {
+          if (unitsImperial.checked) updateUnits("imperial");
+        });
+      }
+
+      (function initUnits() {
+        let stored = null;
+        try {
+          stored = localStorage.getItem("sourDohUnits");
+        } catch (e) {
+          stored = null;
+        }
+        if (stored === "imperial" || stored === "metric") {
+          updateUnits(stored);
+        } else {
+          updateUnits("metric");
+        }
+      })();
+
+      // ---------- DEEP SCIENCE COLLAPSIBLES ----------
+      function wireDeepScienceBlock(blockId) {
+        const block = document.getElementById(blockId);
+        if (!block) return;
+        const header = block.querySelector(".deep-science-header");
+        if (!header) return;
+        header.addEventListener("click", () => {
+          block.classList.toggle("deep-science-open");
+        });
+      }
+
+      wireDeepScienceBlock("starterDeepScience");
+      wireDeepScienceBlock("learnDeepScience1");
+
+      // ---------- DOM REFS ----------
+      const starterListEl = document.getElementById("starterList");
+      const feedStarterSelect = document.getElementById("feedStarterSelect");
+      const bakeStarterSelect = document.getElementById("bakeStarterSelect");
+      const bakeListEl = document.getElementById("bakeList");
+      const journalListEl = document.getElementById("journalList");
+      const familyListEl = document.getElementById("familyList");
+
+      // ---------- RENDER FUNCTIONS ----------
+      function renderStarters() {
+        const starters = data.starters.slice().sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+
+        if (!starters.length) {
+          starterListEl.innerHTML = '<div class="list-empty">No starters yet. Create one above to see it here.</div>';
+        } else {
+          const container = document.createElement("div");
+          container.className = "list-items";
+          starters.forEach((s) => {
+            const item = document.createElement("div");
+            item.className = "list-item";
+            item.innerHTML = `
+              <div class="list-item-header">
+                <span>${s.name || "Unnamed starter"}</span>
+                <span class="list-item-meta">
+                  ${s.hydration ? s.hydration + "% hydration" : ""}${s.hydration && s.flourMix ? " · " : ""}${s.flourMix || ""}
+                </span>
+              </div>
+              <div class="list-item-meta">
+                Born: ${s.originDate || "Unknown"} · Created: ${formatDate(s.createdAt)}
+              </div>
+              ${s.notes ? `<div class="list-item-body">${truncate(s.notes, 140)}</div>` : ""}
+            `;
+            container.appendChild(item);
+          });
+          starterListEl.innerHTML = "";
+          starterListEl.appendChild(container);
+        }
+
+        while (feedStarterSelect.firstChild) {
+          feedStarterSelect.removeChild(feedStarterSelect.firstChild);
+        }
+        if (!starters.length) {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "No starters yet";
+          feedStarterSelect.appendChild(opt);
+          feedStarterSelect.disabled = true;
+        } else {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "Choose a starter…";
+          feedStarterSelect.appendChild(opt);
+          starters.forEach((s) => {
+            const o = document.createElement("option");
+            o.value = s.id;
+            o.textContent = s.name || "Unnamed starter";
+            feedStarterSelect.appendChild(o);
+          });
+          feedStarterSelect.disabled = false;
+        }
+
+        if (bakeStarterSelect) {
+          bakeStarterSelect.innerHTML = "";
+          const baseOpt = document.createElement("option");
+          baseOpt.value = "";
+          baseOpt.textContent = starters.length ? "No specific starter" : "No starters yet (optional)";
+          bakeStarterSelect.appendChild(baseOpt);
+
+          starters.forEach((s) => {
+            const o = document.createElement("option");
+            o.value = s.id;
+            o.textContent = s.name || "Unnamed starter";
+            bakeStarterSelect.appendChild(o);
+          });
+        }
+      }
+
+      function renderBakes() {
+        const bakes = data.bakes.slice().sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+        if (!bakes.length) {
+          bakeListEl.innerHTML = '<div class="list-empty">No bakes saved yet. Log a bake above to see it here.</div>';
+          return;
+        }
+
+        const container = document.createElement("div");
+        container.className = "list-items";
+
+        bakes.forEach((b) => {
+          const f = b.formula || {};
+          const ferm = b.fermentation || {};
+          const proof = b.proof || {};
+          const bake = b.bake || {};
+          const ev = b.evaluation || {};
+
+          const metaParts = [];
+          if (f.hydration) metaParts.push(f.hydration + "% hyd.");
+          if (f.doughWeight) metaParts.push(f.doughWeight + " g dough");
+          if (b.starterNameSnapshot) metaParts.push("Starter: " + b.starterNameSnapshot);
+          const metaLine = metaParts.join(" · ");
+
+          const evalParts = [];
+          if (Number.isFinite(ev.crumbScore)) evalParts.push("Crumb " + ev.crumbScore + "/5");
+          if (Number.isFinite(ev.crustScore)) evalParts.push("Crust " + ev.crustScore + "/5");
+          if (Number.isFinite(ev.sournessScore)) evalParts.push("Sour " + ev.sournessScore + "/5");
+          const evalLine = evalParts.join(" · ");
+
+          const fermParts = [];
+          if (ferm.bulkHours) fermParts.push("Bulk " + ferm.bulkHours + " h");
+          if (ferm.ambientTempC) fermParts.push("@" + ferm.ambientTempC + "°C");
+          if (ferm.foldsCount) fermParts.push(ferm.foldsCount + " folds");
+          const fermLine = fermParts.join(" · ");
+
+          const bakeParts = [];
+          if (proof.proofMethod) bakeParts.push("Proof: " + proof.proofMethod);
+          if (proof.proofHours) bakeParts.push(proof.proofHours + " h");
+          if (bake.vessel) bakeParts.push("Vessel: " + bake.vessel);
+          const bakeLine = bakeParts.join(" · ");
+
+          const item = document.createElement("div");
+          item.className = "list-item";
+          item.innerHTML = `
+            <div class="list-item-header">
+              <span>${b.name || "Unnamed bake"}</span>
+              <span class="list-item-meta">${b.date || formatDate(b.createdAt)}</span>
+            </div>
+            ${metaLine ? `<div class="list-item-meta list-item-line">${metaLine}</div>` : ""}
+            ${fermLine ? `<div class="list-item-meta list-item-line">${fermLine}</div>` : ""}
+            ${bakeLine ? `<div class="list-item-meta list-item-line">${bakeLine}</div>` : ""}
+            ${evalLine ? `<div class="list-item-meta list-item-line">${evalLine}</div>` : ""}
+            ${ev.notes ? `<div class="list-item-body">${truncate(ev.notes, 200)}</div>` : ""}
+          `;
+          container.appendChild(item);
+        });
+
+        bakeListEl.innerHTML = "";
+        bakeListEl.appendChild(container);
+      }
+
+      function renderJournal() {
+        const entries = data.journal.slice().sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+        if (!entries.length) {
+          journalListEl.innerHTML = '<div class="list-empty">No journal entries yet. Write one above to see it here.</div>';
+          return;
+        }
+        const container = document.createElement("div");
+        container.className = "list-items";
+        entries.forEach((e) => {
+          const item = document.createElement("div");
+          item.className = "list-item";
+          item.innerHTML = `
+            <div class="list-item-header">
+              <span>${e.title || "Untitled entry"}</span>
+              <span class="list-item-meta">${formatDate(e.createdAt)}</span>
+            </div>
+            ${e.tags && e.tags.length ? `<div class="list-item-meta">Tags: ${e.tags.join(", ")}</div>` : ""}
+            ${e.body ? `<div class="list-item-body">${truncate(e.body, 180)}</div>` : ""}
+          `;
+          container.appendChild(item);
+        });
+        journalListEl.innerHTML = "";
+        journalListEl.appendChild(container);
+      }
+
+      function renderFamilyRecipes() {
+        const recipes = data.familyRecipes.slice().sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+        if (!recipes.length) {
+          familyListEl.innerHTML = '<div class="list-empty">No family recipes yet. Save one above to see it here.</div>';
+          return;
+        }
+        const container = document.createElement("div");
+        container.className = "list-items";
+        recipes.forEach((r) => {
+          const item = document.createElement("div");
+          item.className = "list-item";
+          item.innerHTML = `
+            <div class="list-item-header">
+              <span>${r.name || "Untitled recipe"}</span>
+              <span class="list-item-meta">${r.occasion || ""}</span>
+            </div>
+            <div class="list-item-meta">Saved: ${formatDate(r.createdAt)}</div>
+            ${r.story ? `<div class="list-item-body">${truncate(r.story, 180)}</div>` : ""}
+          `;
+          container.appendChild(item);
+        });
+        familyListEl.innerHTML = "";
+        familyListEl.appendChild(container);
+      }
+
+      // ---------- STARTER: SAVE ----------
+      const starterSaveBtn = document.getElementById("starterSaveBtn");
+      starterSaveBtn.addEventListener("click", () => {
+        const name = document.getElementById("starterName").value.trim();
+        const hydrationRaw = document.getElementById("starterHydration").value.trim();
+        const flourMix = document.getElementById("starterFlour").value.trim();
+        const originDate = document.getElementById("starterOrigin").value;
+        const notes = document.getElementById("starterNotes").value.trim();
+
+        if (!name) {
+          alert("Give your starter a name first.");
+          return;
+        }
+
+        const hydration = hydrationRaw ? Number(hydrationRaw) : null;
+        const nowIso = new Date().toISOString();
+
+        data.starters.push({
+          id: shortId(),
+          name,
+          hydration,
+          flourMix,
+          originDate: originDate || "",
+          notes,
+          createdAt: nowIso,
+          updatedAt: nowIso
+        });
+
+        saveData();
+        renderStarters();
+
+        document.getElementById("starterName").value = "";
+        document.getElementById("starterHydration").value = "";
+        document.getElementById("starterFlour").value = "";
+        document.getElementById("starterNotes").value = "";
+      });
+
+      // ---------- STARTER EXPECTATIONS TOGGLE ----------
+      const starterExpectationsBtn = document.getElementById("starterExpectationsBtn");
+      const starterExpectationsCard = document.getElementById("starterExpectationsCard");
+      if (starterExpectationsBtn && starterExpectationsCard) {
+        starterExpectationsBtn.addEventListener("click", () => {
+          const isHidden = starterExpectationsCard.classList.contains("hidden");
+          if (isHidden) {
+            starterExpectationsCard.classList.remove("hidden");
+            starterExpectationsBtn.innerHTML = "<span>🙈 Hide what to expect</span>";
+          } else {
+            starterExpectationsCard.classList.add("hidden");
+            starterExpectationsBtn.innerHTML = "<span>👀 What to expect (new starter)</span>";
+          }
+        });
+      }
+
+      // ---------- FEED: SAVE ----------
+      const feedSaveBtn = document.getElementById("feedSaveBtn");
+      feedSaveBtn.addEventListener("click", () => {
+        const starterId = feedStarterSelect.value;
+        if (!starterId) {
+          alert("Choose a starter to log this feeding against.");
+          return;
+        }
+        const ratio = document.getElementById("feedRatio").value.trim();
+        const tempRaw = document.getElementById("feedTemp").value.trim();
+        const peakRaw = document.getElementById("feedPeakTime").value.trim();
+        const notes = document.getElementById("feedNotes").value.trim();
+
+        const feed = {
+          id: shortId(),
+          starterId,
+          ratio,
+          temperatureC: tempRaw ? Number(tempRaw) : null,
+          timeToPeakHours: peakRaw ? Number(peakRaw) : null,
+          notes,
+          datetime: new Date().toISOString()
+        };
+
+        data.feeds.push(feed);
+        saveData();
+
+        document.getElementById("feedRatio").value = "";
+        document.getElementById("feedTemp").value = "";
+        document.getElementById("feedPeakTime").value = "";
+        document.getElementById("feedNotes").value = "";
+      });
+
+      // ---------- PRINT STARTER LOG ----------
+      const printStarterLogBtn = document.getElementById("printStarterLogBtn");
+      if (printStarterLogBtn) {
+        printStarterLogBtn.addEventListener("click", () => {
+          window.print();
+        });
+      }
+
+      // ---------- BAKES: SAVE (WITH FREE LIMIT) ----------
+      const bakeSaveBtn = document.getElementById("bakeSaveBtn");
+      bakeSaveBtn.addEventListener("click", () => {
+        if (data.bakes.length >= FREE_BAKE_LIMIT) {
+          alert(
+            "You’ve reached the free prototype limit of 1 saved bake.\n\n" +
+            "In the full version of Sour D’oh! you’ll be able to log unlimited bakes, attach photos, and see analytics."
+          );
+          showSection("bakes");
+          return;
+        }
+
+        const name = document.getElementById("bakeName").value.trim();
+        const date = document.getElementById("bakeDate").value;
+
+        const starterId = bakeStarterSelect ? bakeStarterSelect.value : "";
+        let starterNameSnapshot = "";
+        if (starterId) {
+          const starter = data.starters.find((s) => s.id === starterId);
+          starterNameSnapshot = starter ? starter.name || "" : "";
+        }
+
+        const doughWeight = Number(document.getElementById("bakeDoughWeight").value || 0);
+        const hydration = Number(document.getElementById("bakeHydration").value || 0);
+        const saltPercent = Number(document.getElementById("bakeSaltPercent").value || 0);
+        const levainPercent = Number(document.getElementById("bakeLevainPercent").value || 0);
+        const flourBlend = document.getElementById("bakeFlourBlend").value.trim();
+        const ambientTempC = Number(document.getElementById("bakeAmbientTemp").value || 0);
+
+        const bulkHours = Number(document.getElementById("bakeBulkHours").value || 0);
+        const foldsCount = Number(document.getElementById("bakeFolds").value || 0);
+        const foldMethod = document.getElementById("bakeFoldMethod").value;
+        const bulkNotes = document.getElementById("bakeBulkNotes").value.trim();
+
+        const proofMethod = document.getElementById("bakeProofMethod").value;
+        const proofHours = Number(document.getElementById("bakeProofHours").value || 0);
+        const proofTempC = Number(document.getElementById("bakeProofTemp").value || 0);
+
+        const vessel = document.getElementById("bakeVessel").value;
+        const preheatTempC = Number(document.getElementById("bakePreheatTemp").value || 0);
+        const bakeTempC = Number(document.getElementById("bakeBakeTemp").value || 0);
+        const coveredMinutes = Number(document.getElementById("bakeCoveredMinutes").value || 0);
+        const uncoveredMinutes = Number(document.getElementById("bakeUncoveredMinutes").value || 0);
+        const steamMethod = document.getElementById("bakeSteamMethod").value.trim();
+        const bakeNotes = document.getElementById("bakeBakeNotes").value.trim();
+
+        const crumbScore = Number(document.getElementById("bakeCrumb").value || 0);
+        const crustScore = Number(document.getElementById("bakeCrust").value || 0);
+        const sournessScore = Number(document.getElementById("bakeSourness").value || 0);
+        const evalNotes = document.getElementById("bakeScoreNotes").value.trim();
+
+        if (!name && !evalNotes) {
+          alert("At least give this bake a name or some evaluation notes.");
+          return;
+        }
+
+        const nowIso = new Date().toISOString();
+
+        const bake = {
+          id: shortId(),
+          name,
+          date: date || "",
+          starterId: starterId || "",
+          starterNameSnapshot,
+          formula: {
+            doughWeight: doughWeight || null,
+            hydration: hydration || null,
+            saltPercent: saltPercent || null,
+            levainPercent: levainPercent || null,
+            flourBlend: flourBlend || ""
+          },
+          fermentation: {
+            ambientTempC: ambientTempC || null,
+            bulkHours: bulkHours || null,
+            foldsCount: foldsCount || null,
+            foldMethod: foldMethod || "",
+            notes: bulkNotes || ""
+          },
+          proof: {
+            proofMethod: proofMethod || "",
+            proofHours: proofHours || null,
+            proofTempC: proofTempC || null
+          },
+          bake: {
+            vessel: vessel || "",
+            preheatTempC: preheatTempC || null,
+            bakeTempC: bakeTempC || null,
+            coveredMinutes: coveredMinutes || null,
+            uncoveredMinutes: uncoveredMinutes || null,
+            steamMethod: steamMethod || "",
+            notes: bakeNotes || ""
+          },
+          evaluation: {
+            crumbScore: crumbScore || null,
+            crustScore: crustScore || null,
+            sournessScore: sournessScore || null,
+            notes: evalNotes || ""
+          },
+          createdAt: nowIso
+        };
+
+        data.bakes.push(bake);
+        saveData();
+        renderBakes();
+
+        document.getElementById("bakeName").value = "";
+        document.getElementById("bakeDate").value = "";
+        document.getElementById("bakeDoughWeight").value = "";
+        document.getElementById("bakeHydration").value = "";
+        document.getElementById("bakeSaltPercent").value = "";
+        document.getElementById("bakeLevainPercent").value = "";
+        document.getElementById("bakeFlourBlend").value = "";
+        document.getElementById("bakeAmbientTemp").value = "";
+        document.getElementById("bakeBulkHours").value = "";
+        document.getElementById("bakeFolds").value = "";
+        document.getElementById("bakeFoldMethod").value = "";
+        document.getElementById("bakeBulkNotes").value = "";
+        document.getElementById("bakeProofMethod").value = "";
+        document.getElementById("bakeProofHours").value = "";
+        document.getElementById("bakeProofTemp").value = "";
+        document.getElementById("bakeVessel").value = "";
+        document.getElementById("bakePreheatTemp").value = "";
+        document.getElementById("bakeBakeTemp").value = "";
+        document.getElementById("bakeCoveredMinutes").value = "";
+        document.getElementById("bakeUncoveredMinutes").value = "";
+        document.getElementById("bakeSteamMethod").value = "";
+        document.getElementById("bakeBakeNotes").value = "";
+        document.getElementById("bakeCrumb").value = "";
+        document.getElementById("bakeCrust").value = "";
+        document.getElementById("bakeSourness").value = "";
+        document.getElementById("bakeScoreNotes").value = "";
+      });
+
+      // ---------- JOURNAL: SAVE ----------
+      const journalSaveBtn = document.getElementById("journalSaveBtn");
+      journalSaveBtn.addEventListener("click", () => {
+        const title = document.getElementById("journalTitle").value.trim();
+        const tagsRaw = document.getElementById("journalTags").value.trim();
+        const bodyText = document.getElementById("journalBody").value.trim();
+
+        if (!title && !bodyText) {
+          alert("Write at least a title or some body text for this entry.");
+          return;
+        }
+
+        const tags = tagsRaw
+          ? tagsRaw
+              .split(/[,#]/)
+              .map((t) => t.trim())
+              .filter(Boolean)
+          : [];
+
+        data.journal.push({
+          id: shortId(),
+          title,
+          tags,
+          body: bodyText,
+          createdAt: new Date().toISOString()
+        });
+
+        saveData();
+        renderJournal();
+
+        document.getElementById("journalTitle").value = "";
+        document.getElementById("journalTags").value = "";
+        document.getElementById("journalBody").value = "";
+      });
+
+      // ---------- FAMILY RECIPES: SAVE ----------
+      const familySaveBtn = document.getElementById("familySaveBtn");
+      familySaveBtn.addEventListener("click", () => {
+        const name = document.getElementById("familyRecipeName").value.trim();
+        const occasion = document.getElementById("familyOccasion").value.trim();
+        const story = document.getElementById("familyStory").value.trim();
+
+        if (!name && !story) {
+          alert("Give this recipe at least a name or a bit of story.");
+          return;
+        }
+
+        data.familyRecipes.push({
+          id: shortId(),
+          name,
+          occasion,
+          story,
+          createdAt: new Date().toISOString()
+        });
+
+        saveData();
+        renderFamilyRecipes();
+
+        document.getElementById("familyRecipeName").value = "";
+        document.getElementById("familyOccasion").value = "";
+        document.getElementById("familyStory").value = "";
+      });
+
+      // ---------- MOCK FORMULA CALCULATOR ----------
+      const calculateBtn = document.getElementById("calculateFormulaBtn");
+      const schedulePreview = document.getElementById("schedulePreview");
+
+      if (calculateBtn && schedulePreview) {
+        calculateBtn.addEventListener("click", () => {
+          const targetWeight = Number(document.getElementById("targetWeight").value || 900);
+          const hydration = Number(document.getElementById("hydration").value || 75);
+          const saltPercent = Number(document.getElementById("saltPercent").value || 2);
+          const levainPercent = Number(document.getElementById("levainPercent").value || 20);
+          const ambientTemp = Number(document.getElementById("ambientTemp").value || 23);
+
+          const flourWeight = targetWeight / (1 + hydration / 100 + saltPercent / 100);
+          const waterWeight = flourWeight * (hydration / 100);
+          const saltWeight = flourWeight * (saltPercent / 100);
+          const levainFlour = flourWeight * (levainPercent / 100);
+          const levainWater = levainFlour * (hydration / 100);
+
+          const rounded = (n) => Math.round(n);
+
+          const bulkHours =
+            ambientTemp >= 26 ? 3.5 :
+            ambientTemp >= 24 ? 4.5 :
+            ambientTemp >= 22 ? 5.5 :
+            ambientTemp >= 20 ? 6.5 : 8;
+
+          schedulePreview.innerHTML = `
+            <p>
+              <strong>Approximate formula (very rough mock):</strong>
+            </p>
+            <ul>
+              <li>Flour: ~${rounded(flourWeight)} g total</li>
+              <li>Water: ~${rounded(waterWeight)} g (${hydration}% hydration)</li>
+              <li>Salt: ~${rounded(saltWeight)} g (${saltPercent}% of flour)</li>
+              <li>Levain/preferment: ~${rounded(levainFlour + levainWater)} g (${levainPercent}% of total flour, assumed same hydration)</li>
+            </ul>
+            <p>
+              <strong>Suggested schedule (mock, based on ~${ambientTemp.toFixed(1)} °C):</strong>
+            </p>
+            <ol>
+              <li><strong>Autolyse:</strong> 30–60 min with flour + water.</li>
+              <li><strong>Mix & levain + salt:</strong> 10–20 min until mostly smooth.</li>
+              <li><strong>Bulk ferment:</strong> ~${bulkHours.toFixed(1)} hours with 3–4 sets of folds in the first 2 hours.</li>
+              <li><strong>Pre-shape & bench rest:</strong> 20–30 min.</li>
+              <li><strong>Final shape:</strong> 1 tight boule or batard.</li>
+              <li><strong>Proof:</strong> 1–2 hours at room temp or 8–16 hours in the fridge.</li>
+              <li><strong>Bake:</strong> Preheat a Dutch oven to 230–250 °C, bake covered 20–25 min, then uncovered 15–25 min until deep golden.</li>
+            </ol>
+            <p class="muted-text">
+              This is intentionally approximate. Later, these numbers will be tuned by your actual bake history
+              and preferences (crust color, sourness, crumb style).
+            </p>
+          `;
+        });
+      }
+
+      // ---------- UNIT CONVERTERS ----------
+      const convertWeightAmount = document.getElementById("convertWeightAmount");
+      const convertWeightFrom = document.getElementById("convertWeightFrom");
+      const convertWeightTo = document.getElementById("convertWeightTo");
+      const convertWeightBtn = document.getElementById("convertWeightBtn");
+      const convertWeightResult = document.getElementById("convertWeightResult");
+
+      const WEIGHT_FACTORS_TO_GRAMS = {
+        g: 1,
+        kg: 1000,
+        oz: 28.3495,
+        lb: 453.592,
+        cup_flour: 120
+      };
+
+      function convertWeight() {
+        const amount = Number(convertWeightAmount.value);
+        const from = convertWeightFrom.value;
+        const to = convertWeightTo.value;
+
+        if (!amount || !WEIGHT_FACTORS_TO_GRAMS[from] || !WEIGHT_FACTORS_TO_GRAMS[to]) {
+          convertWeightResult.textContent = "";
+          return;
+        }
+
+        const grams = amount * WEIGHT_FACTORS_TO_GRAMS[from];
+        const result = grams / WEIGHT_FACTORS_TO_GRAMS[to];
+        const formatted = Math.round(result * 100) / 100;
+
+        const unitNames = {
+          g: "g",
+          kg: "kg",
+          oz: "oz",
+          lb: "lb",
+          cup_flour: "cups flour (approx.)"
+        };
+
+        convertWeightResult.textContent = `${amount} ${unitNames[from]} ≈ ${formatted} ${unitNames[to]}`;
+      }
+
+      if (convertWeightBtn) {
+        convertWeightBtn.addEventListener("click", convertWeight);
+      }
+
+      const convertTempAmount = document.getElementById("convertTempAmount");
+      const convertTempFrom = document.getElementById("convertTempFrom");
+      const convertTempTo = document.getElementById("convertTempTo");
+      const convertTempBtn = document.getElementById("convertTempBtn");
+      const convertTempResult = document.getElementById("convertTempResult");
+
+      function convertTemp() {
+        const amount = Number(convertTempAmount.value);
+        const from = convertTempFrom.value;
+        const to = convertTempTo.value;
+
+        if (!Number.isFinite(amount)) {
+          convertTempResult.textContent = "";
+          return;
+        }
+
+        let result = amount;
+
+        if (from === to) {
+          result = amount;
+        } else if (from === "C" && to === "F") {
+          result = amount * 9 / 5 + 32;
+        } else if (from === "F" && to === "C") {
+          result = (amount - 32) * 5 / 9;
+        }
+
+        const formatted = Math.round(result * 10) / 10;
+        convertTempResult.textContent = `${amount} °${from} ≈ ${formatted} °${to}`;
+      }
+
+      if (convertTempBtn) {
+        convertTempBtn.addEventListener("click", convertTemp);
+      }
+
+      // ---------- INITIAL RENDER ----------
+      renderStarters();
+      renderBakes();
+      renderJournal();
+      renderFamilyRecipes();
+    })();
+  </script>
+  <!-- ===================== END: APP SCRIPT ===================== -->
+</body>
+</html>

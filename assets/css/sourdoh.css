@@ -1,0 +1,1709 @@
+:root {
+  /* Color palette – warm artisan bakery + rustic lab */
+  --bg-body: #faf6f0;           /* Flour dust off-white */
+  --bg-card: #fff8f0;           /* Warm card background */
+  --bg-card-soft: #f4ebdf;      /* Soft wheat panel */
+
+  --accent: #c76a3a;            /* Burnt orange (primary accent) */
+  --accent-soft: rgba(199, 106, 58, 0.18);
+  --accent-deep: #8b5e3c;       /* Toasted crust (deep accent) */
+
+  --text-main: #2a1f1a;         /* Dark roast brown (nearly black) */
+  --text-muted: #7f6e62;        /* Muted bakery brown */
+
+  --border-soft: rgba(102, 76, 51, 0.12);
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.10);
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --transition-fast: 150ms ease-out;
+  --transition-med: 220ms ease;
+}
+
+/* ========== GLOBAL RESET / BASE ========== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #fff8f0 0, #f0e2d4 40%, #e4d2c0 65%, #d3bba3 100%);
+  color: var(--text-main);
+}
+
+a {
+  color: var(--accent-deep);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ========== APP SHELL ========== */
+
+#app-root {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 18px 14px 32px;
+}
+
+.app-shell {
+  background: rgba(255, 248, 240, 0.97);
+  border-radius: 26px;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+}
+
+/* ========== HEADER ========== */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.3rem 1.6rem 0.9rem;
+  border-bottom: 1px solid rgba(102, 76, 51, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(249, 241, 231, 0.98));
+}
+
+.app-badge-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: radial-gradient(circle at 30% 30%, #fff4d7, #f1b45e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.app-title-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-title {
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.app-subtitle {
+  margin-top: 0.14rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* rotating logo in header */
+#rotating-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+/* ========== NAV ========== */
+
+.app-nav {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.6rem 1.4rem 0.85rem;
+  border-bottom: 1px solid rgba(102, 76, 51, 0.1);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.app-nav-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.app-nav-button .emoji {
+  font-size: 1.1rem;
+}
+
+.app-nav-button:hover {
+  background: rgba(249, 241, 231, 0.9);
+  border-color: rgba(102, 76, 51, 0.18);
+  transform: translateY(-1px);
+}
+
+.app-nav-button.app-nav-active {
+  background: radial-gradient(circle at top left, #ffe7c2, #f0c088);
+  border-color: rgba(183, 118, 57, 0.7);
+  color: #4a2d16;
+  box-shadow: 0 12px 30px rgba(217, 139, 74, 0.35);
+}
+
+/* ========== MAIN LAYOUT ========== */
+
+.app-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+  gap: 1.1rem;
+  padding: 1rem 1.4rem 1.4rem;
+}
+
+.app-section {
+  display: none;
+}
+
+.app-section.app-section-active {
+  display: block;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.7rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.section-title .emoji {
+  font-size: 1.1rem;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 32rem;
+}
+
+.pill-label {
+  align-self: center;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--accent-deep);
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(217, 139, 74, 0.12);
+  border: 1px solid rgba(217, 139, 74, 0.5);
+  white-space: nowrap;
+}
+
+.app-secondary-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* ========== CARDS ========== */
+
+.card {
+  background: linear-gradient(145deg, var(--bg-card), #fffdf7);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--border-soft);
+  padding: 0.75rem 0.85rem 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.card-soft {
+  background: linear-gradient(145deg, var(--bg-card-soft), #fffaf3);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.card-header .tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(102, 76, 51, 0.18);
+  background: rgba(249, 241, 231, 0.8);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.card-body {
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+}
+
+.muted-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* nerdy expandable blocks */
+.deep-science-block {
+  margin-top: 0.6rem;
+  border-radius: var(--radius-lg);
+  padding: 0.6rem 0.7rem;
+  background: radial-gradient(circle at top left, rgba(217, 139, 74, 0.12), rgba(255, 248, 240, 0.9));
+  border: 1px dashed rgba(183, 118, 57, 0.55);
+}
+
+.deep-science-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.deep-science-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a2d16;
+}
+
+.deep-science-toggle-icon {
+  font-size: 1rem;
+}
+
+.deep-science-body {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+  display: none;
+}
+
+.deep-science-body.open {
+  display: block;
+}
+
+/* ========== FORM ELEMENTS ========== */
+
+.input-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.45rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.input-group label,
+.field-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  padding: 0.38rem 0.5rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: rgba(255, 252, 246, 0.96);
+  color: var(--text-main);
+}
+
+.input-group textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.input-group input:focus-visible,
+.input-group select:focus-visible,
+.input-group textarea:focus-visible {
+  outline: 2px solid rgba(217, 139, 74, 0.8);
+  outline-offset: 1px;
+  border-color: rgba(217, 139, 74, 0.8);
+  background: #fffdf8;
+}
+
+/* global field text + placeholder styling */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+  color: var(--text-main);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #c7b8a9 !important;
+}
+
+select:invalid {
+  color: #c7b8a9;
+}
+
+/* ========== BUTTONS ========== */
+
+.primary-btn,
+.soft-btn,
+.ghost-btn {
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.86rem;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #f3b56d, #d98b4a);
+  color: #3b250f;
+  box-shadow: 0 14px 34px rgba(217, 139, 74, 0.4);
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 40px rgba(217, 139, 74, 0.6);
+}
+
+.soft-btn {
+  background: rgba(249, 241, 231, 0.96);
+  color: var(--text-main);
+  border: 1px solid rgba(102, 76, 51, 0.18);
+}
+
+.soft-btn:hover {
+  background: rgba(249, 241, 231, 1);
+}
+
+.ghost-btn {
+  background: transparent;
+  color: var(--text-muted);
+  padding-inline: 0.4rem;
+}
+
+.ghost-btn:hover {
+  background: rgba(249, 241, 231, 0.8);
+}
+
+/* Learn section FAQ trigger spacing */
+.learn-faq-actions {
+  margin-top: 0.6rem;
+}
+
+.learn-faq-trigger {
+  margin-top: 0.15rem;
+}
+
+
+.btn-sm {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.78rem;
+}
+
+/* Tiny circular "?" hint buttons on labels */
+.hint-badge {
+  margin-left: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  background: #f9f5ef;
+  color: var(--accent-deep);
+  font-size: 0.75rem;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hint-badge:hover {
+  background: #fffaf3;
+  border-color: #c76a3a;
+}
+
+/* ========== LISTS (STARTERS, BAKES, JOURNAL, FAMILY) ========== */
+
+.list-empty {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  padding: 0.4rem 0.2rem;
+}
+
+.list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.list-item {
+  padding: 0.4rem 0.5rem;
+  border-radius: 12px;
+  background: rgba(255, 252, 246, 0.95);
+  border: 1px solid rgba(102, 76, 51, 0.12);
+}
+
+.list-item-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.list-item-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.list-item-body {
+  font-size: 0.86rem;
+  margin-top: 0.25rem;
+}
+
+/* starter feed history */
+.feed-history {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.feed-history summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.feed-history-list {
+  margin-top: 0.25rem;
+  border-left: 2px solid rgba(102, 76, 51, 0.25);
+  padding-left: 0.5rem;
+}
+
+.feed-history-item + .feed-history-item {
+  margin-top: 0.3rem;
+}
+
+.feed-history-meta {
+  color: var(--text-muted);
+}
+
+.feed-history-notes {
+  margin-top: 0.1rem;
+}
+
+.feed-history-empty {
+  margin-top: 0.25rem;
+}
+
+/* ========== FOOTER ========== */
+
+.app-footer {
+  padding: 0.5rem 1.6rem 0.9rem;
+  border-top: 1px solid rgba(102, 76, 51, 0.1);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(255, 252, 246, 0.96), rgba(249, 241, 231, 0.96));
+}
+
+.app-footer strong {
+  font-weight: 700;
+  color: var(--accent-deep);
+}
+
+.flow-guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(102, 76, 51, 0.25);
+  background: #fff8f0;
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background 0.12s ease;
+}
+
+.flow-guide-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  background: #fff2e2;
+}
+
+/* ===================== BEGIN: FLOW GUIDE MODAL ===================== */
+
+body.flow-modal-open {
+  overflow: hidden;
+}
+
+/* Backdrop behind the modal */
+.flow-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: none;
+  align-items: flex-start; /* anchor a bit toward the top */
+  justify-content: center;
+  z-index: 200;
+  padding: 1.5rem;
+}
+
+/* When open, show the flex container */
+.flow-modal-backdrop.is-open {
+  display: flex;
+}
+
+/* The modal itself */
+.flow-modal {
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  background: linear-gradient(135deg, #fffaf3, #f4ebdf);
+  border-radius: 24px;
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(102, 76, 51, 0.3);
+  position: relative;
+  padding: 1.1rem 1.3rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  overflow: hidden;
+}
+
+/* Close button (×) */
+.flow-modal-close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.5rem;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: rgba(55, 41, 30, 0.7);
+  padding: 0.2rem;
+}
+
+.flow-modal-close:hover {
+  color: rgba(55, 41, 30, 0.95);
+}
+
+/* Header text */
+.flow-modal-header {
+  padding-right: 2rem;
+}
+
+.flow-modal-header h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+  color: var(--text-main);
+}
+
+.flow-modal-header p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Tabs row */
+.flow-modal-tabs {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  gap: 0.4rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: rgba(255, 248, 240, 0.9);
+  border: 1px solid rgba(102, 76, 51, 0.18);
+}
+
+/* Individual tab button */
+.flow-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    transform 0.08s ease;
+}
+
+/* Number bubble in each tab */
+.flow-tab-step {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  background: rgba(199, 106, 58, 0.12);
+  color: var(--accent-deep);
+}
+
+/* Active tab state */
+.flow-tab.is-active {
+  background: #c76a3a;
+  color: #fff8f0;
+}
+
+.flow-tab.is-active .flow-tab-step {
+  background: rgba(255, 252, 246, 0.95);
+  color: #c76a3a;
+}
+
+/* Body grid inside modal: left panel / right log timeline */
+.flow-modal-body {
+  margin-top: 0.5rem;
+  padding: 0.7rem 0.1rem 0.4rem;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+  gap: 0.9rem;
+}
+
+/* Panels (Starter / Bulk / Bake) */
+.flow-panel {
+  display: none;
+}
+
+.flow-panel.is-active {
+  display: block;
+}
+
+/* Panel text helpers */
+.flow-panel-intro {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  margin: 0 0 0.35rem;
+}
+
+.flow-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0.1rem 0 0.3rem;
+}
+
+/* Forms & radio chips */
+.flow-form {
+  margin-top: 0.4rem;
+}
+
+            /* Submit buttons inside Flow Guide modal */
+        .flow-submit-btn {
+        margin-top: 0.6rem;
+        border-radius: var(--radius-pill);
+        padding: 0.45rem 0.9rem;
+        font-size: 0.86rem;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        width: 100%;
+
+        /* match primary button look */
+        background: linear-gradient(135deg, #f3b56d, #d98b4a);
+        color: #3b250f;
+        box-shadow: 0 14px 34px rgba(217, 139, 74, 0.4);
+        }
+
+        .flow-submit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 40px rgba(217, 139, 74, 0.6);
+        }
+
+.flow-fieldset {
+  border: 1px solid rgba(102, 76, 51, 0.18);
+  border-radius: 14px;
+  padding: 0.6rem 0.7rem 0.7rem;
+  margin: 0 0 0.6rem;
+}
+
+.flow-fieldset legend {
+  padding: 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-deep);
+}
+
+.flow-radio-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.flow-radio-chip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 0.4rem 0.45rem;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: #f9f5ef;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition:
+    border-color 0.12s ease,
+    background 0.12s ease,
+    transform 0.08s ease;
+}
+
+.flow-radio-chip:hover {
+  border-color: #c76a3a;
+  background: #fffaf3;
+}
+
+.flow-radio-chip input[type="radio"] {
+  margin-top: 0.1rem;
+}
+
+.flow-radio-chip span {
+  display: block;
+}
+
+.flow-radio-chip strong {
+  font-weight: 700;
+}
+
+/* Tiny text snippets / prompts */
+.flow-small-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Right-hand timeline box in modal */
+.flow-timeline-shell {
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.96);
+  color: #e5e7eb;
+  padding: 0.6rem 0.7rem 0.7rem;
+  font-size: 0.78rem;
+}
+
+.flow-timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.flow-timeline-header span {
+  font-weight: 600;
+}
+
+/* Clear Timeline Button (Flow Guide) */
+.flow-clear-btn,
+.flow-timeline-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.45rem 0.9rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  /* Distinctive but consistent styling */
+  background: linear-gradient(135deg, #e68b8b, #c55757); /* soft red tone */
+  color: #fff4f4;
+  box-shadow: 0 12px 28px rgba(197, 87, 87, 0.45);
+  transition: all 0.15s ease-out;
+}
+
+.flow-clear-btn:hover,
+.flow-timeline-clear:hover {
+  transform: translateY(-1px) scale(1.015);
+  box-shadow: 0 16px 36px rgba(197, 87, 87, 0.55);
+}
+
+.flow-clear-btn:active,
+.flow-timeline-clear:active {
+  transform: translateY(0) scale(0.98);
+}
+
+
+
+.flow-timeline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.flow-timeline-item {
+  padding: 0.3rem 0.3rem 0.35rem;
+  border-radius: 10px;
+}
+
+.flow-timeline-item + .flow-timeline-item {
+  margin-top: 0.2rem;
+}
+
+.flow-timeline-item:hover {
+  background: rgba(59, 130, 246, 0.18);
+}
+
+/* Responsive: stack modal body on small screens */
+@media (max-width: 900px) {
+  .flow-modal-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .flow-modal-tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ===================== END: FLOW GUIDE MODAL ===================== */
+
+/* ===================== BEGIN: FAQ MODAL ===================== */
+
+body.faq-modal-open {
+  overflow: hidden;
+}
+
+.faq-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 210;
+  padding: 1.5rem;
+}
+
+.faq-modal-backdrop.is-open {
+  display: flex;
+}
+
+.faq-modal {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  max-height: min(90vh, 900px);
+  background: radial-gradient(circle at top left, #020617, #020617);
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.9);
+  padding: 1.4rem 1.4rem 1.6rem;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+
+.faq-modal-header {
+  margin-bottom: 0.4rem;
+}
+
+.faq-modal-header h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.15rem;
+}
+
+.faq-modal-header p {
+  font-size: 0.9rem;
+  color: #cbd5f5;
+}
+
+.faq-modal-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.faq-modal-body {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.5);
+  overflow: auto;
+}
+
+/* Sections */
+.faq-section {
+  margin-top: 1rem;
+}
+
+.faq-section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #facc6b;
+  margin-bottom: 0.4rem;
+}
+
+/* Accordion container */
+.faq-accordion {
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  margin-bottom: 0.55rem;
+  overflow: hidden;
+}
+
+/* Accordion header (question) */
+.faq-accordion-header {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.faq-accordion-header:hover {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.faq-accordion-header.is-open {
+  background: radial-gradient(circle at top left, #f4c76a1a, #020617);
+}
+
+.faq-q {
+  flex: 1;
+}
+
+.faq-chevron {
+  font-size: 0.9rem;
+  transform: translateY(1px);
+  transition: transform 0.12s ease;
+}
+
+.faq-accordion-header.is-open .faq-chevron {
+  transform: rotate(180deg);
+}
+
+/* Accordion panel (answer) */
+.faq-accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 0.85rem;
+  background: rgba(15, 23, 42, 0.96);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #cbd5f5;
+  transition: max-height 0.18s ease;
+}
+
+.faq-accordion-panel-inner {
+  padding: 0.45rem 0 0.7rem;
+}
+
+.faq-accordion-panel-inner p + p {
+  margin-top: 0.35rem;
+}
+
+/* Footer actions wrapper in footer when both buttons appear */
+.app-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ===================== END: FAQ MODAL ===================== */
+
+/* ===================== BEGIN: STARTER NAME MODAL ===================== */
+
+body.starter-name-modal-open {
+  overflow: hidden;
+}
+
+.starter-name-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 230;
+  padding: 1.5rem;
+}
+
+.starter-name-modal-backdrop.is-open {
+  display: flex;
+}
+
+.starter-name-modal {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: min(90vh, 720px);
+  background: radial-gradient(circle at top left, #020617, #020617);
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.9);
+  padding: 1.4rem 1.4rem 1.6rem;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+
+.starter-name-modal-header h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.starter-name-modal-header p {
+  font-size: 0.9rem;
+  color: #cbd5f5;
+}
+
+.starter-name-modal-close {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.starter-name-modal-body {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+/* Wheel block */
+.starter-name-wheel {
+  text-align: center;
+  padding: 0.6rem 0.4rem 0.2rem;
+}
+
+.starter-name-wheel-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+  margin-bottom: 0.4rem;
+}
+
+.starter-name-wheel-display {
+  border-radius: 999px;
+  border: 1px solid rgba(250, 204, 21, 0.7);
+  background: radial-gradient(circle at top left, #facc6b1a, #020617);
+  padding: 0.65rem 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fef9c3;
+  margin-bottom: 0.7rem;
+  min-height: 2.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.starter-name-wheel-note {
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+/* Tiny wiggle animation for "spinning" state */
+.starter-name-wheel-spinning {
+  animation: starter-name-wiggle 0.1s linear infinite;
+}
+
+@keyframes starter-name-wiggle {
+  0% {
+    transform: translateX(-1px);
+  }
+  50% {
+    transform: translateX(1px);
+  }
+  100% {
+    transform: translateX(-1px);
+  }
+}
+
+/* Final "hit" effect when the wheel stops */
+.starter-name-wheel-final {
+  animation: starter-name-final-pulse 0.35s ease-out;
+}
+
+@keyframes starter-name-final-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(250, 204, 21, 0.0);
+  }
+  40% {
+    transform: scale(1.06);
+    box-shadow: 0 0 18px rgba(250, 204, 21, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(250, 204, 21, 0.0);
+  }
+}
+
+/* Critical success: extra glow & sparkles */
+.starter-name-wheel-crit {
+  position: relative;
+  background: radial-gradient(circle at top left, #facc15, #f97316);
+  color: #0b1020;
+}
+
+.starter-name-wheel-crit::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(251, 191, 36, 0.6), transparent 60%),
+    radial-gradient(circle at 80% 100%, rgba(248, 250, 252, 0.4), transparent 55%);
+  opacity: 0;
+  animation: starter-name-crit-sparkle 0.6s ease-out forwards;
+}
+
+@keyframes starter-name-crit-sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+.starter-name-wheel-crit::before {
+  animation: starter-name-crit-sparkle 1.4s ease-out forwards;
+}
+
+
+/* Starter name row tweaks */
+.starter-name-row {
+  margin-top: 0.75rem;
+}
+
+.starter-name-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.starter-name-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.starter-name-suggestions {
+  margin-top: 0.6rem;
+  font-size: 0.82rem;
+}
+
+.starter-name-help-text {
+  margin-bottom: 0.3rem;
+  color: #9ca3af;
+}
+
+.starter-name-suggestion-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.3rem;
+}
+
+.starter-name-suggestion-btn {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.85);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #e5e7eb;
+}
+
+.starter-name-suggestion-btn:hover {
+  background: rgba(30, 64, 175, 0.8);
+}
+
+.starter-name-clear-suggestions-btn {
+  border: none;
+  background: transparent;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+/* ===================== END: STARTER NAME MODAL ===================== */
+
+
+/* ===================== BEGIN: SOUR D’OH! TIP MODAL ===================== */
+
+body.tip-modal-open {
+  overflow: hidden;
+}
+
+.tip-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 250;
+  padding: 1.5rem;
+}
+
+.tip-modal-backdrop.is-open {
+  display: flex;
+}
+
+.tip-modal {
+  max-width: 520px;
+  width: 100%;
+  background: linear-gradient(135deg, #fffaf3, #f4ebdf);
+  border-radius: 22px;
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(102, 76, 51, 0.3);
+  position: relative;
+  padding: 1.1rem 1.1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tip-modal-close {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.4rem;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: rgba(55, 41, 30, 0.7);
+  padding: 0.2rem;
+}
+
+.tip-modal-close:hover {
+  color: rgba(55, 41, 30, 0.95);
+}
+
+.tip-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.tip-modal-logo-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tip-modal-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tip-modal-title-block h2 {
+  margin: 0.05rem 0 0;
+  font-size: 1.05rem;
+  color: var(--text-main);
+}
+
+.tip-modal-kicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent-deep);
+}
+
+.tip-modal-body {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.tip-modal-body p {
+  margin: 0 0 0.4rem;
+}
+
+.tip-modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.tip-modal-body .tip-lead {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+  .tip-modal {
+    max-width: 94vw;
+    padding-inline: 0.9rem;
+  }
+}
+
+/* ===================== END: SOUR D’OH! TIP MODAL ===================== */
+
+/* ===================== PRINT LAYOUT FOR STARTER LOG – FINAL VERSION ===================== */
+
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  #app-root {
+    padding: 0;
+  }
+
+  .app-shell {
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+  }
+
+  /* Hide normal chrome + main app layout on print */
+  .app-header,
+  .app-nav,
+  .app-main,
+  .app-footer {
+    display: none !important;
+  }
+
+  /* Show ONLY the dedicated printable starter log (and starter header if you want it) */
+  #printStarterLog {
+    display: block !important;
+  }
+}
+
+/* On-screen: printable log is always hidden */
+#printStarterLog {
+  display: none;
+  padding: 0.4in 0.6in 0.6in;
+  font-family: "Georgia", "Times New Roman", serif;
+  color: #333;
+}
+
+
+  /* You can narrow print to starter or planner by setting a print-only class if needed later */
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 900px) {
+  .app-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .flow-modal-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .section-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pill-label {
+    align-self: flex-start;
+  }
+
+  .input-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-header {
+    flex-wrap: wrap;
+  }
+
+  .app-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+    .starter-crit-banner {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #facc15;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.7);
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+    pointer-events: none;
+    }
+
+    .starter-crit-banner.show {
+    opacity: 1;
+    }
+/* ===================== BEGIN: Bake rating graph ===================== */
+
+.bake-rating-graph {
+  margin-top: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bake-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.bake-rating-label {
+  min-width: 3.3rem;
+  opacity: 0.8;
+}
+
+.bake-rating-bar {
+  flex: 1;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.bake-rating-bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f97316, #facc15);
+}
+
+/* ===================== END: Bake rating graph ===================== */
+/* =========================================================
+   BAKE TIMERS — BUTTONS & STATUS (Scoped)
+   ========================================================= */
+
+#bakeTimerControls {
+  margin-top: 0.6rem;
+}
+
+.timer-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14); /* stronger base */
+  color: #e68b8b; /* full white text */
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  font-weight: 800; /* heavier */
+  font-size: 0.9rem; /* slightly larger */
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.08s ease;
+}
+
+.timer-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.timer-btn:active {
+  transform: translateY(1px);
+}
+
+
+/* Subtle per-type accents (not loud) */
+.timer-btn--autolyse {
+  box-shadow: inset 0 0 0 1px rgba(210, 180, 140, 0.35); /* warm flour */
+}
+
+.timer-btn--folds {
+  box-shadow: inset 0 0 0 1px rgba(160, 200, 220, 0.35); /* cool motion */
+}
+
+.timer-btn--bulk {
+  box-shadow: inset 0 0 0 1px rgba(180, 140, 210, 0.35); /* fermentation */
+}
+
+.timer-btn--proof {
+  box-shadow: inset 0 0 0 1px rgba(210, 160, 120, 0.35); /* warmth */
+}
+
+/* Live status line */
+#bakeTimerStatus {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  opacity: 0.85;
+  line-height: 1.35;
+}
+
+/* Optional: emphasize running timers */
+#bakeTimerStatus::before {
+  content: "⏱ ";
+  opacity: 0.6;
+}
+/* =========================================================
+   TIMERS — ACTIVE GLOW + DISABLED STATE + MODAL MATCH
+   ========================================================= */
+
+/* Active button glow (applies when JS adds .is-running) */
+.timer-btn.is-running {
+  background: rgba(255, 255, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.14),
+    0 10px 26px rgba(0, 0, 0, 0.25);
+}
+
+/* Disabled state while timer exists + not complete */
+.timer-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  filter: saturate(0.85);
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Optional: subtle “running” indicator */
+.timer-btn.is-running::after {
+  content: " • ▶";
+  opacity: 0.75;
+  font-weight: 900;
+}
+
+/* ----- Make the Timers MODAL buttons match your timer buttons ----- */
+#sdTimersModal .sdTimersRow button,
+#sdTimersModal .sdTimersClose,
+#sdTimersModal #sdTimersTestChime {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.08s ease;
+}
+
+#sdTimersModal .sdTimersRow button:hover,
+#sdTimersModal .sdTimersClose:hover,
+#sdTimersModal #sdTimersTestChime:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+#sdTimersModal .sdTimersRow button:active,
+#sdTimersModal .sdTimersClose:active,
+#sdTimersModal #sdTimersTestChime:active {
+  transform: translateY(1px);
+}

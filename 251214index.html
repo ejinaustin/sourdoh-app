@@ -1,0 +1,2878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sour D’oh! – Sourdough Companion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Sour D’oh! – an all-in-one sourdough companion for starters, bake planning, journaling, and family recipes."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/sourdoh.css" />
+
+  <!-- Layout overrides: kill the fake right column and let content use full width -->
+   <style>
+    /* Force the main app area to be a single column instead of a 2-col grid */
+    .app-main {
+      display: block;
+    }
+
+    /* Make sure the shell can breathe on mobile */
+    @media (max-width: 768px) {
+      .app-shell {
+        max-width: 100%;
+        margin: 0 auto;
+        padding-inline: 1rem;
+      }
+    }
+
+    /* Print overrides when using the "Print bake report" button */
+    @media print {
+      /* When we're in bake-report print mode, DO NOT show the starter log sheet */
+      body.print-bakes-mode #printStarterLog {
+        display: none !important;
+      }
+
+      /* And DO show the main app root again (starter-log print CSS hides this) */
+      body.print-bakes-mode #app-root {
+        display: block !important;
+      }
+
+      /* Only show the Bakes section from the main app */
+      body.print-bakes-mode .app-section {
+        display: none !important;
+      }
+
+      body.print-bakes-mode #section-bakes {
+        display: block !important;
+      }
+    }
+  </style>
+
+</head>
+
+</head>
+
+<body data-units="metric">
+  <div id="app-root">
+    <div class="app-shell">
+      <!-- ===================== BEGIN: HEADER ===================== -->
+      <header class="app-header">
+        <div class="app-badge-icon" aria-hidden="true">
+          <!-- Rotating logo image (starts on logo_1.png) -->
+          <img
+            id="appLogoRotator"
+            src="assets/images/logo_1.png"
+            alt=""
+            style="display:block; max-width:100%; max-height:100%;"
+          />
+        </div>
+        <div class="app-title-block">
+          <div class="app-title">Sour D’oh!</div>
+          <div class="app-subtitle">A cozy, scientific companion for your sourdough journey.</div>
+        </div>
+      </header>
+      <!-- ===================== END: HEADER ===================== -->
+
+      <!-- ===================== BEGIN: NAVIGATION ===================== -->
+      <nav class="app-nav" aria-label="Main navigation">
+        <button class="app-nav-button app-nav-active" data-section="home">
+          <span class="emoji">🏠</span>
+          <span>Home</span>
+        </button>
+        <button class="app-nav-button" data-section="starterLab">
+          <span class="emoji">🫙</span>
+          <span>Starter Lab</span>
+        </button>
+        <button class="app-nav-button" data-section="planner">
+          <span class="emoji">🧮</span>
+          <span>Planner</span>
+        </button>
+        <button class="app-nav-button" data-section="bakes">
+          <span class="emoji">📊</span>
+          <span>Bakes</span>
+        </button>
+        <!-- BEGIN: FLOW GUIDE NAV BUTTON -->
+        <button id="flowGuideTrigger" class="app-nav-button">
+        <span class="emoji">🧭</span>
+        <span>Flow guide</span>
+        </button>
+        <!-- END: FLOW GUIDE NAV BUTTON -->
+        <button class="app-nav-button" data-section="learn">
+          <span class="emoji">📚</span>
+          <span>Learn</span>
+        </button>
+        <button class="app-nav-button" data-section="journal">
+          <span class="emoji">📝</span>
+          <span>Journal</span>
+        </button>
+        <button class="app-nav-button" data-section="family">
+          <span class="emoji">👨‍👩‍👧‍👦</span>
+          <span>Family recipes</span>
+        </button>
+        <button class="app-nav-button" data-section="settings">
+          <span class="emoji">⚙️</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <!-- ===================== END: NAVIGATION ===================== -->
+
+      <!-- ===================== BEGIN: MAIN CONTENT ===================== -->
+      <main class="app-main">
+        <!-- LEFT COLUMN -->
+        <section id="section-home" class="app-section app-section-active" aria-labelledby="home-title">
+            <div>
+        <div class="section-title-row">
+        <div>
+            <div id="home-title" class="section-title">
+            <span class="emoji">🏠</span>
+            <span>Welcome to Sour D’oh!</span>
+            </div>
+            <div class="section-subtitle">
+            Whether this is your first starter or your 300th loaf, this space keeps your notes, timings, and
+            “oh THAT’S what went wrong” moments in one cozy place.
+            </div>
+        </div>
+        <div class="pill-label">Prototype – local only</div>
+        </div>
+
+        <!-- Main "How to use" card -->
+        <div class="card card-soft">
+        <div class="card-header">
+            How to use this prototype
+            <span class="tag">Beginner &amp; expert friendly</span>
+        </div>
+        <div class="card-body">
+            <ul class="muted-text">
+            <li>
+                <strong>Starter Lab:</strong> Create profiles for each starter, log feedings, and print a paper log
+                if you’re elbow-deep in dough.
+            </li>
+            <li>
+                <strong>Planner:</strong> Enter your target dough weight, hydration, and room temp, then let the
+                app suggest a timeline with hover tips for each step.
+            </li>
+            <li>
+                <strong>Bakes:</strong> Log each bake with fermentation, bake details, and your scoring.
+            </li>
+            <li>
+                <strong>Learn &amp; Journal:</strong> Save “aha” moments, troubleshoot flops, and stash notes you’ll
+                actually find again.
+            </li>
+            </ul>
+        </div>
+        </div>
+
+        <!-- ===================== BEGIN: SOURDOUGH NUANCE SECTION ===================== -->
+        <div class="card card-soft" style="margin-top: 1.5rem;">
+        <div class="card-header">
+            The art (and science) of sourdough
+            <span class="tag">Beginner-friendly</span>
+        </div>
+
+        <div class="card-body">
+            <p>
+            <strong>Sourdough isn’t just a recipe — it’s a relationship.</strong>
+            Every starter has a personality, every kitchen has its own microclimate, and
+            every baker develops instincts over time. And every loaf? It comes out a little
+            different from the last.
+            </p>
+
+            <p>
+            This app isn’t meant to hand you “one perfect formula.” Instead, it explains
+            the <em>why</em> behind the fermentation science, helps you track what you’re
+            doing batch by batch, and guides you toward building your own personal style.
+            </p>
+
+            <p>
+            Many bakers don’t hit their dream loaf until their 10th, 20th, or even 50th
+            bake. And some ultra-perfectionists? They never stop tweaking. (We still love
+            them.)
+            </p>
+
+            <p>
+            But if you follow the science, stay curious, and start recognizing the “cause
+            and effect” behind hydration, timing, temperature, and fermentation strength,
+            you’ll be on your way to becoming the best sourdough baker <em>you</em> can be.
+            </p>
+        </div>
+        </div>
+        <!-- ===================== END: SOURDOUGH NUANCE SECTION ===================== -->
+    </div>
+    </section>
+
+    <!-- ===================== BEGIN: BETA FEEDBACK TRIGGER STRIP ===================== -->
+        <!-- Inline beta feedback pill removed – feedback now lives in the footer actions bar. -->
+        <!-- (intentionally left blank) -->
+        <!-- ===================== END: BETA FEEDBACK TRIGGER STRIP ===================== -->
+
+        <!-- STARTER LAB -->
+        <section id="section-starterLab" class="app-section" aria-labelledby="starterLab-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="starterLab-title" class="section-title">
+                  <span class="emoji">🫙</span>
+                  <span>Starter Lab</span>
+                </div>
+                <div class="section-subtitle">
+                  Track each starter like a tiny, bubbly pet with its own habits, history, and flavor.
+                </div>
+              </div>
+              <div class="pill-label">Multiple starters supported</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New starter profile
+              <span class="tag">Metadata</span>
+            </div>
+            <div class="card-body">
+            <!-- ===================== BEGIN: STARTER NAME BLOCK ===================== -->
+            <div class="input-row starter-name-row">
+            <div class="input-group starter-name-input-group">
+                <label for="starterName">Starter name</label>
+                <div class="starter-name-input-wrap">
+                <input
+                    id="starterName"
+                    type="text"
+                    placeholder="Name your bubbly little chaos goblin"
+                    autocomplete="off"
+                />
+
+                <div class="starter-name-actions">
+                    <button
+                    type="button"
+                    id="starterNameRandomBtn"
+                    class="soft-btn starter-name-random-btn"
+                    >
+                    🎲 Roll again
+                    </button>
+
+                    <button
+                    type="button"
+                    class="ghost-btn starter-name-modal-btn"
+                    data-starter-name-modal-open="true"
+                    >
+                    🎰 Starter Name Arcade
+                    </button>
+                </div>
+
+                <div id="starterNameSuggestions" class="starter-name-suggestions"></div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="starterHydration">Hydration (%)</label>
+                <input
+                id="starterHydration"
+                type="number"
+                min="50"
+                max="125"
+                step="1"
+                placeholder="100"
+                />
+            </div>
+            </div>
+            <!-- ===================== END: STARTER NAME BLOCK ===================== -->
+
+
+               <div class="input-row">
+                <div class="input-group">
+                  <label for="starterFlour">Primary flour mix</label>
+                  <input id="starterFlour" type="text" placeholder="All-purpose, bread, 70/30 bread/whole wheat…" />
+                </div>
+                <div class="input-group">
+                  <label for="starterOrigin">Origin date</label>
+                  <input id="starterOrigin" type="date" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="starterNotes">Notes</label>
+                  <textarea
+                    id="starterNotes"
+                    placeholder="Where did it come from? What does it smell like? Any special feeding schedule?"
+                  ></textarea>
+                </div>
+              </div>
+              <p class="muted-text">
+                This now saves into your browser as a reusable starter profile. You can add as many as you like.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="starterSaveBtn">
+                <span>💾 Save starter</span>
+              </button>
+              <button class="soft-btn beginner-only" id="starterExpectationsBtn">
+                <span>👀 What to expect (new starter)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card hidden" id="starterExpectationsCard">
+            <div class="card-header">
+              What to expect from a brand new starter
+              <span class="tag">Beginner comfort</span>
+            </div>
+            <div class="card-body">
+              <p class="muted-text">
+                Every starter is different, but here’s a rough idea of what most people see in the first week if they’re
+                feeding equal parts flour and water at room temperature.
+              </p>
+              <ul class="muted-text">
+                <li><strong>Day 1–2:</strong> It may look lively quickly, then stall. Totally normal.</li>
+                <li><strong>Day 3–4:</strong> It might smell funky (cheese, socks, vinegar). Still normal.</li>
+                <li>
+                  <strong>Day 5–7:</strong> Once it reliably doubles between feedings, you’re getting close to a usable
+                  starter.
+                </li>
+                <li>
+                  <strong>Hooch (liquid on top):</strong> a sign it’s hungry. Pour it off or stir it back in, then feed.
+                </li>
+              </ul>
+              <p class="muted-text">
+                The key: <strong>consistency over perfection.</strong> Stick to a schedule and write down what you see.
+              </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Saved starters
+            </div>
+            <div class="card-body" id="starterList">
+              <div class="list-empty">No starters yet. Create one above to see it here.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Log a feeding
+              <span class="tag">Connected to a starter</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="feedStarterSelect">Which starter?</label>
+                  <select id="feedStarterSelect">
+                    <option value="">No starters yet</option>
+                  </select>
+                </div>
+
+                <div class="input-group">
+                  <label for="feedRatio">Feed ratio (starter : flour : water)</label>
+                  <input id="feedRatio" type="text" placeholder="1 : 2 : 2" />
+                </div>
+
+                <!-- NEW: time of feeding -->
+                <div class="input-group">
+                  <label for="feedTime">Time of feeding</label>
+                  <input id="feedTime" type="time" />
+                </div>
+
+                <div class="input-group">
+                  <label for="feedTemp">
+                    Room temp (<span data-units-label="temp">°C</span>)
+                  </label>
+                  <input id="feedTemp" type="number" step="0.1" placeholder="23" />
+                </div>
+
+                <div class="input-group">
+                  <label for="feedPeakTime">Time to peak (hours)</label>
+                  <input id="feedPeakTime" type="number" step="0.1" placeholder="4.5" />
+                </div>
+              </div>
+
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="feedNotes">
+                    Feed notes - include information regarding your discard here.
+                  </label>
+                  <textarea
+                    id="feedNotes"
+                    placeholder="Bubbly? Domed? Any hooch? Smell more acidic or sweet?"
+                  ></textarea>
+                </div>
+              </div>
+
+              <p class="muted-text">
+                Each feeding you save is stored under the chosen starter. Later we can visualize activity over time.
+              </p>
+
+              <div class="deep-science-block" id="starterDeepScience">
+                <div class="deep-science-header">
+                  <div class="deep-science-title">
+                    <span>🧪 Deep Science: What’s happening after a feeding?</span>
+                  </div>
+                  <div class="deep-science-toggle-icon" aria-hidden="true">▼</div>
+                </div>
+                <div class="deep-science-body">
+                  <p>
+                    After you feed, wild yeasts and lactic acid bacteria wake up and start chewing through sugars. The
+                    ratio of flour, water, temperature, and time all affect which microbes “win” and how sour or mild
+                    your starter becomes.
+                  </p>
+                  <ul>
+                    <li>Warmer temps favor faster activity but can push things more sour.</li>
+                    <li>Cooler temps slow everything down but can build complexity.</li>
+                    <li>Higher feed ratios (like 1:5:5) give a longer, slower rise.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button class="primary-btn" id="feedSaveBtn">
+                <span>📥 Save feeding</span>
+              </button>
+              <button class="soft-btn" id="printStarterLogBtn">
+                <span>🖨️ Print blank log sheet</span>
+              </button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- PLANNER -->
+        <section id="section-planner" class="app-section" aria-labelledby="planner-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="planner-title" class="section-title">
+                  <span class="emoji">🧮</span>
+                  <span>Bake Planner</span>
+                </div>
+                <div class="section-subtitle">
+                  Define your flour mix, hydration, and schedule. Let the app help you hit your bake window.
+                </div>
+              </div>
+              <div class="pill-label">Formula &amp; timeline</div>
+            </div>
+          </div>
+
+          <!-- ===================== BEGIN: PLANNER – DOUGH FORMULA CARD ===================== -->
+<div class="card card-soft">
+  <div class="card-header">
+    Dough formula
+    <span class="tag">Inputs</span>
+  </div>
+  <div class="card-body">
+    <div class="input-row">
+      <div class="input-group">
+        <label for="targetWeight" class="field-label">
+          Target dough weight (<span data-units-label="weight">g</span>)
+          <button
+            type="button"
+            id="targetWeightHintBtn"
+            class="hint-badge"
+            aria-label="What is target dough weight?"
+          >
+            ?
+          </button>
+        </label>
+        <input
+          id="targetWeight"
+          type="number"
+          min="300"
+          max="3000"
+          step="10"
+          placeholder="900"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="hydration" class="field-label">
+          Hydration (%)
+          <button
+            type="button"
+            id="hydrationHintBtn"
+            class="hint-badge"
+            aria-label="What is hydration and why it matters"
+          >
+            ?
+          </button>
+        </label>
+        <input
+          id="hydration"
+          type="number"
+          min="55"
+          max="90"
+          step="1"
+          placeholder="75"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="saltPercent" class="field-label">
+          Salt (%)
+          <button
+            type="button"
+            id="saltHintBtn"
+            class="hint-badge"
+            aria-label="Why do we add salt?"
+          >
+            ?
+          </button>
+        </label>
+        <input
+          id="saltPercent"
+          type="number"
+          min="1.5"
+          max="3"
+          step="0.1"
+          placeholder="2.0"
+        />
+      </div>
+    </div>
+
+    <div class="input-row">
+      <!-- Levain already had beginner help + ? button -->
+      <div class="input-group">
+        <label for="levainPercent" class="field-label">
+          Levain (% of flour)
+          <button
+            type="button"
+            id="levainHintBtn"
+            class="hint-badge"
+            aria-label="How levain is calculated and why it matters"
+          >
+            ?
+          </button>
+        </label>
+        <input
+          id="levainPercent"
+          type="number"
+          min="0"
+          max="40"
+          step="1"
+          placeholder="20"
+        />
+        <p class="muted-text" id="levainInlineHelp">
+          Levain is just your active starter that goes into the dough. This number says
+          how much of your flour becomes levain. If you’re not sure, 20% is a great place to start.
+        </p>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="input-group">
+        <label for="flourBlend" class="field-label">
+          Flour blend
+          <button
+            type="button"
+            id="flourBlendHintBtn"
+            class="hint-badge"
+            aria-label="How flour blend affects the dough"
+          >
+            ?
+          </button>
+        </label>
+        <input
+          id="flourBlend"
+          type="text"
+          placeholder="70% bread, 20% AP, 10% whole wheat"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="ambientTemp" class="field-label">
+          Room temperature (<span data-units-label="temp">°C</span>)
+          <button
+            type="button"
+            id="ambientTempHintBtn"
+            class="hint-badge"
+            aria-label="How room temperature affects fermentation"
+          >
+            ?
+          </button>
+        </label>
+        <input
+          id="ambientTemp"
+          type="number"
+          step="0.1"
+          placeholder="23.0"
+        />
+      </div>
+    </div>
+
+    <p class="muted-text">
+      These inputs drive a mock formula and schedule now. Later we can tie them to your real bake history.
+    </p>
+  </div>
+
+  <div class="card-footer">
+    <button class="primary-btn" id="calculateFormulaBtn">
+      <span>🧾 Calculate formula</span>
+    </button>
+  </div>
+</div>
+<!-- ===================== END: PLANNER – DOUGH FORMULA CARD ===================== -->
+
+
+          <div class="card">
+            <div class="card-header">
+              Suggested schedule
+              <span class="tag">Preview</span>
+            </div>
+            <div class="card-body" id="schedulePreview">
+              Enter a target weight, hydration, levain %, and room temperature above, then click
+              <strong>Calculate formula</strong>. This area will show a rough timeline with hover tips for each step.
+            </div>
+          </div>
+        </section>
+
+         
+
+      <!-- INLINE STYLES FOR FLOW GUIDE (SCOPED) -->
+      <style>
+        .sd-flow-shell {
+          margin-top: 1.2rem;
+          padding: 1.1rem 1.1rem 1.3rem;
+          border-radius: 20px;
+          background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.98));
+          border: 1px solid rgba(148, 163, 184, 0.5);
+        }
+
+        .sd-flow-steps {
+          list-style: none;
+          margin: 0 0 1.1rem;
+          padding: 0;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 0.9rem;
+        }
+
+        .sd-flow-step {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.55rem 0.7rem;
+          border-radius: 999px;
+          border: 1px solid rgba(148, 163, 184, 0.5);
+          background: #020617;
+          cursor: pointer;
+          font-size: 0.8rem;
+          transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+        }
+
+        .sd-flow-step:hover {
+          border-color: #f4c76a;
+          transform: translateY(-1px);
+        }
+
+        .sd-flow-step-active {
+          border-color: #f4c76a;
+          background: radial-gradient(circle at top left, #f4c76a, #d97706);
+          color: #111827;
+        }
+
+        .sd-flow-step-active .sd-flow-circle {
+          background: rgba(15, 23, 42, 0.92);
+          color: #facc15;
+        }
+
+        .sd-flow-circle {
+          width: 26px;
+          height: 26px;
+          border-radius: 999px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.8rem;
+          background: #0f172a;
+          color: #e5e7eb;
+          flex-shrink: 0;
+        }
+
+        .sd-flow-step-label {
+          font-weight: 500;
+        }
+
+        .sd-flow-panels {
+          border-radius: 16px;
+          border: 1px solid rgba(30, 64, 175, 0.5);
+          background: rgba(15, 23, 42, 0.9);
+          padding: 0.9rem 0.9rem 1.1rem;
+        }
+
+        .sd-flow-panel {
+          display: none;
+        }
+
+        .sd-flow-panel-active {
+          display: block;
+        }
+
+        .sd-flow-panel-header h3 {
+          margin: 0 0 0.25rem;
+          font-size: 0.98rem;
+        }
+
+        .sd-flow-panel-tagline {
+          margin: 0 0 0.75rem;
+          font-size: 0.8rem;
+          color: #9ca3af;
+        }
+
+        .sd-flow-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 0.75rem;
+        }
+
+        .sd-flow-card {
+          border-radius: 16px;
+          border: 1px solid rgba(148, 163, 184, 0.45);
+          background: #020617;
+          padding: 0.7rem 0.8rem 0.75rem;
+          font-size: 0.8rem;
+        }
+
+        .sd-flow-card h4 {
+          margin: 0 0 0.35rem;
+          font-size: 0.9rem;
+        }
+
+        .sd-flow-card ul {
+          margin: 0 0 0.45rem 1.1rem;
+          padding: 0;
+        }
+
+        .sd-flow-card li {
+          margin-bottom: 0.2rem;
+        }
+
+        .sd-flow-tip {
+          margin: 0;
+          font-size: 0.78rem;
+          color: #a5b4fc;
+        }
+
+        .sd-flow-branch-label {
+          margin: 0.1rem 0 0;
+          font-size: 0.78rem;
+          color: #bbf7d0;
+        }
+
+        .sd-flow-branch-alt {
+          color: #fecaca;
+        }
+
+        @media (max-width: 700px) {
+          .sd-flow-steps {
+            grid-template-columns: 1fr;
+          }
+        }
+      </style>
+      <!-- ===================== END: FLOW GUIDE ===================== -->
+
+
+        <!-- BAKES -->
+        <section id="section-bakes" class="app-section" aria-labelledby="bakes-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="bakes-title" class="section-title">
+                  <span class="emoji">📊</span>
+                  <span>Bake Log &amp; Analytics</span>
+                </div>
+                <div class="section-subtitle">
+                  Log every loaf with full details: formula, fermentation, bake, and evaluation.
+                </div>
+              </div>
+              <div class="pill-label">Prototype – unlimited bakes (saved in this browser)</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New bake entry
+              <span class="tag">Session</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeName">Bake name</label>
+                  <input id="bakeName" type="text" placeholder="House boule, sandwich loaf, pizza test, etc." />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeDate">Date</label>
+                  <input id="bakeDate" type="date" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeStarterSelect">Starter used (optional)</label>
+                  <select id="bakeStarterSelect">
+                    <option value="">No specific starter</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Formula -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Formula &amp; dough
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeDoughWeight">Dough weight (<span data-units-label="weight">g</span>)</label>
+                  <input id="bakeDoughWeight" type="number" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeHydration">Hydration (%)</label>
+                  <input id="bakeHydration" type="number" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeSaltPercent">Salt (%)</label>
+                  <input id="bakeSaltPercent" type="number" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeLevainPercent">Levain (% of flour)</label>
+                  <input id="bakeLevainPercent" type="number" />
+                </div>
+              </div>
+
+              <!-- Fermentation -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Fermentation
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeAmbientTemp">
+                    Ambient temp (<span data-units-label="temp">°C</span>)
+                  </label>
+                  <input id="bakeAmbientTemp" type="number" step="0.1" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeBulkHours">Bulk ferment (hours)</label>
+                  <input id="bakeBulkHours" type="number" step="0.1" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeFolds">Number of folds</label>
+                  <input id="bakeFolds" type="number" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeFoldMethod">Fold style</label>
+                  <select id="bakeFoldMethod">
+                    <option value="coil">Coil folds</option>
+                    <option value="stretch">Stretch &amp; fold</option>
+                    <option value="slap">Slap &amp; fold</option>
+                    <option value="none">None</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeBulkNotes">Bulk notes</label>
+                  <textarea
+                    id="bakeBulkNotes"
+                    placeholder="How high did it rise? Bubbles? Smooth or weak? Any pauses?"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Proof & bake -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Proof &amp; bake
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeProofMethod">Proof method</label>
+                  <select id="bakeProofMethod">
+                    <option value="cold">Cold retard (fridge)</option>
+                    <option value="room">Room temp</option>
+                    <option value="combo">Room, then cold</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="bakeProofHours">Proof time (hours)</label>
+                  <input id="bakeProofHours" type="number" step="0.1" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeProofTemp">
+                    Proof temp (<span data-units-label="temp">°C</span>)
+                  </label>
+                  <input id="bakeProofTemp" type="number" step="0.1" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeVessel">Baking vessel</label>
+                  <select id="bakeVessel">
+                    <option value="dutch">Dutch oven</option>
+                    <option value="stone">Baking stone/steel</option>
+                    <option value="pan">Loaf pan</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakePreheatTemp">
+                    Preheat temp (<span data-units-label="temp">°C</span>)
+                  </label>
+                  <input id="bakePreheatTemp" type="number" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeBakeTemp">
+                    Bake temp (<span data-units-label="temp">°C</span>)
+                  </label>
+                  <input id="bakeBakeTemp" type="number" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeCoveredMinutes">Minutes covered</label>
+                  <input id="bakeCoveredMinutes" type="number" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeUncoveredMinutes">Minutes uncovered</label>
+                  <input id="bakeUncoveredMinutes" type="number" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeSteamMethod">Steam method</label>
+                  <input
+                    id="bakeSteamMethod"
+                    type="text"
+                    placeholder="Lid on/off, tray of water, ice cubes in pan, etc."
+                  />
+                </div>
+                <div class="input-group">
+                  <label for="bakeBakeNotes">Bake notes</label>
+                  <textarea
+                    id="bakeBakeNotes"
+                    placeholder="Color, blistering, ears, how it smelled, anything that surprised you."
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Evaluation -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Evaluation
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeCrumb">Crumb (1–5)</label>
+                  <input id="bakeCrumb" type="number" min="1" max="5" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeCrust">Crust (1–5)</label>
+                  <input id="bakeCrust" type="number" min="1" max="5" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeSourness">Sourness (1–5)</label>
+                  <input id="bakeSourness" type="number" min="1" max="5" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeOverall">Overall happiness (1–5)</label>
+                  <input id="bakeOverall" type="number" min="1" max="5" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeNotes">Tasting notes</label>
+                  <textarea
+                    id="bakeNotes"
+                    placeholder="Where did this shine? What would you tweak next time?"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+                <div class="card-footer">
+                <button class="primary-btn" id="bakeSaveBtn">
+                    <span>💾 Save bake</span>
+                </button>
+                <button class="soft-btn" id="printBakeReportBtn">
+                    <span>🖨️ Print bake report</span>
+                </button>
+                </div>
+
+          <div class="card">
+            <div class="card-header">
+              Saved bakes
+            </div>
+            <div class="card-body">
+              <div id="bakeList" class="list-empty">
+                No bakes saved yet. Log one above to start your history.
+              </div>
+            </div>
+          </div>
+        </section>
+
+<!-- LEARN -->
+<section id="section-learn" class="app-section" aria-labelledby="learn-title">
+  <div>
+    <div class="section-title-row">
+      <div>
+        <div id="learn-title" class="section-title">
+          <span class="emoji">📚</span>
+          <span>Learn &amp; troubleshoot</span>
+        </div>
+        <div class="section-subtitle">
+          Quick, friendly explanations of the weird stuff that happens between flour, water, and time.
+        </div>
+
+        <!-- BEGIN: LEARN FAQ TRIGGER -->
+        <div class="learn-faq-actions">
+          <button
+            type="button"
+            class="soft-btn learn-faq-trigger"
+            id="faqGuideTrigger"
+            data-faq-trigger="true"
+          >
+            <span class="emoji">❓</span>
+            <span>Open FAQ &amp; tips</span>
+          </button>
+        </div>
+        <!-- END: LEARN FAQ TRIGGER -->
+      </div>
+
+      <div class="pill-label">Evergreen notes</div>
+    </div>
+
+    <div class="card card-soft">
+      <div class="card-header">
+        Common issues
+        <span class="tag">Beginner-friendly</span>
+      </div>
+      <div class="card-body">
+        <ul class="muted-text">
+          <li>
+            <strong>Flat loaf:</strong> Under-fermented, over-proofed, weak shaping, or too low an oven temp are
+            the usual suspects.
+          </li>
+          <li>
+            <strong>Gummy crumb:</strong> Often under-baked, or cut too soon. Let it cool fully before slicing.
+          </li>
+          <li>
+            <strong>Too sour:</strong> Long, warm ferments or very old starter. Shorten bulk or use cooler temps.
+          </li>
+          <li>
+            <strong>Not sour enough:</strong> Increase cold proof time or use a more mature starter.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        Glossary
+        <span class="tag">Plain language</span>
+      </div>
+      <div class="card-body">
+        <ul class="muted-text">
+          <li>
+            <strong>Autolyse:</strong> A rest with just flour and water to start gluten formation with little
+            effort.
+          </li>
+          <li>
+            <strong>Bulk ferment:</strong> The first rise after mixing everything together.
+          </li>
+          <li>
+            <strong>Proof:</strong> The final rise after shaping, right before baking.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- If you want the beta feedback here, paste that block here inside this Learn section -->
+  </div>
+</section>
+
+
+        <!-- JOURNAL -->
+        <section id="section-journal" class="app-section" aria-labelledby="journal-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="journal-title" class="section-title">
+                  <span class="emoji">📝</span>
+                  <span>Bake journal</span>
+                </div>
+                <div class="section-subtitle">
+                  Capture stories, experiments, and “never again” moments that don’t fit neatly into a form.
+                </div>
+              </div>
+              <div class="pill-label">Free-form notes</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New journal entry
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="journalTitle">Title</label>
+                  <input id="journalTitle" type="text" placeholder="That time the loaf welded to the Dutch oven" />
+                </div>
+                <div class="input-group">
+                  <label for="journalDate">Date</label>
+                  <input id="journalDate" type="date" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="journalStory">Story</label>
+                  <textarea
+                    id="journalStory"
+                    placeholder="What happened? What did you learn? What would you change?"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="journalSaveBtn">
+                <span>💾 Save entry</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Saved journal entries</div>
+            <div class="card-body">
+              <div id="journalList" class="list-empty">No entries yet. Start by saving one above.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAMILY RECIPES -->
+        <section id="section-family" class="app-section" aria-labelledby="family-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="family-title" class="section-title">
+                  <span class="emoji">👨‍👩‍👧‍👦</span>
+                  <span>Family recipes</span>
+                </div>
+                <div class="section-subtitle">
+                  Keep heirloom formulas, “Grandma’s notes,” and favorite variations in one safe, sharable place.
+                </div>
+              </div>
+              <div class="pill-label">Heirloom stash</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New family recipe
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="familyTitle">Recipe name</label>
+                  <input id="familyTitle" type="text" placeholder="Grandma’s Sunday sourdough" />
+                </div>
+                <div class="input-group">
+                  <label for="familyAttribution">Who does this belong to?</label>
+                  <input id="familyAttribution" type="text" placeholder="Grandma, Aunt, neighborhood baker, etc." />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="familyStory">Story / notes</label>
+                  <textarea
+                    id="familyStory"
+                    placeholder="When is it usually made? Any quirks or superstitions?"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="familySaveBtn">
+                <span>💾 Save recipe</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Saved family recipes</div>
+            <div class="card-body">
+              <div id="familyList" class="list-empty">
+                No recipes saved yet. Add one above to pin it in place.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="section-settings" class="app-section" aria-labelledby="settings-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="settings-title" class="section-title">
+                  <span class="emoji">⚙️</span>
+                  <span>Settings &amp; tools</span>
+                </div>
+                <div class="section-subtitle">
+                  Tweak how the app behaves and use quick converters when you’re juggling recipes from different sources.
+                </div>
+              </div>
+              <div class="pill-label">Local prototype</div>
+            </div>
+          </div>
+
+          
+          <!-- UNITS & CONVERTERS -->
+          <div class="card">
+            <div class="card-header">
+              Units &amp; quick converters
+              <span class="tag">Customizable</span>
+            </div>
+
+            <div class="card-body">
+
+              <!-- NEW WEIGHT + TEMP UNITS -->
+              <div class="input-row">
+                <!-- Weight Units -->
+                <div class="input-group">
+                  <div class="field-label">Weight units</div>
+
+                  <label class="chip-toggle">
+                    <input type="radio" name="weightUnits" id="weightUnitsGrams" />
+                    <span>Grams (g)</span>
+                  </label>
+
+                  <label class="chip-toggle">
+                    <input type="radio" name="weightUnits" id="weightUnitsOunces" />
+                    <span>Ounces (oz)</span>
+                  </label>
+
+                  <p class="muted-text">
+                    Most sourdough bakers (even in the US) use grams for accuracy. Ounces are available if preferred.
+                  </p>
+                </div>
+
+                <!-- Temperature Units -->
+                <div class="input-group">
+                  <div class="field-label">Temperature units</div>
+
+                  <label class="chip-toggle">
+                    <input type="radio" name="tempUnits" id="tempUnitsCelsius" />
+                    <span>Celsius (°C)</span>
+                  </label>
+
+                  <label class="chip-toggle">
+                    <input type="radio" name="tempUnits" id="tempUnitsFahrenheit" />
+                    <span>Fahrenheit (°F)</span>
+                  </label>
+
+                  <p class="muted-text">
+                    Choose whichever matches your oven and thermometer. Many US ovens are °F even when recipes are °C.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Existing Converters (unchanged) -->
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="convertWeightInput">Weight converter</label>
+                  <input id="convertWeightInput" type="number" placeholder="e.g. 500" />
+                  <select id="convertWeightDirection" style="margin-top:0.25rem; max-width:180px;">
+                    <option value="g-to-oz">Grams → Ounces</option>
+                    <option value="oz-to-g">Ounces → Grams</option>
+                  </select>
+                  <div id="convertWeightResult" class="muted-text" style="margin-top:0.25rem;"></div>
+                </div>
+
+                <div class="input-group">
+                  <label for="convertTempInput">Temperature converter</label>
+                  <input id="convertTempInput" type="number" placeholder="e.g. 450" />
+                  <select id="convertTempDirection" style="margin-top:0.25rem; max-width:180px;">
+                    <option value="c-to-f">°C → °F</option>
+                    <option value="f-to-c">°F → °C</option>
+                  </select>
+                  <div id="convertTempResult" class="muted-text" style="margin-top:0.25rem;"></div>
+                </div>
+              </div>
+
+              <p class="muted-text">
+                These are just quick tools so you don’t have to leave the page when a recipe is in the “wrong” units.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== BEGIN: INLINE SOUR D'OH BETA FEEDBACK ===================== -->
+        <!-- Compact inline trigger strip removed – footer Beta button is now the only trigger. -->
+      <!-- ===================== BEGIN: INLINE SOUR D'OH BETA FEEDBACK ===================== -->
+
+
+      <!-- Modal backdrop + dialog -->
+      <section
+        class="beta-feedback-modal-backdrop"
+        id="betaFeedbackModal"
+        aria-hidden="true"
+      >
+        <div
+          class="beta-feedback-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="betaFeedbackTitle"
+        >
+          <button
+            type="button"
+            class="beta-feedback-close-btn"
+            id="betaFeedbackCloseBtn"
+            aria-label="Close feedback form"
+          >
+            ×
+          </button>
+
+          <header class="sourdoh-inline-header">
+            <div>
+              <div class="sourdoh-inline-kicker">Beta feedback</div>
+              <h2 class="sourdoh-inline-title" id="betaFeedbackTitle">
+                How is Sour D'oh! treating you?
+              </h2>
+              <p class="sourdoh-inline-subtitle">
+                While this is in beta, your feedback goes straight into what we fix and build next.
+              </p>
+            </div>
+          </header>
+
+          <form id="inlineFeedbackForm" class="sourdoh-inline-form">
+            <div class="sourdoh-inline-grid">
+              <div class="sourdoh-field">
+                <label class="sourdoh-label" for="inlineExperienceLevel">
+                  How would you describe yourself as a sourdough baker?
+                </label>
+                <select id="inlineExperienceLevel" name="experienceLevel" class="sourdoh-input">
+                  <option value="">Choose one…</option>
+                  <option value="brand_new">Brand new – first starter / first loaf</option>
+                  <option value="beginner">Beginner – a few loaves, still learning</option>
+                  <option value="intermediate">Intermediate – I bake sometimes</option>
+                  <option value="advanced">Advanced / obsessed</option>
+                </select>
+              </div>
+
+              <div class="sourdoh-field">
+                <label class="sourdoh-label" for="inlineUsageLevel">
+                  How are you using Sour D'oh! so far?
+                </label>
+                <select id="inlineUsageLevel" name="usageLevel" class="sourdoh-input">
+                  <option value="">Choose one…</option>
+                  <option value="just_looked">Just looking around</option>
+                  <option value="one_bake">Used it for one bake</option>
+                  <option value="several_bakes">Used it for several bakes</option>
+                  <option value="used_a_lot">Using it a lot</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="sourdoh-field">
+              <label class="sourdoh-label" for="inlineWhatWorked">
+                What feels good or genuinely helpful right now?
+              </label>
+              <textarea
+                id="inlineWhatWorked"
+                name="whatWorked"
+                class="sourdoh-textarea"
+                placeholder="Specifics are gold here – what actually reduces confusion, saves you time, or boosts confidence?"
+              ></textarea>
+            </div>
+
+            <div class="sourdoh-field">
+              <label class="sourdoh-label" for="inlineWhatConfusing">
+                What’s confusing, frustrating, or missing?
+              </label>
+              <textarea
+                id="inlineWhatConfusing"
+                name="whatConfusing"
+                class="sourdoh-textarea"
+                placeholder="Any spots you got stuck, weren’t sure what to enter, or felt something important was missing?"
+              ></textarea>
+            </div>
+
+            <div class="sourdoh-field">
+              <label class="sourdoh-label" for="inlineBugs">
+                Hit any bugs or weird behavior?
+              </label>
+              <textarea
+                id="inlineBugs"
+                name="bugs"
+                class="sourdoh-textarea"
+                placeholder="If you remember what you clicked or any error text, drop it here."
+              ></textarea>
+            </div>
+
+            <div class="sourdoh-inline-contact-row">
+              <label class="sourdoh-inline-chip">
+                <input type="checkbox" id="inlineOkToContact" name="okToContact" value="yes" />
+                I’m okay with follow-up questions about this feedback.
+              </label>
+
+              <div class="sourdoh-inline-email">
+                <label class="sourdoh-label" for="inlineEmail">Email (optional)</label>
+                <input
+                  type="email"
+                  id="inlineEmail"
+                  name="email"
+                  class="sourdoh-input"
+                  placeholder="you@example.com"
+                />
+              </div>
+            </div>
+
+            <div class="sourdoh-inline-actions">
+              <button type="submit" class="sourdoh-inline-button" id="inlineFeedbackSubmit">
+                <span>📨 Send feedback</span>
+              </button>
+              <p class="sourdoh-inline-footnote">
+                This is just for Sour D'oh! beta – nothing is shared or used outside this app.
+              </p>
+              <span id="inlineFeedbackStatus" class="sourdoh-inline-status"></span>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <style>
+        /* Trigger strip */
+        .sourdoh-inline-feedback-trigger {
+          margin: 1.75rem 0 0;
+        }
+
+        .sourdoh-inline-trigger-inner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.75rem;
+          padding: 0.75rem 1rem;
+          border-radius: 999px;
+          background: radial-gradient(circle at left, rgba(15,23,42,0.96), rgba(2,6,23,0.98));
+          border: 1px solid rgba(148,163,184,0.5);
+        }
+
+        .sourdoh-inline-trigger-text {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .sourdoh-inline-kicker {
+          font-size: 0.72rem;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #a5b4fc;
+          margin-bottom: 0.1rem;
+        }
+
+        .sourdoh-inline-headline {
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+
+        .sourdoh-inline-sub {
+          font-size: 0.8rem;
+          color: #cbd5f5;
+        }
+
+        .sourdoh-inline-button {
+          padding: 0.5rem 1.2rem;
+          border-radius: 999px;
+          border: none;
+          cursor: pointer;
+          font-size: 0.85rem;
+          font-weight: 600;
+          background: radial-gradient(circle at top left, #f4c76a, #d97706);
+          color: #111827;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.7);
+          white-space: nowrap;
+        }
+
+        .sourdoh-inline-button:disabled {
+          opacity: 0.6;
+          cursor: wait;
+        }
+
+        .sourdoh-inline-status {
+          font-size: 0.75rem;
+        }
+
+        .sourdoh-inline-status.ok {
+          color: #bbf7d0;
+        }
+
+        .sourdoh-inline-status.error {
+          color: #fecaca;
+        }
+
+        /* Modal layout */
+        .beta-feedback-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(15, 23, 42, 0.75);
+          display: none;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+
+        .beta-feedback-modal-backdrop.is-open {
+          display: flex;
+        }
+
+        .beta-feedback-modal {
+          width: min(720px, 94vw);
+          max-height: 90vh;
+          overflow-y: auto;
+          background: radial-gradient(circle at top, #020617, #020617 60%, #0b1120 100%);
+          border-radius: 1rem;
+          border: 1px solid rgba(148,163,184,0.6);
+          padding: 1.25rem 1.5rem 1.5rem;
+          box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.8),
+            0 0 0 1px rgba(15,23,42,0.8);
+        }
+
+        .beta-feedback-close-btn {
+          position: absolute;
+          top: 0.6rem;
+          right: 0.9rem;
+          border: none;
+          background: transparent;
+          color: #e5e7eb;
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
+
+        .sourdoh-inline-header {
+          margin-bottom: 1rem;
+        }
+
+        .sourdoh-inline-title {
+          font-size: 1.1rem;
+          margin: 0.15rem 0;
+        }
+
+        .sourdoh-inline-subtitle {
+          font-size: 0.85rem;
+          color: #cbd5f5;
+        }
+
+        .sourdoh-inline-form {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .sourdoh-inline-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 1rem;
+        }
+
+        .sourdoh-field {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+        }
+
+        .sourdoh-label {
+          font-size: 0.83rem;
+          font-weight: 500;
+        }
+
+        .sourdoh-input,
+        .sourdoh-textarea {
+          width: 100%;
+          border-radius: 0.75rem;
+          border: 1px solid rgba(148,163,184,0.7);
+          background: rgba(15,23,42,0.9);
+          padding: 0.45rem 0.65rem;
+          color: #e5e7eb;
+          font-size: 0.85rem;
+        }
+
+        .sourdoh-textarea {
+          min-height: 70px;
+          resize: vertical;
+          line-height: 1.4;
+        }
+
+        .sourdoh-input:focus,
+        .sourdoh-textarea:focus {
+          border-color: #f4c76a;
+          box-shadow: 0 0 0 1px rgba(244, 199, 106, 0.4);
+          outline: none;
+        }
+
+        .sourdoh-inline-contact-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.9rem;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .sourdoh-inline-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          border-radius: 999px;
+          border: 1px solid rgba(148,163,184,0.7);
+          padding: 0.35rem 0.75rem;
+          font-size: 0.8rem;
+        }
+
+        .sourdoh-inline-email {
+          flex: 1;
+          min-width: 180px;
+        }
+
+        .sourdoh-inline-actions {
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          margin-top: 0.25rem;
+        }
+
+        .sourdoh-inline-footnote {
+          font-size: 0.75rem;
+          color: #9ca3af;
+          max-width: 260px;
+        }
+
+        @media (max-width: 640px) {
+          .sourdoh-inline-trigger-inner {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .beta-feedback-modal {
+            padding-inline: 1rem;
+          }
+
+          .sourdoh-inline-grid {
+            grid-template-columns: minmax(0, 1fr);
+          }
+
+          .sourdoh-inline-actions {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+        }
+      </style>
+
+      <script>
+        // ===================== INLINE FEEDBACK SUBMIT JS =====================
+        (function () {
+          const form   = document.getElementById('inlineFeedbackForm');
+          if (!form) return; // safety guard
+
+          const okBox  = document.getElementById('inlineOkToContact');
+          const email  = document.getElementById('inlineEmail');
+          const status = document.getElementById('inlineFeedbackStatus');
+          const button = document.getElementById('inlineFeedbackSubmit');
+
+          // ⚠ IMPORTANT: use the SAME endpoint that works for feedback.html
+          const FEEDBACK_ENDPOINT = '/sourdough/sourdoh-feedback-submit.php';
+
+          function setStatus(message, kind) {
+            if (!status) return;
+            status.textContent = message || '';
+            status.classList.remove('ok', 'error');
+            if (kind) status.classList.add(kind);
+          }
+
+          form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            setStatus('', null);
+
+            const payload = {
+              experienceLevel: form.experienceLevel.value || null,
+              usageLevel: form.usageLevel.value || null,
+              whatWorked: form.whatWorked.value || '',
+              whatConfusing: form.whatConfusing.value || '',
+              bugs: form.bugs.value || ''
+            };
+
+            if (okBox && okBox.checked) {
+              payload.okToContact = 'yes';
+              payload.email = email.value || '';
+            } else {
+              payload.okToContact = 'no';
+              payload.email = '';
+            }
+
+            if (button) button.disabled = true;
+            setStatus('Sending feedback…', null);
+
+            try {
+              const res = await fetch(FEEDBACK_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              });
+
+              if (!res.ok) throw new Error('Network response was not ok');
+
+              setStatus('Thank you — your feedback was sent!', 'ok');
+              if (button) button.disabled = false;
+              form.reset();
+            } catch (err) {
+              console.error(err);
+              setStatus('Something went wrong sending your feedback. Please try again.', 'error');
+              if (button) button.disabled = false;
+            }
+          });
+        })();
+      </script>
+
+      <!-- ===================== END: INLINE SOUR D'OH BETA FEEDBACK ===================== -->
+
+      </main>
+
+       <!-- BAKES: PRINT-STYLE STARTER LOG (PRINT ONLY) -->
+        <section id="printStarterLog">
+          <h1>Sour D’oh! – Starter Log</h1>
+          <h2>Starter name: ____________________________</h2>
+          <p>
+            Use this sheet at the counter, then transfer the info back into the app when your hands aren’t covered in
+            flour.
+          </p>
+
+          <h2>Starter profile</h2>
+          <table>
+            <tr>
+              <th style="width:1.4in;">Hydration (%)</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Flour blend</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Usual room temp (°C/°F)</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Typical feeding ratio</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Notes</th>
+              <td></td>
+            </tr>
+          </table>
+
+          <h2>Feeding log</h2>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:0.9in;">Date</th>
+                <th style="width:0.9in;">Time</th>
+                <th>Feed ratio<br />(starter : flour : water)</th>
+                <th>Room temp<br />(°C or °F)</th>
+                <th>Time to peak<br />(hours)</th>
+                <th>Notes (bubbles, smell, hooch, etc.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- A few blank rows for handwriting -->
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+
+<!-- ===================== BEGIN: FOOTER ===================== -->
+      <footer class="app-footer">
+        <span>
+          <strong>Data note:</strong> Everything you enter here is stored only in this browser for now. Clearing browser
+          storage will wipe it.
+        </span>
+
+        <span class="app-footer-center">
+          Sour D’oh! prototype &middot; v1 – educational &amp; utility demo
+        </span>
+
+<div class="app-footer-actions">
+          <!-- BEGIN: FOOTER BETA FEEDBACK BUTTON -->
+          <button
+            type="button"
+            id="inlineFeedbackOpenBtn"
+            class="flow-guide-btn beta-feedback-footer-btn"
+          >
+            <span class="emoji">💬</span>
+            <span>Beta feedback</span>
+          </button>
+          <!-- END: FOOTER BETA FEEDBACK BUTTON -->
+
+          <!-- BEGIN: FOOTER FAQ BUTTON -->
+          <button
+            type="button"
+            class="flow-guide-btn faq-guide-btn"
+            data-faq-trigger="true"
+          >
+            <span class="emoji">❓</span>
+            <span>FAQ &amp; tips</span>
+          </button>
+          <!-- END: FOOTER FAQ BUTTON -->
+
+          <!-- EXISTING FLOW GUIDE FOOTER BUTTON -->
+          <button type="button" class="flow-guide-btn" id="flowGuideTrigger">
+            <span class="emoji">🧭</span>
+            <span>Flow guide</span>
+          </button>
+        </div>
+
+      </footer>
+      <!-- ===================== END: FOOTER ===================== -->
+      <!-- ===================== BEGIN: FAQ MODAL ===================== -->
+      <div class="faq-modal-backdrop" id="faqModal" aria-hidden="true">
+        <div class="faq-modal" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle">
+          <button
+            type="button"
+            class="faq-modal-close"
+            id="faqModalClose"
+            aria-label="Close FAQ"
+          >
+            ×
+          </button>
+
+          <header class="faq-modal-header">
+            <h2 id="faqModalTitle">Sourdough FAQ &amp; troubleshooting</h2>
+            <p>
+              A friendly, flow-based guide from starter through bake, storage, and gear care.
+            </p>
+          </header>
+
+          <div class="faq-modal-body">
+            <!-- SECTION 1: STARTER & CULTURE -->
+            <section class="faq-section">
+              <h3 class="faq-section-title">1. Starter &amp; culture</h3>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">What is sourdough bread, and how is it different from “regular” bread?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Sourdough uses wild yeast and friendly bacteria instead of commercial yeast. Natural fermentation
+                      creates a tangy flavor, a chewy crust, and an open, airy crumb. Whole-grain flours add extra
+                      nuttiness and depth.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How do I create a sourdough starter from scratch?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Mix equal weights of flour and water in a clean jar. Leave it loosely covered at room temperature.
+                      Every day, discard a portion and feed the remainder with fresh flour and water. Within 1–3 weeks,
+                      it should smell pleasantly sour, bubble reliably, and rise after feedings.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How long does it take to build a starter, and why does it sometimes stall?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Building a new starter can take anywhere from a week to several weeks. Early on you may see bubbles
+                      but very little rise — this “quiet phase” is normal. Keep feeding on schedule and keep it warm; once
+                      a stable yeast and bacteria community forms, it will begin to rise predictably.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">Which flours and water are best for starting and feeding my starter?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Rye and whole-wheat flours are nutrient-rich and tend to kick-start fermentation faster. Unbleached
+                      all-purpose flour works well once the starter is established. Avoid bleached flour if possible, and
+                      use water without strong chlorine — letting tap water sit out overnight usually does the trick.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">What container and covering should I use?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      A clear glass jar makes it easy to see bubbles and how much the starter has risen. Cover loosely so
+                      gas can escape: a cloth, loose lid, or plastic wrap works. Avoid sealing it airtight while it’s
+                      actively fermenting.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How often should I feed my starter, and what ratio should I use?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      A common feeding ratio is 1:1:1 by weight (starter : flour : water). At room temperature, many
+                      starters do well with one or two feedings per day. Higher ratios like 1:5:5 or 1:10:10 give the
+                      microbes more food and can help tame an overly acidic or fast-rising starter.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">Why do I have to discard some starter, and what can I do with the discard?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Discard keeps your starter from growing endlessly and helps maintain the right balance of acidity
+                      and yeast. You can use discard in pancakes, waffles, crackers, biscuits, muffins, and more — or
+                      compost it if you’re not in the mood to cook.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How do I know when my starter is active and ready to bake with?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      A ready starter roughly doubles in volume after feeding, looks bubbly and spongy, and smells tangy
+                      and pleasantly yeasty. Many bakers also look for a consistent daily rise-and-fall rhythm. The float
+                      test can be a clue, but predictable behavior is more important than one spoonful in water.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">My starter has bubbles but won’t double — what’s wrong?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Especially in the first 7–14 days, it’s common to see bubbles without much rise. Keep feeding on
+                      schedule, keep it warm, and consider switching to a stronger flour like rye or whole wheat for a few
+                      feeds. Over time, the yeast population usually catches up and the rise improves.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How do I strengthen a weak or sluggish starter?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Keep it at warm room temperature, feed consistently, and stick to a ratio like 1:1:1 or 1:2:2 until
+                      it reliably doubles within a few hours. For very acidic or sleepy starters, higher-ratio feeds like
+                      1:10:10 can help reset the balance.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How should I store my starter between bakes, and how long can it live in the fridge?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      For longer breaks, feed your starter, let it start to rise for an hour or so, then refrigerate it
+                      with a loose lid. If you bake often, feeding it about once a week in the fridge keeps it in good
+                      shape. A healthy starter can live in cold storage for many months as long as it stays mold-free.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How do I revive a starter that’s been neglected?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      If you see a layer of liquid on top, stir it back in or pour it off, discard down to a small
+                      amount, and resume feeding with fresh flour and water. It may take a few feedings for it to become
+                      bubbly and active again. If there is mold, or the starter is streaked pink or orange, it’s safest to
+                      start over.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">What is “hooch,” and should I pour it off or stir it in?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Hooch is the dark or grayish liquid that forms when your starter runs out of food. You can pour it
+                      off for a milder flavor or stir it back in for extra tang. If you’re seeing hooch frequently, it’s a
+                      sign your starter needs more frequent feedings or cooler temperatures.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">What’s the difference between a sourdough starter, levain, and preferment?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Your <strong>starter</strong> is the ongoing culture you maintain. A <strong>levain</strong> is a
+                      one-time build made from a portion of starter mixed with flour and water from the recipe. It’s used
+                      to leaven a specific dough. <strong>Preferment</strong> is a broad term that includes levain as well
+                      as poolish, biga, and similar builds.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION 2: PLANNING & MIXING -->
+            <section class="faq-section">
+              <h3 class="faq-section-title">2. Planning &amp; mixing</h3>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How much starter should I use when baking bread?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Many home bakers use around 113 g (about ½ cup) of active starter for a standard loaf, but recipes
+                      vary. More starter speeds up fermentation and shortens the timeline; less starter slows things down
+                      and can deepen flavor. Adjust the water in your dough to account for how thick or thin your starter
+                      is.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">What is autolyse, and do I need to use it?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Autolyse is when you mix just flour and water and let the dough rest before adding starter and salt.
+                      This hydrates the flour, encourages gluten development, and can make the dough easier to handle. It’s
+                      optional but especially helpful with whole-grain or higher-hydration doughs.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How should I mix and strengthen dough—do I need to knead?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Sourdough dough is often mixed gently and strengthened with stretch-and-fold or coil folds during
+                      bulk fermentation instead of heavy kneading. High-hydration doughs usually need more rounds of folds
+                      to build strength. Wet your hands instead of adding more flour to tame stickiness.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION 3: BULK, SHAPING & PROOFING -->
+            <section class="faq-section">
+              <h3 class="faq-section-title">3. Bulk, shaping &amp; proofing</h3>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">When is bulk fermentation or proofing complete?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      There’s no single “ding!” moment. During bulk, the dough should feel smoother, stronger, and gain
+                      noticeable volume without collapsing. For final proof, the shaped dough should feel puffy and aerated
+                      but still able to hold its shape. Practice, temperature awareness, and note-taking help you dial in
+                      timing for your kitchen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">Why is my dough so sticky, and how can I fix it?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Sticky dough usually means high hydration, under-developed gluten, or both. Try slightly reducing
+                      the water next time and make sure you give the dough enough folds and rest time. Over-proofed dough
+                      can also turn sticky and lose structure.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">Why does my shaped dough spread or collapse instead of holding its shape?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      This often comes from under- or over-fermentation, or from shaping that doesn’t build enough surface
+                      tension. Make sure the dough feels strong at the end of bulk, use tight but gentle shaping, and
+                      consider lowering hydration if you’re consistently getting puddles instead of domes.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION 4: BAKING & CRUMB -->
+            <section class="faq-section">
+              <h3 class="faq-section-title">4. Baking &amp; crumb</h3>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">Why is my finished loaf dense or gummy?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Dense or gummy crumb can mean under-fermentation, a weak starter, too much water, or under-baking.
+                      Make sure your starter is truly active, allow the dough to rise fully during bulk and proof, and
+                      bake long enough for the interior to set before slicing.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How can I make my sourdough bread more sour or less sour?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      For <strong>more</strong> tang, use cooler fermentation temperatures, more whole grain, longer
+                      ferments, and consider stirring hooch back into the starter. For <strong>less</strong> sour, feed
+                      the starter more often, keep it warmer, and shorten bulk and proof times so the acids don’t build up
+                      as much.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How can I get an open, airy crumb with bigger holes?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      An open crumb usually comes from the combo of proper fermentation, good dough strength, and careful
+                      handling. Gradually increase hydration as your skills improve, build strength with folds, avoid
+                      knocking all the gas out during shaping, and push bulk fermentation far enough without overdoing it.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION 5: STORAGE & GEAR CARE -->
+            <section class="faq-section">
+              <h3 class="faq-section-title">5. Storage &amp; equipment care</h3>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How do I store and freeze baked sourdough bread?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Once cool, keep bread at room temperature in a paper bag, bread box, or loosely wrapped to avoid
+                      trapping steam. For longer storage, slice the loaf and freeze the slices in a bag; you can toast
+                      them straight from frozen for up to a couple of months.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faq-accordion">
+                <button type="button" class="faq-accordion-header">
+                  <span class="faq-q">How do I clean and care for a banneton or proofing basket?</span>
+                  <span class="faq-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <div class="faq-accordion-panel">
+                  <div class="faq-accordion-panel-inner">
+                    <p>
+                      Let the banneton dry completely after use, then brush out excess flour. Avoid washing it with water
+                      unless absolutely necessary; moisture encourages mold. Cloth liners can be washed without soap and
+                      air-dried fully before storage.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <p class="muted-text" style="margin-top: 1rem;">
+              This FAQ blends traditional wisdom, modern techniques, and the science of fermentation into one clear guide
+              inside Sour D’oh!.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- ===================== END: FAQ MODAL ===================== -->
+
+        <!-- ===================== BEGIN: STARTER NAME MODAL ===================== -->
+        <div
+        class="starter-name-modal-backdrop"
+        id="starterNameModal"
+        aria-hidden="true"
+        >
+        <div
+            class="starter-name-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="starterNameModalTitle"
+        >
+            <button
+            type="button"
+            class="starter-name-modal-close"
+            id="starterNameModalClose"
+            aria-label="Close starter name arcade"
+            >
+            ×
+            </button>
+
+            <header class="starter-name-modal-header">
+            <h2 id="starterNameModalTitle">Starter Name Arcade</h2>
+            <p>Spin for a new identity for your bubbly little chaos goblin.</p>
+            </header>
+
+            <div class="starter-name-modal-body">
+
+            <!-- ⭐ CRIT BANNER -->
+            <div id="starterCritBanner" class="starter-crit-banner">
+                CRITICAL RISE!
+            </div>
+
+            <div class="starter-name-wheel">
+                <div class="starter-name-wheel-label">Your new starter name is:</div>
+
+                <div class="starter-name-wheel-display" id="starterNameWheelDisplay">
+                <!-- JS will fill this -->
+                </div>
+
+                <button
+                type="button"
+                class="primary-btn starter-name-spin-btn"
+                id="starterNameSpinBtn"
+                >
+                🎰 Spin the wheel
+                </button>
+
+                <p class="starter-name-wheel-note">
+                The winning name will automatically be applied in Starter Lab.
+                </p>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- ===================== END: STARTER NAME MODAL ===================== -->
+
+
+            <!-- ===================== BEGIN: STARTER NAME AUDIO ===================== -->
+            <audio
+            id="starterWheelTickSound"
+            src="/sourdough/assets/sounds/tick.mp3"
+            preload="auto"
+            ></audio>
+
+            <audio
+            id="starterWheelRiffSound"
+            src="/sourdough/assets/sounds/riff.mp3"
+            preload="auto"
+            ></audio>
+            <!-- ===================== END: STARTER NAME AUDIO ===================== -->
+
+
+      <!-- ===================== BEGIN: FLOW GUIDE MODAL ===================== -->
+      <div class="flow-modal-backdrop" id="flowModal" aria-hidden="true">
+        <div class="flow-modal" role="dialog" aria-modal="true" aria-labelledby="flowModalTitle">
+          <button
+            type="button"
+            class="flow-modal-close"
+            id="flowModalClose"
+            aria-label="Close flow guide"
+          >
+            ×
+          </button>
+
+          <header class="flow-modal-header">
+            <h2 id="flowModalTitle">Sourdough journey flow guide</h2>
+            <p>
+              Start where you are – brand new starter, mid-bulk, or about to bake – and log checkpoints so
+              you can see a full timeline from flour + water to sliced loaf.
+            </p>
+          </header>
+
+          <div class="flow-modal-tabs" role="tablist" aria-label="Sourdough flow steps">
+            <button
+              type="button"
+              class="flow-tab is-active"
+              data-flow-tab="starter"
+            >
+              <span class="flow-tab-step">1</span>
+              <span>Starter</span>
+            </button>
+            <button
+              type="button"
+              class="flow-tab"
+              data-flow-tab="bulk"
+            >
+              <span class="flow-tab-step">2</span>
+              <span>Dough &amp; bulk</span>
+            </button>
+            <button
+              type="button"
+              class="flow-tab"
+              data-flow-tab="bake"
+            >
+              <span class="flow-tab-step">3</span>
+              <span>Proof &amp; bake</span>
+            </button>
+          </div>
+
+          <div class="flow-modal-body">
+            <!-- PANEL: STARTER -->
+            <section
+              class="flow-panel is-active"
+              data-flow-panel="starter"
+              aria-label="Starter flow"
+            >
+              <h3>Step 1 – Starter: where are you right now?</h3>
+              <p class="flow-panel-intro">
+                Log the state of your starter and the app will time-stamp it for you. Over a week or more,
+                you’ll build a record of how it behaves at your room temperature and feeding schedule.
+              </p>
+              <p class="flow-hint">
+                The “days” below are typical ranges – your starter may move faster or slower depending on
+                room temperature, starter temperature, flour type, hydration, and even the container you’re using.
+              </p>
+
+              <form id="flowStarterForm" class="flow-form">
+                <fieldset class="flow-fieldset">
+                  <legend>1A. Where are you at in the starter timeline?</legend>
+                  <p class="flow-hint">
+                    Pick what best matches your most recent status. You can come back and log more than once per day.
+                  </p>
+                  <div class="flow-radio-row">
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="starterStage" value="Day 1 – first mix (flour + water)" />
+                      <span>
+                        <strong>Day 1</strong> – mixed equal parts flour and water, covered at room temp.
+                        Note the room temperature so you can compare later.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="starterStage" value="Days 2–7 – daily feeding, bubbles & wild smells" />
+                      <span>
+                        <strong>Days 2–7</strong> – feeding at least once per day using
+                        <strong>1:1:1</strong> or stepping up toward <strong>1:2:2</strong>.
+                        Expect random bubbles and weird smells – normal wild microbe process.
+                        Start tracking how long it takes to double in size.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="starterStage" value="Days 7–10 – stronger feeds at 1:2:2" />
+                      <span>
+                        <strong>Days 7–10</strong> – increase to <strong>1:2:2</strong> feedings and keep noting:
+                        time to double and daily temperature. The starter should be getting more predictable now.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="starterStage" value="Mature starter – reliably doubles in ~6 hours" />
+                      <span>
+                        <strong>Mature starter</strong> – after the first feeding of the day it reliably
+                        doubles within about <strong>6 hours</strong>, and you’re feeding it regularly.
+                        This is the point where it’s ready to go into levain / dough.
+                      </span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <fieldset class="flow-fieldset">
+                  <legend>1B. Feeding, discard & ratios</legend>
+                  <p class="flow-hint">
+                    A great learning baseline is <strong>1:1:1</strong> (starter:water:flour by weight). As your starter
+                    strengthens (days 2–7), you can begin using <strong>1:2:2</strong>. Some experienced bakers baking a lot
+                    of bread even go to <strong>1:5:5</strong> or higher.
+                  </p>
+                  <p class="flow-hint">
+                    For now, we recommend <strong>1:1:1</strong> while you get used to discard and feeding. Each feeding:
+                    discard down to a small amount of starter first (e.g. 20–50 g), then feed with fresh water and flour.
+                    The discarded portion can be used in recipes (pancakes, waffles, crackers) or thrown away.
+                  </p>
+                </fieldset>
+
+                <div class="flow-grid-2">
+                  <div class="flow-field">
+                    <label for="starterTemp" class="flow-label">
+                      Room temperature where the starter is sitting
+                    </label>
+                    <input
+                      id="starterTemp"
+                      name="starterTemp"
+                      type="text"
+                      class="flow-input"
+                      placeholder="e.g. 72°F / 22°C"
+                    />
+                    <p class="flow-hint">
+                      Temperature strongly affects timing. Logging it explains why your starter speeds up or slows down.
+                    </p>
+                  </div>
+
+                  <div class="flow-field">
+                    <label for="starterNotes" class="flow-label">
+                      Starter characteristics right now
+                    </label>
+                    <textarea
+                      id="starterNotes"
+                      name="starterNotes"
+                      class="flow-textarea"
+                      placeholder="Domed or collapsed? Smell? Bubble size? Any hooch? How long since last feed?"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <p class="flow-small">
+                  When you click log, the app captures the current time and saves it locally with your notes.
+                  <strong>If you log a “Mature starter” event, the guide will automatically move you to Step 2 (dough &amp; bulk).</strong>
+                </p>
+
+                <button type="submit" class="flow-submit-btn">
+                  <span>Log this starter state</span>
+                </button>
+              </form>
+            </section>
+
+            <!-- PANEL: DOUGH & BULK -->
+            <section
+              class="flow-panel"
+              data-flow-panel="bulk"
+              aria-label="Dough and bulk flow"
+            >
+              <h3>Step 2 – Dough creation &amp; bulk ferment</h3>
+              <p class="flow-panel-intro">
+                Use this once your starter is mature and you’re ready to turn it into dough. Log key checkpoints:
+                autolyse, levain, salt, folds, and when the dough is ready for cold ferment.
+              </p>
+
+              <form id="flowBulkForm" class="flow-form">
+                <fieldset class="flow-fieldset">
+                  <legend>2A. Where are you in the dough / bulk process?</legend>
+                  <p class="flow-hint">
+                    Typical pattern: mix flour + water and let the autolyse rest for ~30 minutes, then add levain,
+                    wait about 30 minutes and add salt, then do gentle folds every ~30 minutes for about 2 hours
+                    (4 rounds total).
+                  </p>
+                  <div class="flow-radio-row">
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bulkStage" value="Started autolyse – flour + water mixed and resting (~30 min)" />
+                      <span>
+                        <strong>Started autolyse</strong> – mixed flour and water, dough is resting for roughly
+                        <strong>30 minutes</strong>. No starter or salt yet.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bulkStage" value="Added levain – mixed into autolysed dough" />
+                      <span>
+                        <strong>Added levain</strong> – starter mixed into the autolysed dough until 80–90% incorporated.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bulkStage" value="Added salt – about 30 minutes after levain" />
+                      <span>
+                        <strong>Added salt</strong> – roughly <strong>30 minutes after adding levain</strong>,
+                        salt is added and gently worked in.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bulkStage" value="Stretch & fold – round 1 of 4 (gentle)" />
+                      <span>
+                        <strong>Stretch &amp; fold – round 1 of 4</strong> – first gentle set of folds.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bulkStage" value="Stretch & fold – round 2 of 4" />
+                      <span>
+                        <strong>Stretch &amp; fold – round 2 of 4</strong> – about 30 minutes after round 1.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bulkStage" value="Stretch & fold – round 3 of 4" />
+                      <span>
+                        <strong>Stretch &amp; fold – round 3 of 4</strong> – dough should be smoother and stronger now.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bulkStage" value="Stretch & fold – round 4 of 4" />
+                      <span>
+                        <strong>Stretch &amp; fold – round 4 of 4</strong> – final gentle folds. Dough should hold shape better.
+                      </span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bulkStage" value="End of bulk – dough holds shape, ready to pre-shape / cold ferment" />
+                      <span>
+                        <strong>End of bulk</strong> – roughly 50–75% volume increase, dough is airy and jiggly, holds its shape
+                        in the container and is ready to pre-shape and move toward cold fermentation.
+                      </span>
+                    </label>
+                  </div>
+                  <p class="flow-hint">
+                    Through all of this: keep folds <strong>gentle</strong>. You’re building strength, not beating it up.
+                    Overworking can tear gluten and flatten the loaf.
+                  </p>
+                </fieldset>
+
+                <div class="flow-grid-2">
+                  <div class="flow-field">
+                    <label for="bulkTemp" class="flow-label">Dough / room temperature</label>
+                    <input
+                      id="bulkTemp"
+                      name="bulkTemp"
+                      type="text"
+                      class="flow-input"
+                      placeholder="e.g. 75°F / 24°C"
+                    />
+                  </div>
+                  <div class="flow-field">
+                    <label for="bulkNotes" class="flow-label">What does the dough look and feel like?</label>
+                    <textarea
+                      id="bulkNotes"
+                      name="bulkNotes"
+                      class="flow-textarea"
+                      placeholder="Strength, bubbles, stickiness, surface smoothness, how folds are changing it..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <p class="flow-small">
+                  When you log an <strong>End of bulk</strong> event, the guide will automatically move you to Step 3 (proof &amp; bake).
+                </p>
+
+                <button type="submit" class="flow-submit-btn">
+                  <span>Log this dough / bulk checkpoint</span>
+                </button>
+              </form>
+            </section>
+
+            <!-- PANEL: PROOF & BAKE -->
+            <section
+              class="flow-panel"
+              data-flow-panel="bake"
+              aria-label="Proof and bake flow"
+            >
+              <h3>Step 3 – Proof &amp; bake: readiness, scoring &amp; results</h3>
+              <p class="flow-panel-intro">
+                Track when you start cold proof, when you decide it’s ready to bake, how you score it, and how the
+                finished loaf looks. Over a few bakes, this timeline becomes your personal “what works” map.
+              </p>
+              <p class="flow-hint">
+                Before baking, think about how you’ll score the loaf – even a single confident slash helps it bloom.
+                In a future update, this section will include printable scoring guides and patterns.
+              </p>
+
+              <form id="flowBakeForm" class="flow-form">
+                <fieldset class="flow-fieldset">
+                  <legend>3A. Where are you right now?</legend>
+                  <div class="flow-radio-row">
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bakeStage" value="Just shaped / starting proof" />
+                      <span>Just shaped and starting proof (room temp or moving into the fridge).</span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bakeStage" value="Cold proof in progress" />
+                      <span>In the fridge – cold proofing (often 1–12+ hours depending on schedule and flavor goals).</span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bakeStage" value="Ready to bake (poke test passed)" />
+                      <span>Ready to bake – poke test gives a slow spring back and shallow dent.</span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bakeStage" value="Just baked / cooling" />
+                      <span>Just baked and cooling.</span>
+                    </label>
+                    <label class="flow-radio-chip">
+                      <input type="radio" name="bakeStage" value="Crumb / ear / color notes" />
+                      <span>
+                        Post-bake notes – crumb, ear size, color, flavor, and anything you’d like to repeat or improve next time.
+                      </span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <div class="flow-grid-2">
+                  <div class="flow-field">
+                    <label for="bakeTemp" class="flow-label">
+                      Environment / oven notes
+                    </label>
+                    <input
+                      id="bakeTemp"
+                      name="bakeTemp"
+                      type="text"
+                      class="flow-input"
+                      placeholder="e.g. 500°F preheat, 450°F bake, steam for 20 min"
+                    />
+                  </div>
+                  <div class="flow-field">
+                    <label for="bakeNotes" class="flow-label">
+                      Notes on readiness / result
+                    </label>
+                    <textarea
+                      id="bakeNotes"
+                      name="bakeNotes"
+                      class="flow-textarea"
+                      placeholder="Crumb openness, ear, color, flavor, under/over-proof feel..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <button type="submit" class="flow-submit-btn">
+                  <span>Log this proof / bake checkpoint</span>
+                </button>
+              </form>
+            </section>
+          </div>
+
+          <section class="flow-timeline-section">
+            <header class="flow-timeline-header">
+              <h3>Your current flow timeline</h3>
+              <p>
+                Every time you log a state, it’s saved in this browser with a timestamp. At the end of a bake,
+                you’ll see the full path from starter state → dough &amp; bulk → proof / bake notes.
+              </p>
+            </header>
+            <div id="flowTimeline" class="flow-timeline"></div>
+            <button type="button" class="flow-clear-btn" id="flowTimelineClear">
+              Clear this timeline (this browser only)
+            </button>
+          </section>
+        </div>
+      </div>
+  <!-- ===================== END: FLOW GUIDE MODAL ===================== -->
+    </div>
+  </div>
+    <!-- ===================== BEGIN: BAKE REPORT MODAL ===================== -->
+  <section
+    class="beta-feedback-modal-backdrop"
+    id="bakeReportModal"
+    aria-hidden="true"
+  >
+    <div
+      class="beta-feedback-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="bakeReportTitle"
+    >
+      <button
+        type="button"
+        class="beta-feedback-close-btn"
+        id="bakeReportCloseBtn"
+        aria-label="Close bake report"
+      >
+        ×
+      </button>
+
+      <header class="sourdoh-inline-header" style="margin-bottom: 0.75rem;">
+        <div>
+          <div class="sourdoh-inline-eyebrow">Auto-generated from your logs</div>
+          <h2 id="bakeReportTitle" class="sourdoh-inline-title">
+            Bake report
+          </h2>
+          <p class="sourdoh-inline-subtitle">
+            Starter feedings, flow events, and bake details for this loaf – all pulled from what you already logged.
+          </p>
+        </div>
+      </header>
+
+      <div id="bakeReportContent" class="bake-report-content" style="display:flex;flex-direction:column;gap:1rem;">
+        <!-- Filled dynamically by app-init.js -->
+      </div>
+
+      <div class="bake-report-graph-block" style="margin-top:1.25rem;">
+        <h3 style="font-size:0.9rem;margin-bottom:0.35rem;">Dough temperature over time (from Flow Guide)</h3>
+        <canvas
+          id="bakeReportGraph"
+          width="640"
+          height="200"
+          style="width:100%;max-width:640px;border-radius:0.75rem;background:rgba(15,23,42,0.9);border:1px solid rgba(148,163,184,0.5);"
+        ></canvas>
+        <p class="bake-report-graph-note" style="font-size:0.8rem;color:#9ca3af;margin-top:0.35rem;">
+          Based on Flow Guide entries where you logged a dough/room temperature. If the line is empty, this bake didn’t
+          have any temps recorded there yet.
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- ===================== END: BAKE REPORT MODAL ===================== -->
+
+  <!-- ===================== BEGIN: SOUR D’OH! TIP MODAL ===================== -->
+    <div
+    id="tipModalBackdrop"
+    class="tip-modal-backdrop"
+    aria-hidden="true"
+    >
+    <div
+        class="tip-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tipModalTitle"
+    >
+        <button
+        type="button"
+        id="tipModalClose"
+        class="tip-modal-close"
+        aria-label="Close tip"
+        >
+        ×
+        </button>
+
+        <div class="tip-modal-header">
+        <div class="tip-modal-logo-wrap">
+            <img
+            src="/sourdough/assets/images/logo_27.png"
+            alt="Three-Legged Dog & Company logo"
+            class="tip-modal-logo"
+            />
+        </div>
+        <div class="tip-modal-title-block">
+            <div class="tip-modal-kicker">Sour D’oh! tip</div>
+            <h2 id="tipModalTitle">Helpful hint</h2>
+        </div>
+        </div>
+
+        <div id="tipModalBody" class="tip-modal-body">
+        <!-- Tip text will be injected here from JS -->
+        </div>
+    </div>
+    </div>
+    <!-- ===================== END: SOUR D’OH! TIP MODAL ===================== -->
+    <!-- Logo rotator for header icon -->
+  <script src="assets/js/logo-rotator.js"></script>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/starter.js"></script>
+  <script src="assets/js/planner.js"></script>
+  <script src="assets/js/bakes.js"></script>
+  <script src="assets/js/journal.js"></script>
+  <script src="assets/js/family.js"></script>
+  <script src="assets/js/app-init.js"></script>
+
+</body>
+</html>

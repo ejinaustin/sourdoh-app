@@ -1,0 +1,842 @@
+<!-- ===================== BEGIN: SOUR D'OH FEEDBACK PAGE ===================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sour D'oh! – Beta Feedback</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #05070d;
+      --bg-soft: #111827;
+      --card: #111827;
+      --card-soft: #151b28;
+      --accent: #f4c76a;
+      --accent-soft: rgba(244, 199, 106, 0.15);
+      --danger: #f97373;
+      --text-main: #f9fafb;
+      --text-soft: #d1d5db;
+      --border-subtle: rgba(148, 163, 184, 0.4);
+      --radius-lg: 16px;
+      --radius-xl: 22px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.7);
+      --gap-lg: 1.5rem;
+      --gap-md: 1rem;
+      --gap-sm: 0.6rem;
+      --input-bg: #020617;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 40%, #000 100%);
+      color: var(--text-main);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .feedback-shell {
+      width: 100%;
+      max-width: 960px;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.98));
+      border-radius: 26px;
+      padding: 2rem 1.75rem 2.5rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feedback-shell::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(244, 199, 106, 0.08), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.06), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.5rem;
+      align-items: flex-start;
+      margin-bottom: 1.75rem;
+    }
+
+    .feedback-title-block {
+      max-width: 620px;
+    }
+
+    .feedback-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .feedback-title {
+      font-size: clamp(1.7rem, 2.2vw, 2.1rem);
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+    }
+
+    .feedback-subtitle {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      max-width: 560px;
+      line-height: 1.5;
+    }
+
+    .feedback-tag {
+      background: rgba(22, 163, 74, 0.15);
+      color: #bbf7d0;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      border: 1px solid rgba(22, 163, 74, 0.5);
+      white-space: nowrap;
+    }
+
+    form {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-lg);
+    }
+
+    .feedback-section {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.98));
+      border-radius: var(--radius-xl);
+      padding: 1.4rem 1.3rem 1.35rem;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .feedback-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.95rem;
+    }
+
+    .feedback-section-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .feedback-section-tagline {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-sm);
+      margin-bottom: 0.2rem;
+    }
+
+    .field-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .field-hint {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .radio-row,
+    .checkbox-column {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.1rem;
+      margin-top: 0.15rem;
+    }
+
+    .radio-chip,
+    .checkbox-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+    }
+
+    .radio-chip input,
+    .checkbox-chip input {
+      accent-color: var(--accent);
+    }
+
+    .radio-chip:hover,
+    .checkbox-chip:hover {
+      border-color: var(--accent);
+      background: rgba(15, 23, 42, 1);
+      transform: translateY(-1px);
+    }
+
+    .likert-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .likert-table th,
+    .likert-table td {
+      padding: 0.45rem 0.4rem;
+      text-align: center;
+    }
+
+    .likert-table thead th {
+      font-weight: 500;
+      color: var(--text-soft);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    .likert-table tbody th {
+      text-align: left;
+      font-weight: 500;
+    }
+
+    .likert-table tbody tr:nth-child(even) {
+      background: rgba(15, 23, 42, 0.75);
+    }
+
+    .likert-table input[type="radio"] {
+      accent-color: var(--accent);
+    }
+
+    textarea,
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.6rem 0.8rem;
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    textarea {
+      border-radius: 18px;
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.4;
+    }
+
+    textarea:focus,
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(244, 199, 106, 0.4);
+      background: #020617;
+    }
+
+    .inline-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 0.4rem;
+    }
+
+    .inline-row .field-label {
+      margin-right: 0.3rem;
+    }
+
+    .inline-condensed {
+      flex: 1 1 220px;
+    }
+
+    .submit-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .submit-note {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      max-width: 420px;
+    }
+
+    .btn-primary {
+      padding: 0.65rem 1.45rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: radial-gradient(circle at top left, #f4c76a, #d97706);
+      color: #111827;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.7);
+    }
+
+    .btn-primary span {
+      font-size: 1rem;
+    }
+
+    .pill-note {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      color: var(--text-soft);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 1.25rem 0.75rem;
+      }
+
+      .feedback-shell {
+        padding: 1.5rem 1.1rem 1.9rem;
+        border-radius: 20px;
+      }
+
+      .feedback-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .likert-table thead {
+        display: none;
+      }
+
+      .likert-table,
+      .likert-table tbody,
+      .likert-table tr,
+      .likert-table td,
+      .likert-table th {
+        display: block;
+        width: 100%;
+      }
+
+      .likert-table tr {
+        padding: 0.55rem 0.4rem;
+        border-bottom: 1px solid rgba(30, 41, 59, 1);
+      }
+
+      .likert-table tbody th {
+        margin-bottom: 0.4rem;
+      }
+
+      .likert-table td {
+        text-align: left;
+        padding: 0.2rem 0.1rem;
+      }
+
+      .likert-table td::before {
+        content: attr(data-label);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        color: var(--text-soft);
+        margin-right: 0.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="feedback-shell">
+    <header class="feedback-header">
+      <div class="feedback-title-block">
+        <div class="feedback-kicker">Sour D'oh! Beta</div>
+        <h1 class="feedback-title">Tell us what you thought of version one.</h1>
+        <p class="feedback-subtitle">
+          Be brutally honest. This is your chance to shape the next build—
+          especially how we split <strong>Beginner</strong> vs <strong>Experienced</strong> bakers,
+          and what actually helps you bake better bread.
+        </p>
+      </div>
+      <div class="feedback-tag">
+        2–4 minutes • No fluff
+      </div>
+    </header>
+
+    <form id="feedbackForm">
+      <!-- SECTION 1: WHO ARE YOU AS A BAKER? -->
+      <section class="feedback-section">
+        <div class="feedback-section-header">
+          <div>
+            <h2 class="feedback-section-title">1. About you as a baker</h2>
+            <p class="feedback-section-tagline">Just enough context so your feedback makes sense.</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">How experienced are you with sourdough?</label>
+          <p class="field-hint">Pick the option that feels closest.</p>
+          <div class="radio-row">
+            <label class="radio-chip">
+              <input type="radio" name="experienceLevel" value="brand_new" required />
+              Brand new – never baked sourdough
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="experienceLevel" value="beginner" />
+              Beginner – a few loaves, still learning
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="experienceLevel" value="intermediate" />
+              Intermediate – bake somewhat regularly
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="experienceLevel" value="advanced" />
+              Advanced / obsessed
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">How did you use Sour D'oh! so far?</label>
+          <div class="radio-row">
+            <label class="radio-chip">
+              <input type="radio" name="usageLevel" value="just_looked" required />
+              I just looked around
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="usageLevel" value="one_bake" />
+              Used it for 1 bake
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="usageLevel" value="several_bakes" />
+              Used it for several bakes
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="usageLevel" value="used_a_lot" />
+              Used it a lot
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Which parts did you actually touch?</label>
+          <p class="field-hint">Check everything you at least clicked into.</p>
+          <div class="checkbox-column">
+            <label class="checkbox-chip">
+              <input type="checkbox" name="featuresUsed" value="starter_lab" />
+              Starter Lab / starter log
+            </label>
+            <label class="checkbox-chip">
+              <input type="checkbox" name="featuresUsed" value="planner" />
+              Planner / schedule
+            </label>
+            <label class="checkbox-chip">
+              <input type="checkbox" name="featuresUsed" value="bakes" />
+              Bakes / bake log
+            </label>
+            <label class="checkbox-chip">
+              <input type="checkbox" name="featuresUsed" value="journal" />
+              Journal / notes
+            </label>
+            <label class="checkbox-chip">
+              <input type="checkbox" name="featuresUsed" value="family" />
+              Family / sharing
+            </label>
+            <label class="checkbox-chip">
+              <input type="checkbox" name="featuresUsed" value="settings" />
+              Settings
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: BEGINNER VS EXPERIENCED -->
+      <section class="feedback-section">
+        <div class="feedback-section-header">
+          <div>
+            <h2 class="feedback-section-title">2. Beginner vs Experienced mode</h2>
+            <p class="feedback-section-tagline">This is a big focus for the next version.</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Which mode did you use first?</label>
+          <div class="radio-row">
+            <label class="radio-chip">
+              <input type="radio" name="modeUsed" value="beginner" />
+              Beginner
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="modeUsed" value="experienced" />
+              Experienced
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="modeUsed" value="not_sure" />
+              I don't remember / not sure
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">If you saw tips/explanations, how did they feel?</label>
+          <div class="radio-row">
+            <label class="radio-chip">
+              <input type="radio" name="tipsFeeling" value="lifesaver" />
+              Lifesaver – really helped me
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="tipsFeeling" value="nice_to_have" />
+              Nice to have but I skimmed
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="tipsFeeling" value="too_much" />
+              Too much text / got in the way
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="tipsFeeling" value="didnt_see" />
+              I didn’t really notice any tips
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">What would make Beginner vs Experienced mode feel “right” to you?</label>
+          <p class="field-hint">For example: more science, fewer tooltips, clearer step-by-step, less hand-holding, etc.</p>
+          <textarea name="modeFeedback" placeholder="Type anything that comes to mind here..."></textarea>
+        </div>
+      </section>
+
+      <!-- SECTION 3: RATINGS -->
+      <section class="feedback-section">
+        <div class="feedback-section-header">
+          <div>
+            <h2 class="feedback-section-title">3. Quick ratings</h2>
+            <p class="feedback-section-tagline">Gut feel is fine. Use 1–5 where 1 = rough, 5 = nailed it.</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <table class="likert-table">
+            <thead>
+              <tr>
+                <th>Area</th>
+                <th>1<br />Confusing</th>
+                <th>2</th>
+                <th>3<br />Okay</th>
+                <th>4</th>
+                <th>5<br />Loved it</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Starter Lab</th>
+                <td data-label="1">
+                  <input type="radio" name="rateStarter" value="1" />
+                </td>
+                <td data-label="2">
+                  <input type="radio" name="rateStarter" value="2" />
+                </td>
+                <td data-label="3">
+                  <input type="radio" name="rateStarter" value="3" />
+                </td>
+                <td data-label="4">
+                  <input type="radio" name="rateStarter" value="4" />
+                </td>
+                <td data-label="5">
+                  <input type="radio" name="rateStarter" value="5" />
+                </td>
+              </tr>
+              <tr>
+                <th>Planner / timeline</th>
+                <td data-label="1">
+                  <input type="radio" name="ratePlanner" value="1" />
+                </td>
+                <td data-label="2">
+                  <input type="radio" name="ratePlanner" value="2" />
+                </td>
+                <td data-label="3">
+                  <input type="radio" name="ratePlanner" value="3" />
+                </td>
+                <td data-label="4">
+                  <input type="radio" name="ratePlanner" value="4" />
+                </td>
+                <td data-label="5">
+                  <input type="radio" name="ratePlanner" value="5" />
+                </td>
+              </tr>
+              <tr>
+                <th>Bakes / logging a bake</th>
+                <td data-label="1">
+                  <input type="radio" name="rateBakes" value="1" />
+                </td>
+                <td data-label="2">
+                  <input type="radio" name="rateBakes" value="2" />
+                </td>
+                <td data-label="3">
+                  <input type="radio" name="rateBakes" value="3" />
+                </td>
+                <td data-label="4">
+                  <input type="radio" name="rateBakes" value="4" />
+                </td>
+                <td data-label="5">
+                  <input type="radio" name="rateBakes" value="5" />
+                </td>
+              </tr>
+              <tr>
+                <th>Overall app flow</th>
+                <td data-label="1">
+                  <input type="radio" name="rateOverall" value="1" />
+                </td>
+                <td data-label="2">
+                  <input type="radio" name="rateOverall" value="2" />
+                </td>
+                <td data-label="3">
+                  <input type="radio" name="rateOverall" value="3" />
+                </td>
+                <td data-label="4">
+                  <input type="radio" name="rateOverall" value="4" />
+                </td>
+                <td data-label="5">
+                  <input type="radio" name="rateOverall" value="5" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">If you had to give Sour D'oh! a score out of 10 right now, what would it be?</label>
+          <div class="inline-row">
+            <div class="inline-condensed">
+              <input type="text" name="scoreOutOfTen" placeholder="e.g. 7.5" />
+            </div>
+            <span class="pill-note">No pressure, just be honest.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: WHAT WORKED / WHAT DIDN'T -->
+      <section class="feedback-section">
+        <div class="feedback-section-header">
+          <div>
+            <h2 class="feedback-section-title">4. The good, the bad, and the buggy</h2>
+            <p class="feedback-section-tagline">This is where you can rant (or rave).</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">What did you like or find genuinely helpful?</label>
+          <p class="field-hint">Specific moments are gold here – “this part clicked for me when…”</p>
+          <textarea name="whatWorked" placeholder="Starter tracking, timing reminders, layout, etc..."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">What confused you, felt clunky, or didn’t make sense?</label>
+          <p class="field-hint">UI weirdness, wording, layout, features that felt half-baked (pun absolutely intended).</p>
+          <textarea name="whatDidntWork" placeholder="Be as picky as you want."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Did you hit any bugs or broken things?</label>
+          <p class="field-hint">If you remember error messages, what you clicked, or what page you were on, drop that here.</p>
+          <textarea name="bugs" placeholder="Example: Planner froze when I changed times, starter log didn’t save, etc."></textarea>
+        </div>
+      </section>
+
+      <!-- SECTION 5: NEXT VERSION -->
+      <section class="feedback-section">
+        <div class="feedback-section-header">
+          <div>
+            <h2 class="feedback-section-title">5. Next version priorities</h2>
+            <p class="feedback-section-tagline">Help decide what gets built first.</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">If you could wave a magic spatula and change one thing first, what would it be?</label>
+          <textarea name="topChange" placeholder="The very first thing you’d want improved or added."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Anything you wish the app did that it doesn’t do yet?</label>
+          <p class="field-hint">For example: more graphing, hydration calculators, printable timelines, notifications, sharing options, etc.</p>
+          <textarea name="missingFeatures" placeholder="Dream big. Worst case, it goes on the roadmap."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Would you use a polished, full version regularly?</label>
+          <div class="radio-row">
+            <label class="radio-chip">
+              <input type="radio" name="wouldUseFull" value="yes_daily" />
+              Yes – pretty much every bake
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="wouldUseFull" value="yes_sometimes" />
+              Yes – sometimes
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="wouldUseFull" value="maybe" />
+              Maybe – depends how it evolves
+            </label>
+            <label class="radio-chip">
+              <input type="radio" name="wouldUseFull" value="no" />
+              Nah, probably not for me
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: CONTACT (OPTIONAL) -->
+      <section class="feedback-section">
+        <div class="feedback-section-header">
+          <div>
+            <h2 class="feedback-section-title">6. Optional: stay in the loop</h2>
+            <p class="feedback-section-tagline">Only if you’re okay with follow-up questions or early access invites.</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="checkbox-chip">
+            <input type="checkbox" id="okToContact" name="okToContact" value="yes" />
+            I’m okay with being contacted about my feedback.
+          </label>
+        </div>
+
+        <div class="field-group inline-row">
+          <div class="inline-condensed">
+            <label class="field-label" for="email">Email (optional)</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" />
+          </div>
+          <span class="pill-note">We won’t share this. No spammy nonsense.</span>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Anything else you want to say?</label>
+          <textarea name="finalNotes" placeholder="Roast, praise, random thoughts – all welcome."></textarea>
+        </div>
+      </section>
+
+      <!-- SUBMIT -->
+      <div class="submit-row">
+        <p class="submit-note">
+          When you hit submit, your answers will be collected and used to steer the next build of Sour D'oh!.
+        </p>
+        <button type="submit" class="btn-primary">
+          <span>➤</span>
+          Send feedback
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // ===================== FEEDBACK HANDLER (LOCAL PHP JSON POST) =====================
+    (function () {
+      const form = document.getElementById('feedbackForm');
+      const okToContact = document.getElementById('okToContact');
+
+      // 🔧 UPDATE THIS PATH to where sourdoh-feedback-submit.php lives
+      // Example if both are in /sourdough/:
+      // const FEEDBACK_ENDPOINT = '/sourdough/sourdoh-feedback-submit.php';
+      const FEEDBACK_ENDPOINT = '/sourdough/sourdoh-feedback-submit.php';
+
+      function collectFormData(formElement) {
+        const fd = new FormData(formElement);
+        const data = {};
+        for (const [key, value] of fd.entries()) {
+          if (key === 'featuresUsed') {
+            if (!Array.isArray(data[key])) data[key] = [];
+            data[key].push(value);
+          } else {
+            data[key] = value;
+          }
+        }
+        return data;
+      }
+
+      function normalize(data) {
+        if (okToContact && !okToContact.checked) {
+          data.okToContact = 'no';
+          data.email = '';
+        } else if (okToContact && okToContact.checked) {
+          data.okToContact = 'yes';
+        }
+        return data;
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        let payload = collectFormData(form);
+        payload = normalize(payload);
+
+        console.log('Submitting payload to PHP:', payload);
+
+        try {
+          const res = await fetch(FEEDBACK_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const result = await res.json().catch(() => ({}));
+
+            if (
+            !res.ok ||
+            !(result.status === 'ok' || result.status === 'ok-debug')
+            ) {
+            console.error('Feedback submit error:', result);
+            alert('Something went wrong saving your feedback. Please try again.');
+            return;
+            }
+
+
+          alert('Thank you! Your feedback is saving the next version.');
+          form.reset();
+        } catch (err) {
+          console.error('Network error:', err);
+          alert('Network issue – try again in a moment.');
+        }
+      });
+    })();
+    // ===================== END FEEDBACK HANDLER =====================
+  </script>
+
+</body>
+</html>
+<!-- ===================== END: SOUR D'OH FEEDBACK PAGE ===================== -->

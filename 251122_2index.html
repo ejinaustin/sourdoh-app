@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sour D'oh! – Sourdough Journal & Starter Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* ===================== BEGIN: GLOBAL STYLES ===================== */
+    :root {
+      --bg: #14110f;
+      --bg-soft: #1f1a17;
+      --card: #221c18;
+      --accent: #f6c26b;
+      --accent-soft: rgba(246, 194, 107, 0.18);
+      --accent-strong: #ffda8a;
+      --text-main: #f9f5ee;
+      --text-soft: #d5c9b8;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #3b2b22 0, #14110f 45%, #050304 100%);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 16px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0 0 0.4rem;
+      letter-spacing: 0.03em;
+    }
+
+    p {
+      margin: 0.1rem 0 0.4rem;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.9rem;
+      background: linear-gradient(135deg, #f6c26b, #f09549);
+      color: #24150c;
+      font-weight: 600;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+      filter: brightness(1.05);
+    }
+
+    button.secondary {
+      background: transparent;
+      border-color: var(--border-subtle);
+      color: var(--text-soft);
+      box-shadow: none;
+    }
+
+    button.secondary:hover {
+      background: rgba(255, 255, 255, 0.04);
+      filter: none;
+      transform: none;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: #120e0c;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      padding: 0.45rem 0.55rem;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(246, 194, 107, 0.3);
+    }
+
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+      margin-bottom: 0.2rem;
+      display: block;
+    }
+
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .hidden { display: none !important; }
+    /* ===================== END: GLOBAL STYLES ===================== */
+
+
+    /* ===================== BEGIN: LAYOUT ===================== */
+    .app-shell {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .app-header {
+      background: radial-gradient(circle at top left, #3b2b22 0, #110d0a 55%);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .app-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
+
+    .app-tagline {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(246, 194, 107, 0.1);
+      border: 1px solid rgba(246, 194, 107, 0.5);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-strong);
+    }
+
+    .tab-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    .tab-btn {
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+      background: rgba(0,0,0,0.3);
+      color: var(--text-soft);
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(246, 194, 107, 0.14), rgba(174, 114, 65, 0.32));
+      border-color: rgba(246, 194, 107, 0.8);
+      color: var(--accent-strong);
+    }
+
+    .main-panels {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: 0.9rem 1rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.2rem;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin: 0.7rem 0;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 0.8rem;
+    }
+
+    @media (max-width: 800px) {
+      .two-column {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 0.6rem 0.7rem;
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .card-title-row small {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .ratio-group {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.2rem;
+    }
+
+    .field-inline-unit {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .field-inline-unit span {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .card-footer-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.6rem;
+      margin-top: 0.6rem;
+    }
+
+    .meta-card {
+      background: rgba(0,0,0,0.4);
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      padding: 0.5rem 0.6rem;
+    }
+
+    .meta-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+      margin-bottom: 0.1rem;
+    }
+
+    .meta-value {
+      font-size: 0.9rem;
+    }
+
+    table.log-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    table.log-table th,
+    table.log-table td {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.25rem 0.3rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table.log-table th {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: var(--text-soft);
+    }
+
+    table.log-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .log-discard {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .note-text {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .locked-card {
+      border-style: dashed;
+      border-color: rgba(246,194,107,0.8);
+      background: linear-gradient(135deg, rgba(246,194,107,0.08), rgba(174,114,65,0.16));
+    }
+
+    .locked-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-strong);
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: 0.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .settings-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .converter-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.5rem;
+      align-items: end;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- ===================== BEGIN: HEADER ===================== -->
+    <header class="app-header">
+      <div class="header-row">
+        <div>
+          <div class="app-title">Sour D'oh!</div>
+          <div class="app-tagline">A cozy, science-aware sourdough journal for starters, bakes, and notes.</div>
+        </div>
+        <div class="badge">Starter • Bakes • Notes</div>
+      </div>
+      <div class="tab-row">
+        <button class="tab-btn active" data-tab="starters-panel">Starters</button>
+        <button class="tab-btn" data-tab="bakes-panel">Bakes</button>
+        <button class="tab-btn" data-tab="settings-panel">Settings &amp; Tools</button>
+      </div>
+    </header>
+    <!-- ===================== END: HEADER ===================== -->
+
+
+    <!-- ===================== BEGIN: MAIN PANELS ===================== -->
+    <main class="main-panels">
+      <!-- ********** PANEL: STARTERS ********** -->
+      <section id="starters-panel" class="panel active">
+        <div class="panel-header-line">
+          <div>
+            <h2>Starter Tracker</h2>
+            <p>Log feedings, discards, and activity so you can understand your starter like a living pet.</p>
+            <div class="pill-row">
+              <div class="pill">Track Feeds</div>
+              <div class="pill">Discard &amp; Activity</div>
+              <div class="pill">Printable Log</div>
+            </div>
+          </div>
+          <button id="btn-print-starter" class="secondary">Print Starter Log</button>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Starter selection -->
+        <div class="card">
+          <div class="card-title-row">
+            <h3>Active Starter</h3>
+            <small>Most users only need a single “house” starter.</small>
+          </div>
+          <div class="form-grid">
+            <div>
+              <label for="starter-select">Choose Starter</label>
+              <select id="starter-select"></select>
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button id="btn-new-starter" class="secondary">New Starter</button>
+            </div>
+          </div>
+
+          <div id="starter-meta" class="meta-row"></div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="two-column">
+          <!-- LEFT: Feeding form -->
+          <div class="card">
+            <div class="card-title-row">
+              <h3>Log a Feeding</h3>
+              <small>Discard, feed, and observe behavior.</small>
+            </div>
+
+            <div class="form-grid">
+              <div>
+                <label for="feed-datetime">Date &amp; Time</label>
+                <input type="datetime-local" id="feed-datetime">
+              </div>
+              <div>
+                <label>Ratio (Starter : Flour : Water)</label>
+                <div class="ratio-group">
+                  <input type="number" id="ratio-starter" placeholder="1">
+                  <input type="number" id="ratio-flour" placeholder="2">
+                  <input type="number" id="ratio-water" placeholder="2">
+                </div>
+              </div>
+              <div>
+                <label for="feed-temp">Temperature</label>
+                <div class="field-inline-unit">
+                  <input type="number" id="feed-temp" placeholder="75">
+                  <span id="temp-unit-label">°F</span>
+                </div>
+              </div>
+              <div>
+                <label for="feed-peak">Time to Peak (hours)</label>
+                <input type="number" id="feed-peak" placeholder="4.5" step="0.1" min="0">
+              </div>
+              <div>
+                <label for="feed-activity">Activity Rating (1–5)</label>
+                <input type="number" id="feed-activity" min="1" max="5" placeholder="4">
+              </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="form-grid">
+              <div>
+                <label for="discard-amount">Discard Amount</label>
+                <div class="field-inline-unit">
+                  <input type="number" id="discard-amount" placeholder="50" step="1" min="0">
+                  <span id="weight-unit-label">g</span>
+                </div>
+              </div>
+              <div>
+                <label for="discard-notes">Discard Notes</label>
+                <textarea id="discard-notes" placeholder="Example: Left 40 g in jar, poured off hooch, smelled a bit sharp…"></textarea>
+              </div>
+            </div>
+
+            <label for="feed-notes" style="margin-top:0.5rem;">General Notes</label>
+            <textarea id="feed-notes" placeholder="Aroma, bubbles, dome, hooch, texture, etc."></textarea>
+
+            <div class="card-footer-row">
+              <button id="save-feed-btn">Save Feeding Log</button>
+            </div>
+          </div>
+
+          <!-- RIGHT: Feed log table -->
+          <div class="card">
+            <div class="card-title-row">
+              <h3>Feeding History</h3>
+              <small>Use this when troubleshooting or teaching others.</small>
+            </div>
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Ratio</th>
+                  <th>Temp</th>
+                  <th>Discard</th>
+                  <th>Peak</th>
+                  <th>Act</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="feed-log-body">
+                <!-- rows injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p class="note-text">
+          Tip: Use the printed log if you’re elbow-deep in flour and don’t want to touch your phone. Enter your notes later.
+        </p>
+      </section>
+
+      <!-- ********** PANEL: BAKES ********** -->
+      <section id="bakes-panel" class="panel">
+        <div class="panel-header-line">
+          <div>
+            <h2>Bake Journal</h2>
+            <p>Track your full loaf from mix to bake. Free version stores one bake; Pro unlocks unlimited, plus advanced planning features.</p>
+            <div class="pill-row">
+              <div class="pill">One Bake in Free Mode</div>
+              <div class="pill">Pro Planner Locked</div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="two-column">
+          <!-- LEFT: Basic bake form -->
+          <div class="card">
+            <div class="card-title-row">
+              <h3>Current Bake</h3>
+              <small>Simple profile of your latest loaf.</small>
+            </div>
+
+            <div class="form-grid">
+              <div>
+                <label for="bake-name">Bake Name</label>
+                <input type="text" id="bake-name" placeholder="House Boule, Sandwich Loaf, etc.">
+              </div>
+              <div>
+                <label for="bake-date">Bake Date</label>
+                <input type="date" id="bake-date">
+              </div>
+              <div>
+                <label for="bake-hydration">Hydration %</label>
+                <input type="number" id="bake-hydration" placeholder="75" min="40" max="100">
+              </div>
+              <div>
+                <label for="bake-levain">Levain % of Flour</label>
+                <input type="number" id="bake-levain" placeholder="20">
+              </div>
+              <div>
+                <label for="bake-salt">Salt %</label>
+                <input type="number" id="bake-salt" placeholder="2">
+              </div>
+              <div>
+                <label for="bake-bulk-time">Bulk Time (hrs)</label>
+                <input type="number" id="bake-bulk-time" placeholder="4" step="0.1">
+              </div>
+              <div>
+                <label for="bake-proof-time">Proof Time (hrs)</label>
+                <input type="number" id="bake-proof-time" placeholder="12" step="0.1">
+              </div>
+              <div>
+                <label for="bake-oven-temp">Oven Temp</label>
+                <div class="field-inline-unit">
+                  <input type="number" id="bake-oven-temp" placeholder="475">
+                  <span id="temp-unit-label-bake">°F</span>
+                </div>
+              </div>
+            </div>
+
+            <label for="bake-notes" style="margin-top:0.5rem;">Bake Notes</label>
+            <textarea id="bake-notes" placeholder="Crumb, crust color, oven spring, scoring pattern, flavor notes…"></textarea>
+
+            <div class="card-footer-row">
+              <button id="save-bake-btn">Save Bake (Free: 1 Slot)</button>
+            </div>
+          </div>
+
+          <!-- RIGHT: Saved bake + locked card -->
+          <div class="card">
+            <div class="card-title-row">
+              <h3>Saved Bakes</h3>
+              <small>One slot in free mode.</small>
+            </div>
+            <div id="bakes-list"></div>
+
+            <div class="card locked-card" style="margin-top:0.7rem;">
+              <div class="locked-label">Pro Bake Planner (Locked)</div>
+              <p>Unlock:</p>
+              <ul class="note-text">
+                <li>Unlimited bakes with full timelines (autolyse, stretches &amp; folds, cold proof).</li>
+                <li>Phase-by-phase notes and photos.</li>
+                <li>Side-by-side comparisons of hydration, temp, and flour blends.</li>
+              </ul>
+              <p class="note-text">For now, this card is just here to show what’s coming.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ********** PANEL: SETTINGS ********** -->
+      <section id="settings-panel" class="panel">
+        <div class="panel-header-line">
+          <div>
+            <h2>Settings &amp; Tools</h2>
+            <p>Choose your units, convert on the fly, and see which tools make sourdough easier.</p>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="settings-grid">
+          <!-- LEFT: Units + converter -->
+          <div class="card">
+            <div class="card-title-row">
+              <h3>Units &amp; Conversions</h3>
+              <small>Pick your defaults; converter is approximate.</small>
+            </div>
+
+            <div class="form-grid">
+              <div>
+                <label for="weight-unit-select">Weight Unit</label>
+                <select id="weight-unit-select">
+                  <option value="g">Grams</option>
+                  <option value="oz">Ounces</option>
+                </select>
+              </div>
+              <div>
+                <label for="temp-unit-select">Temperature Unit</label>
+                <select id="temp-unit-select">
+                  <option value="F">Fahrenheit</option>
+                  <option value="C">Celsius</option>
+                </select>
+              </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <h4 style="margin-bottom:0.2rem;">Quick Converters</h4>
+            <p class="note-text">Volume (cups) is approximate and assumes all-purpose/bread flour (~120 g per cup).</p>
+
+            <div class="converter-row" style="margin-top:0.4rem;">
+              <div>
+                <label for="conv-grams">Grams</label>
+                <input type="number" id="conv-grams" placeholder="500">
+              </div>
+              <div>
+                <label for="conv-ounces">Ounces</label>
+                <input type="number" id="conv-ounces" placeholder="17.6">
+              </div>
+              <div>
+                <label for="conv-cups">Cups (flour)</label>
+                <input type="number" id="conv-cups" placeholder="4.2">
+              </div>
+              <div>
+                <button id="btn-convert-weight" class="secondary">Convert</button>
+              </div>
+            </div>
+
+            <div class="converter-row" style="margin-top:0.7rem;">
+              <div>
+                <label for="conv-f">Fahrenheit</label>
+                <input type="number" id="conv-f" placeholder="75">
+              </div>
+              <div>
+                <label for="conv-c">Celsius</label>
+                <input type="number" id="conv-c" placeholder="24">
+              </div>
+              <div>
+                <button id="btn-convert-temp" class="secondary">Convert Temp</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Tools of the trade -->
+          <div class="card">
+            <div class="card-title-row">
+              <h3>Tools of the Trade</h3>
+              <small>Nice-to-haves that make the process smoother.</small>
+            </div>
+            <ul class="note-text">
+              <li><strong>Digital scale:</strong> Non-negotiable for consistent hydration and salt percentages.</li>
+              <li><strong>Bench scraper:</strong> Moving dough, cleaning the counter, dividing portions.</li>
+              <li><strong>Flexible scraper/bowl scraper:</strong> Great for mixing and clean bowl edges.</li>
+              <li><strong>Lame or sharp razor:</strong> Scoring for controlled oven spring.</li>
+              <li><strong>Banneton baskets:</strong> Support shape during proofing, pretty flour rings on the crust.</li>
+              <li><strong>Tea towels:</strong> Line baskets, prevent sticking, cover dough while resting.</li>
+              <li><strong>Dutch oven or combo cooker:</strong> Traps steam for bakery-style crust.</li>
+              <li><strong>Jars for starters:</strong> Clear glass lets you see rise level and bubbles.</li>
+              <li><strong>Proofing box or warm spot:</strong> Stable fermentation temperatures = predictable timing.</li>
+              <li><strong>Spurtle or sturdy spoon:</strong> Comfortable mixing for high-hydration doughs.</li>
+            </ul>
+            <p class="note-text">You don’t need everything on day one. Start with a scale, scraper, and something with a lid that can go in a hot oven.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- ===================== END: MAIN PANELS ===================== -->
+  </div>
+
+  <script>
+    // ===================== BEGIN: DATA & SETTINGS =====================
+    const STORAGE_KEY = "sour_doh_app_v1";
+
+    let data = {
+      starters: [],
+      starterFeedLogs: [],
+      bakes: []
+    };
+
+    let settings = {
+      weightUnit: "g",
+      temperatureUnit: "F"
+    };
+
+    let currentStarterId = null;
+
+    function loadFromLocalStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === "object") {
+            data.starters = parsed.starters || [];
+            data.starterFeedLogs = parsed.starterFeedLogs || [];
+            data.bakes = parsed.bakes || [];
+            settings = parsed.settings || settings;
+          }
+        }
+      } catch (err) {
+        console.error("Error loading data:", err);
+      }
+
+      // Ensure at least one starter
+      if (!data.starters.length) {
+        const id = "starter_" + Date.now();
+        data.starters.push({
+          id,
+          name: "House Starter",
+          hydration: 100,
+          flourBlend: { bread: 100 },
+          originDate: new Date().toISOString().slice(0, 10),
+          notes: "Default house starter."
+        });
+        currentStarterId = id;
+        saveToLocalStorage();
+      } else if (!currentStarterId) {
+        currentStarterId = data.starters[0].id;
+      }
+    }
+
+    function saveToLocalStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          starters: data.starters,
+          starterFeedLogs: data.starterFeedLogs,
+          bakes: data.bakes,
+          settings
+        }));
+      } catch (err) {
+        console.error("Error saving data:", err);
+      }
+    }
+    // ===================== END: DATA & SETTINGS =====================
+
+
+    // ===================== BEGIN: RENDER – STARTERS =====================
+    function renderStarterSelect() {
+      const select = document.getElementById("starter-select");
+      select.innerHTML = "";
+      data.starters.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = s.name;
+        if (s.id === currentStarterId) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    function getCurrentStarter() {
+      return data.starters.find(s => s.id === currentStarterId) || null;
+    }
+
+    function renderStarterMeta() {
+      const container = document.getElementById("starter-meta");
+      const starter = getCurrentStarter();
+      if (!starter) {
+        container.innerHTML = "<p class='note-text'>No starter selected.</p>";
+        return;
+      }
+
+      const flourBlend = starter.flourBlend || {};
+      const flourDesc = Object.keys(flourBlend)
+        .map(k => `${k}: ${flourBlend[k]}%`)
+        .join(", ") || "n/a";
+
+      container.innerHTML = `
+        <div class="meta-card">
+          <div class="meta-label">Name</div>
+          <div class="meta-value">${starter.name}</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Hydration</div>
+          <div class="meta-value">${starter.hydration || 100}%</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Flour Blend</div>
+          <div class="meta-value">${flourDesc}</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Origin Date</div>
+          <div class="meta-value">${starter.originDate || "n/a"}</div>
+        </div>
+      `;
+    }
+
+    function renderStarterFeedLogs() {
+      const tbody = document.getElementById("feed-log-body");
+      tbody.innerHTML = "";
+      if (!currentStarterId) return;
+
+      const logs = data.starterFeedLogs
+        .filter(l => l.starterId === currentStarterId)
+        .sort((a,b) => (a.datetime || "").localeCompare(b.datetime || ""));
+
+      logs.forEach(l => {
+        const tr = document.createElement("tr");
+        const ratio = l.ratio || {};
+        const temp = l.temperature || {};
+        const discardAmount = l.discardAmount || 0;
+        const discardUnit = l.discardUnit || settings.weightUnit;
+        const discardNotes = l.discardNotes || "";
+
+        tr.innerHTML = `
+          <td>${l.datetime || ""}</td>
+          <td>${ratio.starter || 0}:${ratio.flour || 0}:${ratio.water || 0}</td>
+          <td>${temp.value || ""} ${temp.unit || ""}</td>
+          <td class="log-discard">
+            ${discardAmount ? `${discardAmount} ${discardUnit}` : "-"}
+            ${discardNotes ? `<br><span>${discardNotes}</span>` : ""}
+          </td>
+          <td>${l.timeToPeakHours || ""}</td>
+          <td>${l.activityRating || ""}</td>
+          <td>${l.notes || ""}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateUnitLabels() {
+      document.getElementById("temp-unit-label").textContent = "°" + settings.temperatureUnit;
+      document.getElementById("weight-unit-label").textContent = settings.weightUnit;
+      document.getElementById("temp-unit-label-bake").textContent = "°" + settings.temperatureUnit;
+
+      document.getElementById("weight-unit-select").value = settings.weightUnit;
+      document.getElementById("temp-unit-select").value = settings.temperatureUnit;
+    }
+    // ===================== END: RENDER – STARTERS =====================
+
+
+    // ===================== BEGIN: ACTIONS – STARTERS =====================
+    function saveFeedingLog() {
+      if (!currentStarterId) return;
+
+      const datetime = document.getElementById("feed-datetime").value || "";
+      const ratioStarter = parseFloat(document.getElementById("ratio-starter").value) || 0;
+      const ratioFlour = parseFloat(document.getElementById("ratio-flour").value) || 0;
+      const ratioWater = parseFloat(document.getElementById("ratio-water").value) || 0;
+      const tempValue = parseFloat(document.getElementById("feed-temp").value) || null;
+      const timeToPeak = parseFloat(document.getElementById("feed-peak").value) || null;
+      const activity = parseInt(document.getElementById("feed-activity").value) || null;
+
+      const discardAmount = parseFloat(document.getElementById("discard-amount").value) || 0;
+      const discardNotes = document.getElementById("discard-notes").value.trim();
+      const notes = document.getElementById("feed-notes").value.trim();
+
+      const log = {
+        id: "feed_" + Date.now(),
+        starterId: currentStarterId,
+        datetime,
+        ratio: {
+          starter: ratioStarter,
+          flour: ratioFlour,
+          water: ratioWater
+        },
+        temperature: {
+          value: tempValue,
+          unit: settings.temperatureUnit
+        },
+        discardAmount,
+        discardUnit: settings.weightUnit,
+        discardNotes,
+        timeToPeakHours: timeToPeak,
+        activityRating: activity,
+        notes
+      };
+
+      data.starterFeedLogs.push(log);
+      saveToLocalStorage();
+      renderStarterFeedLogs();
+    }
+
+    function printStarterLog() {
+      if (!currentStarterId) return;
+
+      const starter = data.starters.find(s => s.id === currentStarterId);
+      const starterName = starter ? starter.name : currentStarterId;
+
+      const logs = data.starterFeedLogs
+        .filter(l => l.starterId === currentStarterId)
+        .sort((a,b) => (a.datetime || "").localeCompare(b.datetime || ""));
+
+      const win = window.open("", "_blank");
+      let html = `
+        <html>
+        <head>
+          <title>Sour D'oh! – Starter Log (${starterName})</title>
+          <style>
+            body { font-family: "Georgia", "Times New Roman", serif; padding: 24px; }
+            h2 { text-align: center; margin-bottom: 0.25rem; }
+            h3 { text-align: center; margin-top: 0; font-weight: normal; color: #555; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.88rem; }
+            th, td { border: 1px solid #ccc; padding: 6px 8px; vertical-align: top; }
+            th { background: #f4f0ea; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.15em; }
+          </style>
+        </head>
+        <body>
+          <h2>Sour D'oh! – Starter Log</h2>
+          <h3>${starterName}</h3>
+          <table>
+            <tr>
+              <th>Date</th>
+              <th>Ratio</th>
+              <th>Temp</th>
+              <th>Discard</th>
+              <th>Peak (h)</th>
+              <th>Activity</th>
+              <th>Notes</th>
+            </tr>
+      `;
+
+      logs.forEach(l => {
+        const ratio = l.ratio || {};
+        const temp = l.temperature || {};
+        const discard = l.discardAmount ? `${l.discardAmount} ${l.discardUnit || ""}` : "-";
+        const discardNotes = l.discardNotes ? `<br>${l.discardNotes}` : "";
+        html += `
+          <tr>
+            <td>${l.datetime || ""}</td>
+            <td>${ratio.starter || 0}:${ratio.flour || 0}:${ratio.water || 0}</td>
+            <td>${temp.value || ""} ${temp.unit || ""}</td>
+            <td>${discard}${discardNotes}</td>
+            <td>${l.timeToPeakHours || ""}</td>
+            <td>${l.activityRating || ""}</td>
+            <td>${l.notes || ""}</td>
+          </tr>
+        `;
+      });
+
+      html += `
+          </table>
+        </body>
+        </html>
+      `;
+      win.document.write(html);
+      win.document.close();
+      win.print();
+    }
+
+    function createNewStarter() {
+      const name = prompt("Name for this starter (e.g., 'House Starter', 'Rye Levain'):");
+      if (!name) return;
+
+      const hydrationStr = prompt("Hydration %? (e.g., 100 for equal water & flour)", "100");
+      const hydration = parseInt(hydrationStr, 10) || 100;
+
+      const id = "starter_" + Date.now();
+      data.starters.push({
+        id,
+        name,
+        hydration,
+        flourBlend: { bread: 100 },
+        originDate: new Date().toISOString().slice(0, 10),
+        notes: ""
+      });
+      currentStarterId = id;
+      saveToLocalStorage();
+      renderStarterSelect();
+      renderStarterMeta();
+      renderStarterFeedLogs();
+    }
+    // ===================== END: ACTIONS – STARTERS =====================
+
+
+    // ===================== BEGIN: BAKES =====================
+    function renderBakes() {
+      const container = document.getElementById("bakes-list");
+      container.innerHTML = "";
+
+      if (!data.bakes.length) {
+        container.innerHTML = "<p class='note-text'>No bake saved yet. Free mode gives you a single slot.</p>";
+        return;
+      }
+
+      data.bakes.forEach(b => {
+        const div = document.createElement("div");
+        div.className = "meta-card";
+        div.innerHTML = `
+          <div class="meta-label">${b.name || "Unnamed Bake"}</div>
+          <div class="meta-value">
+            Date: ${b.date || "n/a"}<br>
+            Hydration: ${b.hydration || "?"}% | Levain: ${b.levainPct || "?"}% | Salt: ${b.saltPct || "?"}%<br>
+            Bulk: ${b.bulkTime || "?"} h | Proof: ${b.proofTime || "?"} h<br>
+            Oven: ${b.ovenTemp || "?"} °${settings.temperatureUnit}
+          </div>
+          <div class="note-text" style="margin-top:0.3rem;">
+            ${b.notes || ""}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function saveBake() {
+      if (data.bakes.length >= 1) {
+        alert("Free mode supports only one saved bake. Future Pro version will unlock unlimited bakes.");
+        return;
+      }
+
+      const bake = {
+        id: "bake_" + Date.now(),
+        name: document.getElementById("bake-name").value.trim(),
+        date: document.getElementById("bake-date").value,
+        hydration: parseFloat(document.getElementById("bake-hydration").value) || null,
+        levainPct: parseFloat(document.getElementById("bake-levain").value) || null,
+        saltPct: parseFloat(document.getElementById("bake-salt").value) || null,
+        bulkTime: parseFloat(document.getElementById("bake-bulk-time").value) || null,
+        proofTime: parseFloat(document.getElementById("bake-proof-time").value) || null,
+        ovenTemp: parseFloat(document.getElementById("bake-oven-temp").value) || null,
+        notes: document.getElementById("bake-notes").value.trim()
+      };
+
+      data.bakes = [bake]; // ensure only one slot
+      saveToLocalStorage();
+      renderBakes();
+    }
+    // ===================== END: BAKES =====================
+
+
+    // ===================== BEGIN: SETTINGS & CONVERTERS =====================
+    function applySettingsFromUI() {
+      const weightSel = document.getElementById("weight-unit-select");
+      const tempSel = document.getElementById("temp-unit-select");
+      settings.weightUnit = weightSel.value;
+      settings.temperatureUnit = tempSel.value;
+      saveToLocalStorage();
+      updateUnitLabels();
+    }
+
+    function convertWeight() {
+      const gInput = document.getElementById("conv-grams");
+      const ozInput = document.getElementById("conv-ounces");
+      const cupsInput = document.getElementById("conv-cups");
+
+      let g = parseFloat(gInput.value);
+      let oz = parseFloat(ozInput.value);
+      let cups = parseFloat(cupsInput.value);
+
+      const gPerOz = 28.3495;
+      const gPerCupFlour = 120; // approximate
+
+      if (!isNaN(g)) {
+        oz = g / gPerOz;
+        cups = g / gPerCupFlour;
+      } else if (!isNaN(oz)) {
+        g = oz * gPerOz;
+        cups = g / gPerCupFlour;
+      } else if (!isNaN(cups)) {
+        g = cups * gPerCupFlour;
+        oz = g / gPerOz;
+      } else {
+        return;
+      }
+
+      gInput.value = Math.round(g * 10) / 10;
+      ozInput.value = Math.round(oz * 100) / 100;
+      cupsInput.value = Math.round(cups * 100) / 100;
+    }
+
+    function convertTemp() {
+      const fInput = document.getElementById("conv-f");
+      const cInput = document.getElementById("conv-c");
+
+      let f = parseFloat(fInput.value);
+      let c = parseFloat(cInput.value);
+
+      if (!isNaN(f)) {
+        c = (f - 32) * (5 / 9);
+      } else if (!isNaN(c)) {
+        f = (c * 9 / 5) + 32;
+      } else {
+        return;
+      }
+
+      fInput.value = Math.round(f * 10) / 10;
+      cInput.value = Math.round(c * 10) / 10;
+    }
+    // ===================== END: SETTINGS & CONVERTERS =====================
+
+
+    // ===================== BEGIN: NAV / INIT =====================
+    function switchTab(tabId) {
+      document.querySelectorAll(".panel").forEach(p => {
+        p.classList.toggle("active", p.id === tabId);
+      });
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabId);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadFromLocalStorage();
+
+      // Render initial
+      renderStarterSelect();
+      renderStarterMeta();
+      renderStarterFeedLogs();
+      renderBakes();
+      updateUnitLabels();
+
+      // Tab nav
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+      });
+
+      // Starter select
+      document.getElementById("starter-select").addEventListener("change", e => {
+        currentStarterId = e.target.value;
+        renderStarterMeta();
+        renderStarterFeedLogs();
+      });
+
+      // New starter
+      document.getElementById("btn-new-starter").addEventListener("click", createNewStarter);
+
+      // Save feeding
+      document.getElementById("save-feed-btn").addEventListener("click", saveFeedingLog);
+
+      // Print starter log
+      document.getElementById("btn-print-starter").addEventListener("click", printStarterLog);
+
+      // Save bake
+      document.getElementById("save-bake-btn").addEventListener("click", saveBake);
+
+      // Settings changes
+      document.getElementById("weight-unit-select").addEventListener("change", applySettingsFromUI);
+      document.getElementById("temp-unit-select").addEventListener("change", applySettingsFromUI);
+
+      // Converters
+      document.getElementById("btn-convert-weight").addEventListener("click", convertWeight);
+      document.getElementById("btn-convert-temp").addEventListener("click", convertTemp);
+    });
+    // ===================== END: NAV / INIT =====================
+  </script>
+</body>
+</html>

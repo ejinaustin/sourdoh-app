@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sour D’oh! – Sourdough Companion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Sour D’oh! – an all-in-one sourdough companion for starters, bake planning, journaling, and family recipes."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/sourdoh.css" />
+</head>
+<body data-mode="beginner" data-units="metric">
+  <div id="app-root">
+    <div class="app-shell">
+      <!-- ===================== BEGIN: HEADER ===================== -->
+      <header class="app-header">
+  <div class="app-badge-icon" aria-hidden="true">
+    <!-- Rotating logo image (starts on logo_1.png) -->
+    <img
+      id="appLogoRotator"
+      src="assets/images/logo_1.png"
+      alt=""
+      style="display:block; max-width:100%; max-height:100%;"
+    />
+  </div>
+  <div class="app-title-block">
+    <div class="app-title">Sour D’oh!</div>
+    <div class="app-subtitle">A cozy, scientific companion for your sourdough journey.</div>
+  </div>
+        <div class="app-mode-pill">
+          Mode:
+          <select id="modeSelect" class="app-mode-select" aria-label="Experience mode">
+            <option value="beginner">Beginner</option>
+            <option value="expert">Expert</option>
+          </select>
+        </div>
+      </header>
+      <!-- ===================== END: HEADER ===================== -->
+
+      <!-- ===================== BEGIN: NAVIGATION ===================== -->
+      <nav class="app-nav" aria-label="Main navigation">
+        <button class="app-nav-button app-nav-active" data-section="home">
+          <span class="emoji">🏠</span>
+          <span>Home</span>
+        </button>
+        <button class="app-nav-button" data-section="starterLab">
+          <span class="emoji">🫙</span>
+          <span>Starter Lab</span>
+        </button>
+        <button class="app-nav-button" data-section="planner">
+          <span class="emoji">🧮</span>
+          <span>Planner</span>
+        </button>
+        <button class="app-nav-button" data-section="bakes">
+          <span class="emoji">📊</span>
+          <span>Bakes</span>
+        </button>
+        <button class="app-nav-button" data-section="learn">
+          <span class="emoji">📚</span>
+          <span>Learn</span>
+        </button>
+        <button class="app-nav-button" data-section="journal">
+          <span class="emoji">📝</span>
+          <span>Journal</span>
+        </button>
+        <button class="app-nav-button" data-section="family">
+          <span class="emoji">👨‍👩‍👧‍👦</span>
+          <span>Family recipes</span>
+        </button>
+        <button class="app-nav-button" data-section="settings">
+          <span class="emoji">⚙️</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+      <!-- ===================== END: NAVIGATION ===================== -->
+
+      <!-- ===================== BEGIN: MAIN CONTENT ===================== -->
+      <main class="app-main">
+        <!-- LEFT COLUMN -->
+        <section id="section-home" class="app-section app-section-active" aria-labelledby="home-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="home-title" class="section-title">
+                  <span class="emoji">🏠</span>
+                  <span>Welcome to Sour D’oh!</span>
+                </div>
+                <div class="section-subtitle">
+                  Whether this is your first starter or your 300th loaf, this space keeps your notes, timings, and
+                  “oh THAT’S what went wrong” moments in one cozy place.
+                </div>
+              </div>
+              <div class="pill-label">Prototype – local only</div>
+            </div>
+
+            <div class="card card-soft">
+              <div class="card-header">
+                How to use this prototype
+                <span class="tag">Beginner &amp; expert friendly</span>
+              </div>
+              <div class="card-body">
+                <ul class="muted-text">
+                  <li>
+                    <strong>Starter Lab:</strong> Create profiles for each starter, log feedings, and print a paper log
+                    if you’re elbow-deep in dough.
+                  </li>
+                  <li>
+                    <strong>Planner:</strong> Enter your target dough weight, hydration, and room temp, then let the
+                    app suggest a timeline with hover tips for each step.
+                  </li>
+                  <li>
+                    <strong>Bakes:</strong> Log each bake with fermentation, bake details, and your scoring.
+                  </li>
+                  <li>
+                    <strong>Learn &amp; Journal:</strong> Save “aha” moments, troubleshoot flops, and stash notes you’ll
+                    actually find again.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                Beginner vs. expert mode
+                <span class="tag">Mode hint</span>
+              </div>
+              <div class="card-body">
+                <p id="modeHint" class="muted-text">
+                  Beginner mode: we’ll keep things gentle, guide step-by-step, and tuck the nerdy bits behind “Deep
+                  Science” panels.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STARTER LAB -->
+        <section id="section-starterLab" class="app-section" aria-labelledby="starterLab-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="starterLab-title" class="section-title">
+                  <span class="emoji">🫙</span>
+                  <span>Starter Lab</span>
+                </div>
+                <div class="section-subtitle">
+                  Track each starter like a tiny, bubbly pet with its own habits, history, and flavor.
+                </div>
+              </div>
+              <div class="pill-label">Multiple starters supported</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New starter profile
+              <span class="tag">Metadata</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="starterName">Starter name</label>
+                  <input id="starterName" type="text" placeholder="House starter, Rye beast, etc." />
+                </div>
+                <div class="input-group">
+                  <label for="starterHydration">Hydration (%)</label>
+                  <input id="starterHydration" type="number" min="50" max="125" step="1" placeholder="100" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="starterFlour">Primary flour mix</label>
+                  <input id="starterFlour" type="text" placeholder="All-purpose, bread, 70/30 bread/whole wheat…" />
+                </div>
+                <div class="input-group">
+                  <label for="starterOrigin">Origin date</label>
+                  <input id="starterOrigin" type="date" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="starterNotes">Notes</label>
+                  <textarea
+                    id="starterNotes"
+                    placeholder="Where did it come from? What does it smell like? Any special feeding schedule?"
+                  ></textarea>
+                </div>
+              </div>
+              <p class="muted-text">
+                This now saves into your browser as a reusable starter profile. You can add as many as you like.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="starterSaveBtn">
+                <span>💾 Save starter</span>
+              </button>
+              <button class="soft-btn beginner-only" id="starterExpectationsBtn">
+                <span>👀 What to expect (new starter)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card hidden" id="starterExpectationsCard">
+            <div class="card-header">
+              What to expect from a brand new starter
+              <span class="tag">Beginner comfort</span>
+            </div>
+            <div class="card-body">
+              <p class="muted-text">
+                Every starter is different, but here’s a rough idea of what most people see in the first week if they’re
+                feeding equal parts flour and water at room temperature.
+              </p>
+              <ul class="muted-text">
+                <li><strong>Day 1–2:</strong> It may look lively quickly, then stall. Totally normal.</li>
+                <li><strong>Day 3–4:</strong> It might smell funky (cheese, socks, vinegar). Still normal.</li>
+                <li>
+                  <strong>Day 5–7:</strong> Once it reliably doubles between feedings, you’re getting close to a usable
+                  starter.
+                </li>
+                <li>
+                  <strong>Hooch (liquid on top):</strong> a sign it’s hungry. Pour it off or stir it back in, then feed.
+                </li>
+              </ul>
+              <p class="muted-text">
+                The key: <strong>consistency over perfection.</strong> Stick to a schedule and write down what you see.
+              </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Saved starters
+            </div>
+            <div class="card-body" id="starterList">
+              <div class="list-empty">No starters yet. Create one above to see it here.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Log a feeding
+              <span class="tag">Connected to a starter</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="feedStarterSelect">Which starter?</label>
+                  <select id="feedStarterSelect">
+                    <option value="">No starters yet</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="feedRatio">Feed ratio (starter : flour : water)</label>
+                  <input id="feedRatio" type="text" placeholder="1 : 2 : 2" />
+                </div>
+                <div class="input-group">
+                <label for="feedTemp">
+                    Room temp (<span data-units-label="temp">°C</span>)
+                </label>
+                <input id="feedTemp" type="number" step="0.1" placeholder="23" />
+                </div>
+                <div class="input-group">
+                  <label for="feedPeakTime">Time to peak (hours)</label>
+                  <input id="feedPeakTime" type="number" step="0.1" placeholder="4.5" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="feedNotes">Feed notes - include information regarding your discard here.</label>
+                  <textarea
+                    id="feedNotes"
+                    placeholder="Bubbly? Domed? Any hooch? Smell more acidic or sweet?"
+                  ></textarea>
+                </div>
+              </div>
+              <p class="muted-text">
+                Each feeding you save is stored under the chosen starter. Later we can visualize activity over time.
+              </p>
+
+              <div class="deep-science-block" id="starterDeepScience">
+                <div class="deep-science-header">
+                  <div class="deep-science-title">
+                    <span>🧪 Deep Science: What’s happening after a feeding?</span>
+                  </div>
+                  <div class="deep-science-toggle-icon" aria-hidden="true">▼</div>
+                </div>
+                <div class="deep-science-body">
+                  <p>
+                    After you feed, wild yeasts and lactic acid bacteria wake up and start chewing through sugars. The
+                    ratio of flour, water, temperature, and time all affect which microbes “win” and how sour or mild
+                    your starter becomes.
+                  </p>
+                  <ul>
+                    <li>Warmer temps favor faster activity but can push things more sour.</li>
+                    <li>Cooler temps slow everything down but can build complexity.</li>
+                    <li>Higher feed ratios (like 1:5:5) give a longer, slower rise.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="feedSaveBtn">
+                <span>📥 Save feeding</span>
+              </button>
+              <button class="soft-btn" id="printStarterLogBtn">
+                <span>🖨️ Print blank log sheet</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- BAKES: PRINT-STYLE STARTER LOG (PRINT ONLY) -->
+        <section id="printStarterLog">
+          <h1>Sour D’oh! – Starter Log</h1>
+          <h2>Starter name: ____________________________</h2>
+          <p>
+            Use this sheet at the counter, then transfer the info back into the app when your hands aren’t covered in
+            flour.
+          </p>
+
+          <h2>Starter profile</h2>
+          <table>
+            <tr>
+              <th style="width:1.4in;">Hydration (%)</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Flour blend</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Usual room temp (°C/°F)</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Typical feeding ratio</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Notes</th>
+              <td></td>
+            </tr>
+          </table>
+
+          <h2>Feeding log</h2>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:0.9in;">Date</th>
+                <th style="width:0.9in;">Time</th>
+                <th>Feed ratio<br />(starter : flour : water)</th>
+                <th>Room temp<br />(°C or °F)</th>
+                <th>Time to peak<br />(hours)</th>
+                <th>Notes (bubbles, smell, hooch, etc.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- A few blank rows for handwriting -->
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+    <!-- PLANNER -->
+    <section id="section-planner" class="app-section" aria-labelledby="planner-title">
+    <div>
+        <div class="section-title-row">
+        <div>
+            <div id="planner-title" class="section-title">
+            <span class="emoji">🧮</span>
+            <span>Bake Planner</span>
+            </div>
+            <div class="section-subtitle">
+            Define your flour mix, hydration, and schedule. Let the app help you hit your bake window.
+            </div>
+        </div>
+        <div class="pill-label">Formula &amp; timeline</div>
+        </div>
+    </div>
+
+    <div class="card card-soft">
+        <div class="card-header">
+        Dough formula
+        <span class="tag">Inputs</span>
+        </div>
+        <div class="card-body">
+        <div class="input-row">
+            <div class="input-group">
+            <label for="targetWeight">Target dough weight (<span data-units-label="weight">g</span>)</label>
+            <input id="targetWeight" type="number" min="300" max="3000" step="10" placeholder="900" />
+            </div>
+
+            <div class="input-group">
+            <label for="hydration">Hydration (%)</label>
+            <input id="hydration" type="number" min="55" max="90" step="1" placeholder="75" />
+            </div>
+
+            <div class="input-group">
+            <label for="saltPercent">Salt (%)</label>
+            <input id="saltPercent" type="number" min="1.5" max="3" step="0.1" placeholder="2.0" />
+            </div>
+
+            <!-- Levain visible for ALL modes, with beginner-friendly help -->
+            <div class="input-group">
+            <label for="levainPercent" class="field-label">
+                Levain (% of flour)
+                <button
+                type="button"
+                id="levainHintBtn"
+                class="hint-badge"
+                aria-label="How levain is calculated and why it matters"
+                >
+                ?
+                </button>
+            </label>
+            <input id="levainPercent" type="number" min="0" max="40" step="1" placeholder="20" />
+            <p class="muted-text" id="levainInlineHelp">
+                Levain is just your active starter that goes into the dough. This number says
+                how much of your flour becomes levain. If you’re not sure, 20% is a great place to start.
+            </p>
+            </div>
+        </div>
+
+        <div class="input-row">
+            <div class="input-group">
+            <label for="flourBlend">Flour blend</label>
+            <input id="flourBlend" type="text" placeholder="70% bread, 20% AP, 10% whole wheat" />
+            </div>
+
+            <div class="input-group">
+            <label for="ambientTemp">Room temperature (<span data-units-label="temp">°C</span>)</label>
+            <input id="ambientTemp" type="number" step="0.1" placeholder="23.0" />
+            </div>
+        </div>
+
+        <p class="muted-text">
+            These inputs drive a mock formula and schedule now. Later we can tie them to your real bake history.
+        </p>
+        </div>
+
+        <div class="card-footer">
+        <button class="primary-btn" id="calculateFormulaBtn">
+            <span>🧾 Calculate formula</span>
+        </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+        Suggested schedule
+        <span class="tag">Preview</span>
+        </div>
+        <div class="card-body" id="schedulePreview">
+        Enter a target weight, hydration, levain %, and room temperature above, then click
+        <strong>Calculate formula</strong>. This area will show a rough timeline with hover tips for each step.
+        </div>
+    </div>
+    </section>
+
+
+        <!-- BAKES -->
+        <section id="section-bakes" class="app-section" aria-labelledby="bakes-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="bakes-title" class="section-title">
+                  <span class="emoji">📊</span>
+                  <span>Bake Log &amp; Analytics</span>
+                </div>
+                <div class="section-subtitle">
+                  Log every loaf with full details: formula, fermentation, bake, and evaluation.
+                </div>
+              </div>
+              <div class="pill-label">Prototype – unlimited bakes (saved in this browser)</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New bake entry
+              <span class="tag">Session</span>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeName">Bake name</label>
+                  <input id="bakeName" type="text" placeholder="House boule, sandwich loaf, pizza test, etc." />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeDate">Date</label>
+                  <input id="bakeDate" type="date" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeStarterSelect">Starter used (optional)</label>
+                  <select id="bakeStarterSelect">
+                    <option value="">No specific starter</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Formula -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Formula &amp; dough
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeDoughWeight">Dough weight (<span data-units-label="weight">g</span>)</label>
+                  <input id="bakeDoughWeight" type="number" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeHydration">Hydration (%)</label>
+                  <input id="bakeHydration" type="number" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeSaltPercent">Salt (%)</label>
+                  <input id="bakeSaltPercent" type="number" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeLevainPercent">Levain (% of flour)</label>
+                  <input id="bakeLevainPercent" type="number" />
+                </div>
+              </div>
+
+              <!-- Fermentation -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Fermentation
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                <label for="bakeAmbientTemp">
+                    Ambient temp (<span data-units-label="temp">°C</span>)
+                </label>
+                <input id="bakeAmbientTemp" type="number" step="0.1" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeBulkHours">Bulk ferment (hours)</label>
+                  <input id="bakeBulkHours" type="number" step="0.1" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeFolds">Number of folds</label>
+                  <input id="bakeFolds" type="number" />
+                </div>
+
+                <div class="input-group">
+                  <label for="bakeFoldMethod">Fold style</label>
+                  <select id="bakeFoldMethod">
+                    <option value="coil">Coil folds</option>
+                    <option value="stretch">Stretch &amp; fold</option>
+                    <option value="slap">Slap &amp; fold</option>
+                    <option value="none">None</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeBulkNotes">Bulk notes</label>
+                  <textarea
+                    id="bakeBulkNotes"
+                    placeholder="How high did it rise? Bubbles? Smooth or weak? Any pauses?"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Proof & bake -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Proof &amp; bake
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeProofMethod">Proof method</label>
+                  <select id="bakeProofMethod">
+                    <option value="cold">Cold retard (fridge)</option>
+                    <option value="room">Room temp</option>
+                    <option value="combo">Room, then cold</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="bakeProofHours">Proof time (hours)</label>
+                  <input id="bakeProofHours" type="number" step="0.1" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeProofTemp">
+                  Proof temp (<span data-units-label="temp">°C</span>)
+                  </label>
+                  <input id="bakeProofTemp" type="number" step="0.1" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeVessel">Baking vessel</label>
+                  <select id="bakeVessel">
+                    <option value="dutch">Dutch oven</option>
+                    <option value="stone">Baking stone/steel</option>
+                    <option value="pan">Loaf pan</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakePreheatTemp">
+                Preheat temp (<span data-units-label="temp">°C</span>)
+                </label>
+                  <input id="bakePreheatTemp" type="number" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeBakeTemp">
+                    Bake temp (<span data-units-label="temp">°C</span>)
+                    </label>
+                  <input id="bakeBakeTemp" type="number" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeCoveredMinutes">Minutes covered</label>
+                  <input id="bakeCoveredMinutes" type="number" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeUncoveredMinutes">Minutes uncovered</label>
+                  <input id="bakeUncoveredMinutes" type="number" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeSteamMethod">Steam method</label>
+                  <input
+                    id="bakeSteamMethod"
+                    type="text"
+                    placeholder="Lid on/off, tray of water, ice cubes in pan, etc."
+                  />
+                </div>
+                <div class="input-group">
+                  <label for="bakeBakeNotes">Bake notes</label>
+                  <textarea
+                    id="bakeBakeNotes"
+                    placeholder="Color, blistering, ears, how it smelled, anything that surprised you."
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Evaluation -->
+              <div class="muted-text" style="margin-top:0.6rem; font-weight:600;">
+                Evaluation
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeCrumb">Crumb (1–5)</label>
+                  <input id="bakeCrumb" type="number" min="1" max="5" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeCrust">Crust (1–5)</label>
+                  <input id="bakeCrust" type="number" min="1" max="5" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeSourness">Sourness (1–5)</label>
+                  <input id="bakeSourness" type="number" min="1" max="5" />
+                </div>
+                <div class="input-group">
+                  <label for="bakeOverall">Overall happiness (1–5)</label>
+                  <input id="bakeOverall" type="number" min="1" max="5" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="bakeNotes">Tasting notes</label>
+                  <textarea
+                    id="bakeNotes"
+                    placeholder="Where did this shine? What would you tweak next time?"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button class="primary-btn" id="bakeSaveBtn">
+                <span>💾 Save bake</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Saved bakes
+            </div>
+            <div class="card-body">
+              <div id="bakeList" class="list-empty">
+                No bakes saved yet. Log one above to start your history.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LEARN -->
+        <section id="section-learn" class="app-section" aria-labelledby="learn-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="learn-title" class="section-title">
+                  <span class="emoji">📚</span>
+                  <span>Learn &amp; troubleshoot</span>
+                </div>
+                <div class="section-subtitle">
+                  Quick, friendly explanations of the weird stuff that happens between flour, water, and time.
+                </div>
+              </div>
+              <div class="pill-label">Evergreen notes</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              Common issues
+              <span class="tag">Beginner-friendly</span>
+            </div>
+            <div class="card-body">
+              <ul class="muted-text">
+                <li>
+                  <strong>Flat loaf:</strong> Under-fermented, over-proofed, weak shaping, or too low an oven temp are
+                  the usual suspects.
+                </li>
+                <li>
+                  <strong>Gummy crumb:</strong> Often under-baked, or cut too soon. Let it cool fully before slicing.
+                </li>
+                <li>
+                  <strong>Too sour:</strong> Long, warm ferments or very old starter. Shorten bulk or use cooler temps.
+                </li>
+                <li>
+                  <strong>Not sour enough:</strong> Increase cold proof time or use a more mature starter.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              Glossary
+              <span class="tag">Plain language</span>
+            </div>
+            <div class="card-body">
+              <ul class="muted-text">
+                <li>
+                  <strong>Autolyse:</strong> A rest with just flour and water to start gluten formation with little
+                  effort.
+                </li>
+                <li>
+                  <strong>Bulk ferment:</strong> The first rise after mixing everything together.
+                </li>
+                <li>
+                  <strong>Proof:</strong> The final rise after shaping, right before baking.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- JOURNAL -->
+        <section id="section-journal" class="app-section" aria-labelledby="journal-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="journal-title" class="section-title">
+                  <span class="emoji">📝</span>
+                  <span>Bake journal</span>
+                </div>
+                <div class="section-subtitle">
+                  Capture stories, experiments, and “never again” moments that don’t fit neatly into a form.
+                </div>
+              </div>
+              <div class="pill-label">Free-form notes</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New journal entry
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="journalTitle">Title</label>
+                  <input id="journalTitle" type="text" placeholder="That time the loaf welded to the Dutch oven" />
+                </div>
+                <div class="input-group">
+                  <label for="journalDate">Date</label>
+                  <input id="journalDate" type="date" />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="journalStory">Story</label>
+                  <textarea
+                    id="journalStory"
+                    placeholder="What happened? What did you learn? What would you change?"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="journalSaveBtn">
+                <span>💾 Save entry</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Saved journal entries</div>
+            <div class="card-body">
+              <div id="journalList" class="list-empty">No entries yet. Start by saving one above.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAMILY RECIPES -->
+        <section id="section-family" class="app-section" aria-labelledby="family-title">
+          <div>
+            <div class="section-title-row">
+              <div>
+                <div id="family-title" class="section-title">
+                  <span class="emoji">👨‍👩‍👧‍👦</span>
+                  <span>Family recipes</span>
+                </div>
+                <div class="section-subtitle">
+                  Keep heirloom formulas, “Grandma’s notes,” and favorite variations in one safe, sharable place.
+                </div>
+              </div>
+              <div class="pill-label">Heirloom stash</div>
+            </div>
+          </div>
+
+          <div class="card card-soft">
+            <div class="card-header">
+              New family recipe
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="familyTitle">Recipe name</label>
+                  <input id="familyTitle" type="text" placeholder="Grandma’s Sunday sourdough" />
+                </div>
+                <div class="input-group">
+                  <label for="familyAttribution">Who does this belong to?</label>
+                  <input id="familyAttribution" type="text" placeholder="Grandma, Aunt, neighborhood baker, etc." />
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="familyStory">Story / notes</label>
+                  <textarea
+                    id="familyStory"
+                    placeholder="When is it usually made? Any quirks or superstitions?"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="primary-btn" id="familySaveBtn">
+                <span>💾 Save recipe</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Saved family recipes</div>
+            <div class="card-body">
+              <div id="familyList" class="list-empty">
+                No recipes saved yet. Add one above to pin it in place.
+              </div>
+            </div>
+          </div>
+        </section>
+
+<!-- SETTINGS -->
+<section id="section-settings" class="app-section" aria-labelledby="settings-title">
+  <div>
+    <div class="section-title-row">
+      <div>
+        <div id="settings-title" class="section-title">
+          <span class="emoji">⚙️</span>
+          <span>Settings &amp; tools</span>
+        </div>
+        <div class="section-subtitle">
+          Tweak how the app behaves and use quick converters when you’re juggling recipes from different sources.
+        </div>
+      </div>
+      <div class="pill-label">Local prototype</div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE MODE -->
+  <div class="card card-soft">
+    <div class="card-header">
+      Experience mode
+      <span class="tag">Beginner vs. expert</span>
+    </div>
+    <div class="card-body">
+      <p class="muted-text" id="settingsModeSummary">
+        Beginner mode keeps the language gentle and hides some of the nerdier details until you’re ready.
+      </p>
+      <p class="muted-text">
+        Use the mode selector in the header to switch between <strong>Beginner</strong> and
+        <strong>Expert</strong>. Expert mode surfaces more numbers, less hand-holding, and extra “Deep Science”
+        notes.
+      </p>
+    </div>
+  </div>
+
+  <!-- UNITS & CONVERTERS -->
+  <div class="card">
+    <div class="card-header">
+      Units &amp; quick converters
+      <span class="tag">Customizable</span>
+    </div>
+
+    <div class="card-body">
+
+      <!-- NEW WEIGHT + TEMP UNITS -->
+      <div class="input-row">
+        <!-- Weight Units -->
+        <div class="input-group">
+          <div class="field-label">Weight units</div>
+
+          <label class="chip-toggle">
+            <input type="radio" name="weightUnits" id="weightUnitsGrams" />
+            <span>Grams (g)</span>
+          </label>
+
+          <label class="chip-toggle">
+            <input type="radio" name="weightUnits" id="weightUnitsOunces" />
+            <span>Ounces (oz)</span>
+          </label>
+
+          <p class="muted-text">
+            Most sourdough bakers (even in the US) use grams for accuracy. Ounces are available if preferred.
+          </p>
+        </div>
+
+        <!-- Temperature Units -->
+        <div class="input-group">
+          <div class="field-label">Temperature units</div>
+
+          <label class="chip-toggle">
+            <input type="radio" name="tempUnits" id="tempUnitsCelsius" />
+            <span>Celsius (°C)</span>
+          </label>
+
+          <label class="chip-toggle">
+            <input type="radio" name="tempUnits" id="tempUnitsFahrenheit" />
+            <span>Fahrenheit (°F)</span>
+          </label>
+
+          <p class="muted-text">
+            Choose whichever matches your oven and thermometer. Many US ovens are °F even when recipes are °C.
+          </p>
+        </div>
+      </div>
+
+      <!-- Existing Converters (unchanged) -->
+      <div class="input-row">
+        <div class="input-group">
+          <label for="convertWeightInput">Weight converter</label>
+          <input id="convertWeightInput" type="number" placeholder="e.g. 500" />
+          <select id="convertWeightDirection" style="margin-top:0.25rem; max-width:180px;">
+            <option value="g-to-oz">Grams → Ounces</option>
+            <option value="oz-to-g">Ounces → Grams</option>
+          </select>
+          <div id="convertWeightResult" class="muted-text" style="margin-top:0.25rem;"></div>
+        </div>
+
+        <div class="input-group">
+          <label for="convertTempInput">Temperature converter</label>
+          <input id="convertTempInput" type="number" placeholder="e.g. 450" />
+          <select id="convertTempDirection" style="margin-top:0.25rem; max-width:180px;">
+            <option value="c-to-f">°C → °F</option>
+            <option value="f-to-c">°F → °C</option>
+          </select>
+          <div id="convertTempResult" class="muted-text" style="margin-top:0.25rem;"></div>
+        </div>
+      </div>
+
+      <p class="muted-text">
+        These are just quick tools so you don’t have to leave the page when a recipe is in the “wrong” units.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+      <!-- ===================== BEGIN: FOOTER ===================== -->
+      <footer class="app-footer">
+        <span>
+          <strong>Data note:</strong> Everything you enter here is stored only in this browser for now. Clearing browser
+          storage will wipe it.
+        </span>
+        <span>Sour D’oh! prototype &middot; v1 – educational &amp; utility demo</span>
+      </footer>
+      <!-- ===================== END: FOOTER ===================== -->
+    </div>
+  </div>
+
+  <!-- ===================== BEGIN: APP SCRIPT ===================== -->
+  
+  <!-- ===================== END: APP SCRIPT ===================== -->
+
+  <!-- Logo rotator for header icon -->
+  <script src="assets/js/logo-rotator.js"></script>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/starter.js"></script>
+  <script src="assets/js/planner.js"></script>
+  <script src="assets/js/bakes.js"></script>
+  <script src="assets/js/journal.js"></script>
+  <script src="assets/js/family.js"></script>
+  <script src="assets/js/app-init.js"></script>
+</body>
+</html>
